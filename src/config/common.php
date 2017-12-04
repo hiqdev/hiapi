@@ -9,18 +9,6 @@
  */
 
 return [
-    'components' => [
-        'entityManager' => [
-            'class' => \hiapi\components\EntityManager::class,
-        ],
-        'db' => [
-            'class'     => \hiapi\components\Connection::class,
-            'charset'   => 'utf8',
-            'dsn'       => 'pgsql:dbname=' . $params['db.name'],
-            'username'  => $params['db.user'],
-            'password'  => $params['db.password'],
-        ],
-    ],
     'container' => [
         'definitions' => [
             \hiapi\filters\ContentNegotiator::class => [
@@ -31,15 +19,6 @@ return [
 //                     'application/xml'  => \yii\web\Response::FORMAT_XML,
                 ],
             ],
-            \hiapi\query\FieldFactoryInterface::class => \hiapi\query\FieldFactory::class,
-        ],
-        'singletons' => [
-            \hiapi\components\ConnectionInterface::class => function () {
-                return Yii::$app->get('db');
-            },
-            \hiapi\components\EntityManagerInterface::class => function () {
-                return Yii::$app->get('entityManager');
-            },
         ],
     ],
 ];
