@@ -10,12 +10,30 @@
 
 namespace hiapi\commands;
 
-use hiapi\query\Specification;
-use hiapi\repositories\BaseRepository;
-use Yii;
+use hiqdev\yii\DataMapper\components\EntityManagerInterface;
+use hiqdev\yii\DataMapper\query\Specification;
+use hiqdev\yii\DataMapper\repositories\BaseRepository;
 
 class SearchHandler
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
+    /**
+     * @return Specification
+     */
+    protected function createSpecification()
+    {
+        return new Specification();
+    }
+
     public function handle(SearchCommand $command)
     {
         return $this->getRepository($command)->findAll($this->buildSpecification($command));
@@ -23,9 +41,7 @@ class SearchHandler
 
     protected function buildSpecification(SearchCommand $command)
     {
-        return Yii::createObject(Specification::class)
-            ->where($command->where)
-            ->limit($command->limit ?: 25);
+        return $this->createSpecification()->where($command->where)->limit($command->limit ?: 25);
     }
 
     /**
@@ -34,6 +50,6 @@ class SearchHandler
      */
     protected function getRepository(SearchCommand $command)
     {
-        return Yii::$app->entityManager->getRepository($command->getEntityClass());
+        return $this->em->getRepository($command->getEntityClass());
     }
 }

@@ -10,7 +10,9 @@
 
 namespace hiapi\commands;
 
-class SearchCommand extends BaseCommand
+use yii\base\Model;
+
+abstract class SearchCommand extends Model
 {
     public $select;
     public $where;
@@ -24,4 +26,6 @@ class SearchCommand extends BaseCommand
             ['limit', 'number', 'max' => 100],
         ];
     }
+
+    abstract public function getEntityClass();
 }
