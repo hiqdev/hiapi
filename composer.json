@@ -44,8 +44,8 @@
         }
     ],
     "require": {
-        "hiqdev/yii2-autobus": "v2.x-master",
-        "hiqdev/yii2-data-mapper": "v2.x-master",
+        "hiqdev/yii2-autobus": "v2.x-dev",
+        "hiqdev/yii2-data-mapper": "v2.x-dev",
         "vlucas/phpdotenv": "^2.4",
         "hiqdev/hidev-webapp": "<2.0 || dev-master"
     },
