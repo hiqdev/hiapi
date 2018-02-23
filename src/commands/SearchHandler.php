@@ -13,6 +13,10 @@ namespace hiapi\commands;
 use hiqdev\yii\DataMapper\components\EntityManagerInterface;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
+use transmedia\hiapi\modules\client\jsonApi\ClientResourceTransformer;
+use transmedia\hiapi\modules\client\jsonApi\ClientsCollectionDocument;
+use WoohooLabs\Yin\JsonApi\Document\AbstractSuccessfulDocument;
+use WoohooLabs\Yin\JsonApi\JsonApi;
 
 class SearchHandler
 {
@@ -21,9 +25,15 @@ class SearchHandler
      */
     private $em;
 
-    public function __construct(EntityManagerInterface $em)
+    /**
+     * @var JsonApi
+     */
+    private $jsonApi;
+
+    public function __construct(EntityManagerInterface $em, JsonApi $jsonApi)
     {
         $this->em = $em;
+        $this->jsonApi = $jsonApi;
     }
 
     /**
@@ -36,7 +46,14 @@ class SearchHandler
 
     public function handle(SearchCommand $command)
     {
-        return $this->getRepository($command)->findAll($this->buildSpecification($command));
+        $response = $this->jsonApi->respond();
+
+        $results = $this->getRepository($command)->findAll($this->buildSpecification($command));
+
+        return $response->ok(
+            new ClientsCollectionDocument(new ClientResourceTransformer()),
+            $results
+        );
     }
 
     protected function buildSpecification(SearchCommand $command)

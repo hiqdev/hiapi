@@ -10,9 +10,7 @@
 
 namespace hiapi\commands;
 
-use yii\base\Model;
-
-abstract class SearchCommand extends Model
+abstract class SearchCommand extends BaseCommand
 {
     public $select;
     public $where;
