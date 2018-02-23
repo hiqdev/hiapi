@@ -48,7 +48,7 @@ class SearchHandler
     {
         $response = $this->jsonApi->respond();
 
-        $results = $this->getRepository($command)->findAll($this->buildSpecification($command));
+        return $this->getRepository($command)->findAll($this->buildSpecification($command));
 
         return $response->ok(
             new ClientsCollectionDocument(new ClientResourceTransformer()),
