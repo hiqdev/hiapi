@@ -23,7 +23,6 @@ return array_filter([
     'runtimePath' => '@root/runtime',
     'controllerNamespace' => 'hiapi\controllers',
     'bootstrap' => array_filter([
-        'log' => 'log',
         'debug' => empty($params['debug.enabled']) ? null : 'debug',
     ]),
     'components' => [
@@ -35,15 +34,6 @@ return array_filter([
             'viewPath' => '@hiapi/views/mail',
             'htmlLayout' => '@hiapi/views/layouts/mail-html',
             'textLayout' => '@hiapi/views/layouts/mail-text',
-        ],
-        'log' => [
-            'traceLevel' => defined('YII_DEBUG') && YII_DEBUG ? 3 : 0,
-            'targets' => [
-                'default' => [
-                    'class' => \yii\log\FileTarget::class,
-                    'levels' => ['error', 'warning'],
-                ],
-            ],
         ],
         'urlManager' => [
             'class' => \yii\web\UrlManager::class,
