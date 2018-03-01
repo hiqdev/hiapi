@@ -9,18 +9,12 @@
  */
 
 return array_filter([
-    'id' => 'hiapi',
-    'name' => 'HiAPI',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
         '@vendor/bower' => '@vendor/bower-asset',
         '@vendor/npm' => '@vendor/npm-asset',
     ],
-    'basePath' => dirname(__DIR__),
-    'viewPath' => '@hiapi/views',
-    'vendorPath' => '@root/vendor',
-    'runtimePath' => '@root/runtime',
     'controllerNamespace' => 'hiapi\controllers',
     'bootstrap' => array_filter([
         'debug' => empty($params['debug.enabled']) ? null : 'debug',

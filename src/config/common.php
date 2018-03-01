@@ -9,6 +9,13 @@
  */
 
 return [
+    'id' => 'hiapi',
+    'name' => 'HiAPI',
+    'basePath' => dirname(__DIR__),
+    'viewPath' => '@hiapi/views',
+    'vendorPath' => '@root/vendor',
+    'runtimePath' => '@root/runtime',
+
     'container' => [
         'definitions' => [
             \hiapi\filters\ContentNegotiator::class => [
