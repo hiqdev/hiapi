@@ -12,6 +12,9 @@ return [
     'id' => 'hiapi',
     'name' => 'HiAPI',
     'basePath' => dirname(__DIR__),
+
+    /// aliases must be set before their use
+    'aliases' => [],
     'viewPath' => '@hiapi/views',
     'vendorPath' => '@root/vendor',
     'runtimePath' => '@root/runtime',
