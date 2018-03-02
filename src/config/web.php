@@ -30,7 +30,7 @@ return array_filter([
             'textLayout' => '@hiapi/views/layouts/mail-text',
         ],
         'urlManager' => [
-            'class' => \yii\web\UrlManager::class,
+            '__class' => \yii\web\UrlManager::class,
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'enableStrictParsing' => false,
@@ -38,7 +38,7 @@ return array_filter([
     ],
     'modules' => array_filter([
         'debug' => empty($params['debug.enabled']) ? null : array_filter([
-            'class' => \yii\debug\Module::class,
+            '__class' => \yii\debug\Module::class,
             'allowedIPs' => isset($params['debug.allowedIps']) ? $params['debug.allowedIps'] : null,
             'historySize' => isset($params['debug.historySize']) ? $params['debug.historySize'] : null,
         ]),

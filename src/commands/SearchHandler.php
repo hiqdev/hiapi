@@ -46,14 +46,7 @@ class SearchHandler
 
     public function handle(SearchCommand $command)
     {
-        $response = $this->jsonApi->respond();
-
         return $this->getRepository($command)->findAll($this->buildSpecification($command));
-
-        return $response->ok(
-            new ClientsCollectionDocument(new ClientResourceTransformer()),
-            $results
-        );
     }
 
     protected function buildSpecification(SearchCommand $command)
