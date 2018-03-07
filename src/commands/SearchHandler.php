@@ -13,11 +13,12 @@ namespace hiapi\commands;
 use hiqdev\yii\DataMapper\components\EntityManagerInterface;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\BaseRepository;
-use transmedia\hiapi\modules\client\jsonApi\ClientResourceTransformer;
-use transmedia\hiapi\modules\client\jsonApi\ClientsCollectionDocument;
-use WoohooLabs\Yin\JsonApi\Document\AbstractSuccessfulDocument;
-use WoohooLabs\Yin\JsonApi\JsonApi;
 
+/**
+ * Class SearchHandler
+ *
+ * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
+ */
 class SearchHandler
 {
     /**
@@ -26,14 +27,13 @@ class SearchHandler
     private $em;
 
     /**
-     * @var JsonApi
+     * SearchHandler constructor.
+     *
+     * @param EntityManagerInterface $em
      */
-    private $jsonApi;
-
-    public function __construct(EntityManagerInterface $em, JsonApi $jsonApi)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->jsonApi = $jsonApi;
     }
 
     /**
