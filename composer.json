@@ -44,6 +44,7 @@
         }
     ],
     "require": {
+        "yiisoft/yii2": "2.1.x-dev",
         "hiqdev/yii2-autobus": "v2.x-dev",
         "hiqdev/yii2-data-mapper": "v2.x-dev",
         "vlucas/phpdotenv": "^2.4",
