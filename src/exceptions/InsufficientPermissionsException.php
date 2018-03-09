@@ -24,7 +24,7 @@ class InsufficientPermissionsException extends DomainException
      */
     public function __construct(string $permission)
     {
-        parent::__construct('Insufficient permissions');
+        parent::__construct("Insufficient permissions for '$permission'");
 
         $this->permission = $permission;
     }
