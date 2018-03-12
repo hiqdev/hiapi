@@ -18,4 +18,10 @@ return [
     'viewPath' => '@hiapi/views',
     'vendorPath' => '@root/vendor',
     'runtimePath' => '@root/runtime',
+
+    'components' => [
+        'user' => [
+            'enableSession' => false,
+        ],
+    ],
 ];
