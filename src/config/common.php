@@ -18,17 +18,4 @@ return [
     'viewPath' => '@hiapi/views',
     'vendorPath' => '@root/vendor',
     'runtimePath' => '@root/runtime',
-
-    'container' => [
-        'definitions' => [
-            \hiapi\filters\ContentNegotiator::class => [
-                'class' => \yii\filters\ContentNegotiator::class,
-                'formats' => [
-                    'application/json' => \yii\web\Response::FORMAT_JSON,
-                    // XXX disabled because browsers accept XML
-//                     'application/xml'  => \yii\web\Response::FORMAT_XML,
-                ],
-            ],
-        ],
-    ],
 ];
