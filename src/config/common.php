@@ -19,6 +19,9 @@ return [
     'vendorPath' => '@root/vendor',
     'runtimePath' => '@root/runtime',
 
+    'logger' => [
+        '__class' => \yii\log\Logger::class
+    ],
     'components' => [
         'user' => [
             'enableSession' => false,
