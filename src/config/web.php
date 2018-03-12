@@ -33,7 +33,17 @@ return array_filter([
             '__class' => \yii\web\UrlManager::class,
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'enableStrictParsing' => false,
+            'enableStrictParsing' => true,
+            'rules' => [
+                'default' => [
+                    'pattern' => '<version:v\d+>/<resource:[\w]+>/<action:[\w-]+>/<bulk:(bulk)?>',
+                    'route' => 'api/command',
+                    'defaults' => [
+                        'version' => 'v1',
+                        'bulk' => false,
+                    ],
+                ],
+            ],
         ],
     ],
     'modules' => array_filter([
