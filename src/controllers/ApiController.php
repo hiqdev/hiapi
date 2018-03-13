@@ -66,10 +66,10 @@ class ApiController extends Controller
                     HttpBearerAuth::class,
                     [
                         'class' => QueryParamAuth::class,
-                        'tokenParam' => 'access_token'
+                        'tokenParam' => 'access_token',
                     ],
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
