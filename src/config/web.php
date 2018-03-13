@@ -90,6 +90,15 @@ return array_filter([
             'bus.per-command-middleware' => [
                 '__class' => \hiapi\middlewares\PerCommandMiddleware::class,
             ],
+        /// Request & response
+            \Psr\Http\Message\ServerRequestInterface::class => function ($container) {
+                return \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
+            },
+            \Psr\Http\Message\ResponseInterface::class => function ($container) {
+                return new \GuzzleHttp\Psr7\Response();
+            },
+            \WoohooLabs\Yin\JsonApi\Request\RequestInterface::class => \WoohooLabs\Yin\JsonApi\Request\Request::class,
+            \WoohooLabs\Yin\JsonApi\Exception\ExceptionFactoryInterface::class => \WoohooLabs\Yin\JsonApi\Exception\DefaultExceptionFactory::class,
         /// General
             \yii\di\Container::class => function ($container) {
                 return $container;
