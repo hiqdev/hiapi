@@ -90,6 +90,14 @@ return array_filter([
             'bus.per-command-middleware' => [
                 '__class' => \hiapi\middlewares\PerCommandMiddleware::class,
             ],
+
+        /// Bus accessories
+            \League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor::class => \League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor::class,
+            \League\Tactician\Handler\Locator\HandlerLocator::class => \hiqdev\yii2\autobus\bus\NearbyHandlerLocator::class,
+            \League\Tactician\Handler\MethodNameInflector\MethodNameInflector::class => \League\Tactician\Handler\MethodNameInflector\HandleInflector::class,
+
+            \hiqdev\yii2\autobus\components\CommandFactoryInterface::class => \hiqdev\yii2\autobus\components\SimpleCommandFactory::class,
+
         /// Request & response
             \Psr\Http\Message\ServerRequestInterface::class => function ($container) {
                 return \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
