@@ -57,12 +57,43 @@ return array_filter([
     ]),
     'container' => [
         'singletons' => [
+        /// BUS
             \hiapi\bus\ApiCommandsBusInterface::class => [
                 '__class' => \hiapi\bus\ApiCommandsBus::class,
                 '__construct()' => [
                     0 => Instance::of('bus.http-request'),
                 ],
             ],
+            'bus.http-request' => [
+                '__class' => \hiqdev\yii2\autobus\components\TacticianCommandBus::class,
+                '__construct()' => [
+                    Instance::of('bus.http-request.default-command-handler'),
+                ],
+                'middlewares' => [
+                    $_ENV['ENABLE_JSONAPI_RESPONSE'] ?? false
+                        ? \hiapi\middlewares\JsonApiMiddleware::class
+                        : \hiapi\middlewares\LegacyResponderMiddleware::class,
+                    \hiapi\middlewares\HandleExceptionsMiddleware::class,
+                    \hiqdev\yii2\autobus\bus\LoadFromRequestMiddleware::class,
+                    \hiqdev\yii2\autobus\bus\ValidateMiddleware::class,
+                    'bus.per-command-middleware',
+                ],
+            ],
+            'bus.http-request.default-command-handler' => [
+                '__class' => \League\Tactician\Handler\CommandHandlerMiddleware::class,
+                '__construct()' => [
+                    Instance::of(\League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor::class),
+                    Instance::of(\hiqdev\yii2\autobus\bus\NearbyHandlerLocator::class),
+                    Instance::of(\League\Tactician\Handler\MethodNameInflector\HandleInflector::class),
+                ],
+            ],
+            'bus.per-command-middleware' => [
+                '__class' => \hiapi\middlewares\PerCommandMiddleware::class,
+            ],
+        /// General
+            \yii\di\Container::class => function ($container) {
+                return $container;
+            },
             \yii\base\Application::class => function () {
                 return Yii::$app;
             },
