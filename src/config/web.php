@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
+use yii\di\Instance;
+
 return array_filter([
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -55,6 +57,12 @@ return array_filter([
     ]),
     'container' => [
         'singletons' => [
+            \hiapi\bus\ApiCommandsBusInterface::class => [
+                '__class' => \hiapi\bus\ApiCommandsBus::class,
+                '__construct()' => [
+                    0 => Instance::of('bus.http-request'),
+                ],
+            ],
             \yii\base\Application::class => function () {
                 return Yii::$app;
             },
