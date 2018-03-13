@@ -48,6 +48,7 @@
         "hiqdev/yii2-autobus": "v2.x-dev",
         "hiqdev/yii2-data-mapper": "v2.x-dev",
         "vlucas/phpdotenv": "^2.4",
+        "guzzlehttp/psr7": "^1.4",
         "hiqdev/hidev-webapp": "<2.0 || dev-master"
     },
     "require-dev": {
