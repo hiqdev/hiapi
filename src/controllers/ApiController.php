@@ -38,10 +38,6 @@ class ApiController extends Controller
      * @var AutoBusInterface|BranchedAutoBus
      */
     private $autoBus;
-    /**
-     * @var ExtractionInterface
-     */
-    private $extractor;
 
     public function __construct(
         string $id,
@@ -79,8 +75,9 @@ class ApiController extends Controller
 
     public function actionCommand($version, $resource, $action, $bulk = false) // todo: use $version
     {
-        die('asdfsad');
         $handledCommand = $this->autoBus->runCommand($this->buildCommandName($resource, $action, $bulk), []);
+    var_dump($handledCommand);
+        die('asdfsad');
 
         $this->response->setHeaders($handledCommand->getHeaders());
         $this->response->setStatusCode($handledCommand->getStatusCode());
