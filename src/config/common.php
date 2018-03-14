@@ -24,7 +24,15 @@ return [
     ],
     'components' => [
         'user' => [
+            'identityClass' => \hiapi\models\HiamUserIdentity::class,
             'enableSession' => false,
+        ],
+    ],
+    'container' => [
+        'singletons' => [
+            \yii\web\User::class => function ($container, $params, $config) {
+                return new \yii\web\User($config);
+            },
         ],
     ],
 ];
