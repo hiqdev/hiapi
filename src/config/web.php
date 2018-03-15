@@ -58,12 +58,6 @@ return array_filter([
     'container' => [
         'singletons' => [
         /// BUS
-            \hiapi\bus\ApiCommandsBusInterface::class => [
-                '__class' => \hiapi\bus\ApiCommandsBus::class,
-                '__construct()' => [
-                    0 => Instance::of('bus.http-request'),
-                ],
-            ],
             'bus.http-request' => [
                 '__class' => \hiqdev\yii2\autobus\components\TacticianCommandBus::class,
                 '__construct()' => [
@@ -73,7 +67,7 @@ return array_filter([
                     $_ENV['ENABLE_JSONAPI_RESPONSE'] ?? false
                         ? \hiapi\middlewares\JsonApiMiddleware::class
                         : \hiapi\middlewares\LegacyResponderMiddleware::class,
-                    \hiapi\middlewares\HandleExceptionsMiddleware::class,
+                    // TMP \hiapi\middlewares\HandleExceptionsMiddleware::class,
                     \hiqdev\yii2\autobus\bus\LoadFromRequestMiddleware::class,
                     \hiqdev\yii2\autobus\bus\ValidateMiddleware::class,
                     'bus.per-command-middleware',
@@ -87,16 +81,6 @@ return array_filter([
                     Instance::of(\League\Tactician\Handler\MethodNameInflector\HandleInflector::class),
                 ],
             ],
-            'bus.per-command-middleware' => [
-                '__class' => \hiapi\middlewares\PerCommandMiddleware::class,
-            ],
-
-        /// Bus accessories
-            \League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor::class => \League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor::class,
-            \League\Tactician\Handler\Locator\HandlerLocator::class => \hiqdev\yii2\autobus\bus\NearbyHandlerLocator::class,
-            \League\Tactician\Handler\MethodNameInflector\MethodNameInflector::class => \League\Tactician\Handler\MethodNameInflector\HandleInflector::class,
-
-            \hiqdev\yii2\autobus\components\CommandFactoryInterface::class => \hiqdev\yii2\autobus\components\SimpleCommandFactory::class,
 
         /// Request & response
             \Psr\Http\Message\ServerRequestInterface::class => function ($container) {
@@ -107,16 +91,6 @@ return array_filter([
             },
             \WoohooLabs\Yin\JsonApi\Request\RequestInterface::class => \WoohooLabs\Yin\JsonApi\Request\Request::class,
             \WoohooLabs\Yin\JsonApi\Exception\ExceptionFactoryInterface::class => \WoohooLabs\Yin\JsonApi\Exception\DefaultExceptionFactory::class,
-        /// General
-            \yii\di\Container::class => function ($container) {
-                return $container;
-            },
-            \yii\base\Application::class => function () {
-                return Yii::$app;
-            },
-            \yii\mail\MailerInterface::class => function () {
-                return Yii::$app->get('mailer');
-            },
         ],
     ],
 ]);
