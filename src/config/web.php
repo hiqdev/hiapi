@@ -67,7 +67,7 @@ return array_filter([
                     $_ENV['ENABLE_JSONAPI_RESPONSE'] ?? false
                         ? \hiapi\middlewares\JsonApiMiddleware::class
                         : \hiapi\middlewares\LegacyResponderMiddleware::class,
-                    // TMP \hiapi\middlewares\HandleExceptionsMiddleware::class,
+                    \hiapi\middlewares\HandleExceptionsMiddleware::class,
                     \hiqdev\yii2\autobus\bus\LoadFromRequestMiddleware::class,
                     \hiqdev\yii2\autobus\bus\ValidateMiddleware::class,
                     'bus.per-command-middleware',
