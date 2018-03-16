@@ -58,7 +58,7 @@ class SearchHandler
      * @param SearchCommand $command
      * @return BaseRepository
      */
-    protected function getRepository(SearchCommand $command)
+    protected function getRepository(EntityCommand $command)
     {
         return $this->em->getRepository($command->getEntityClass());
     }

@@ -10,7 +10,12 @@
 
 namespace hiapi\commands;
 
-abstract class SearchCommand extends BaseCommand
+/**
+ * Class SearchCommand
+ *
+ * @author Andrii Vasyliev <sol@hiqdev.com>
+ */
+abstract class SearchCommand extends EntityCommand
 {
     public $select;
     public $where;
@@ -24,6 +29,4 @@ abstract class SearchCommand extends BaseCommand
             ['limit', 'number', 'max' => 100],
         ];
     }
-
-    abstract public function getEntityClass();
 }
