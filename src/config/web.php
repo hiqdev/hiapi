@@ -38,7 +38,7 @@ return array_filter([
             'enableStrictParsing' => true,
             'rules' => [
                 'default' => [
-                    'pattern' => '<version:v\d+>/<resource:[\w]+>/<action:[\w-]+>/<bulk:(bulk)?>',
+                    'pattern' => '<version:v\d+>/<resource:[\w-]+>/<action:[\w-]+>/<bulk:(bulk)?>',
                     'route' => 'api/command',
                     'defaults' => [
                         'version' => 'v1',
