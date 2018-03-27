@@ -44,12 +44,12 @@ class SearchHandler
         return new Specification();
     }
 
-    public function handle(SearchCommand $command)
+    public function handle(EntityCommandInterface $command)
     {
         return $this->getRepository($command)->findAll($this->buildSpecification($command));
     }
 
-    protected function buildSpecification(SearchCommand $command)
+    protected function buildSpecification(EntityCommandInterface $command)
     {
         $spec = $this->createSpecification();
         $spec->where($command->where);
@@ -63,7 +63,7 @@ class SearchHandler
      * @param SearchCommand $command
      * @return BaseRepository
      */
-    protected function getRepository(SearchCommand $command)
+    protected function getRepository(EntityCommand $command)
     {
         return $this->em->getRepository($command->getEntityClass());
     }

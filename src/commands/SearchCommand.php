@@ -12,7 +12,12 @@ namespace hiapi\commands;
 
 use hiapi\validators\RefValidator;
 
-abstract class SearchCommand extends BaseCommand
+/**
+ * Class SearchCommand
+ *
+ * @author Andrii Vasyliev <sol@hiqdev.com>
+ */
+abstract class SearchCommand extends EntityCommand
 {
     public $select;
     public $where;
@@ -28,6 +33,4 @@ abstract class SearchCommand extends BaseCommand
             ['with', 'each', 'rule' => [RefValidator::class]],
         ];
     }
-
-    abstract public function getEntityClass();
 }
