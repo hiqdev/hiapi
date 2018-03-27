@@ -10,11 +10,14 @@
 
 namespace hiapi\commands;
 
+use hiapi\validators\RefValidator;
+
 abstract class SearchCommand extends BaseCommand
 {
     public $select;
     public $where;
     public $limit;
+    public $with = [];
 
     public function rules()
     {
@@ -22,6 +25,7 @@ abstract class SearchCommand extends BaseCommand
             ['select', 'safe'],
             ['where', 'safe'],
             ['limit', 'number', 'max' => 100],
+            ['with', 'each', 'rule' => [RefValidator::class]],
         ];
     }
 

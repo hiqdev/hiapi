@@ -51,7 +51,12 @@ class SearchHandler
 
     protected function buildSpecification(SearchCommand $command)
     {
-        return $this->createSpecification()->where($command->where)->limit($command->limit ?: 25);
+        $spec = $this->createSpecification();
+        $spec->where($command->where);
+        $spec->limit($command->limit ?: 25);
+        $spec->with($command->with);
+        
+        return $spec;
     }
 
     /**
