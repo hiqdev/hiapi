@@ -73,7 +73,7 @@ class ApiController extends Controller
         ]);
     }
 
-    public function actionCommand($version, $resource, $action, $bulk = false) // todo: use $version
+    public function actionCommand($version, $resource, $action, $bulk = false) // todo: use $version, $bulk
     {
         $handledCommand = $this->autoBus->runCommand($this->buildCommandName($resource, $action, $bulk), []);
 
