@@ -53,7 +53,7 @@ return [
             \League\Event\EmitterInterface::class => [
                 '__class' => \hiapi\event\ConfigurableEmitter::class,
                 'listeners' => [
-                    ['event' => '*', 'listener' => \hiapi\event\listeners\LogEventsListener::class]
+                    ['event' => '*', 'listener' => \hiapi\event\listener\LogEventsListener::class],
                 ]
             ],
 

@@ -22,9 +22,6 @@ return array_filter([
         'debug' => empty($params['debug.enabled']) ? null : 'debug',
     ]),
     'components' => [
-        'errorHandler' => [
-            '__class' => \yii\console\ErrorHandler::class
-        ],
         'request' => [
             'enableCsrfCookie' => false,
             'enableCsrfValidation' => false,

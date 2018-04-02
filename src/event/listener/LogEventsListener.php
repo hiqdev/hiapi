@@ -1,6 +1,6 @@
 <?php
 
-namespace hiapi\event\listeners;
+namespace hiapi\event\listener;
 
 use League\Event\EventInterface;
 use League\Event\ListenerInterface;
@@ -14,11 +14,6 @@ use yii\base\InvalidConfigException;
  */
 class LogEventsListener implements ListenerInterface
 {
-    public function __construct()
-    {
-        $a = 0;
-    }
-
     /**
      * Handle an event.
      *
@@ -28,7 +23,7 @@ class LogEventsListener implements ListenerInterface
      */
     public function handle(EventInterface $event)
     {
-        file_put_contents(Yii::getAlias('@runtime/events.log'), $this->serializeEvent($event), FILE_APPEND);
+        file_put_contents(Yii::getAlias('@runtime/events.log'), $this->serializeEvent($event) . PHP_EOL, FILE_APPEND | LOCK_EX);
     }
 
     /**

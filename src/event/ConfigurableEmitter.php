@@ -28,6 +28,13 @@ class ConfigurableEmitter extends Emitter implements EmitterInterface
                 throw new InvalidConfigException('Both "event" and "listener" properties are required to attach a listener.');
             }
 
+            if (is_string($listener['listener'])) {
+                $className = $listener['listener'];
+                $listener['listener'] = function ($event) use ($className) {
+                    (new $className())->handle($event);
+                };
+            }
+
             $this->addListener($listener['event'], $listener['listener'], $listener['priority'] ?? self::P_NORMAL);
         }
 
