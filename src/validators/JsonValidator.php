@@ -17,7 +17,7 @@ class JsonValidator extends Validator
     {
         parent::__construct($config);
 
-        $this->message = '{attrubute} must be a valid JSON';
+        $this->message = '{attribute} must be a valid JSON';
     }
 
     protected function validateValue($value)
