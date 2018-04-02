@@ -4,6 +4,7 @@
 namespace hiapi\middlewares;
 
 use hiapi\exceptions\InsufficientPermissionsException;
+use hiapi\exceptions\NotAuthenticatedException;
 use League\Tactician\Middleware;
 use yii\web\User;
 
@@ -35,9 +36,14 @@ class AuthMiddleware implements Middleware
      *
      * @return mixed
      * @throws InsufficientPermissionsException
+     * @throws NotAuthenticatedException
      */
     public function execute($command, callable $next)
     {
+        if ($this->user->getId() === null) {
+            throw new NotAuthenticatedException();
+        }
+
         if (!$this->user->can($this->permission)) {
             throw new InsufficientPermissionsException($this->permission);
         }
