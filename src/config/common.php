@@ -48,6 +48,15 @@ return [
             \League\Tactician\Handler\Locator\HandlerLocator::class => \hiqdev\yii2\autobus\bus\NearbyHandlerLocator::class,
             \League\Tactician\Handler\MethodNameInflector\MethodNameInflector::class => \League\Tactician\Handler\MethodNameInflector\HandleInflector::class,
             \hiqdev\yii2\autobus\components\CommandFactoryInterface::class => \hiqdev\yii2\autobus\components\SimpleCommandFactory::class,
+        /// Event
+            \hiapi\event\EventStorageInterface::class => \hiapi\event\EventStorage::class,
+            \League\Event\EmitterInterface::class => [
+                '__class' => \hiapi\event\ConfigurableEmitter::class,
+                'listeners' => [
+                    ['event' => '*', 'listener' => \hiapi\event\listeners\LogEventsListener::class]
+                ]
+            ],
+
         /// General
             \yii\di\Container::class => function ($container) {
                 return $container;

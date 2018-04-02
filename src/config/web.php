@@ -22,6 +22,9 @@ return array_filter([
         'debug' => empty($params['debug.enabled']) ? null : 'debug',
     ]),
     'components' => [
+        'errorHandler' => [
+            '__class' => \yii\console\ErrorHandler::class
+        ],
         'request' => [
             'enableCsrfCookie' => false,
             'enableCsrfValidation' => false,
@@ -70,6 +73,7 @@ return array_filter([
                     \hiapi\middlewares\HandleExceptionsMiddleware::class,
                     \hiqdev\yii2\autobus\bus\LoadFromRequestMiddleware::class,
                     \hiqdev\yii2\autobus\bus\ValidateMiddleware::class,
+                    \hiapi\middlewares\EventEmitterMiddleware::class,
                     'bus.per-command-middleware',
                 ],
             ],

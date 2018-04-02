@@ -9,6 +9,11 @@ use hiapi\exceptions\domain\DomainException;
 use League\Tactician\Middleware;
 use Zend\Hydrator\ExtractionInterface;
 
+/**
+ * Class HandleExceptionsMiddleware
+ *
+ * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
+ */
 class HandleExceptionsMiddleware implements Middleware
 {
     /**
