@@ -49,7 +49,8 @@
         "hiqdev/yii2-data-mapper": "v2.x-dev",
         "vlucas/phpdotenv": "^2.4",
         "guzzlehttp/psr7": "^1.4",
-        "hiqdev/hidev-webapp": "<2.0 || dev-master"
+        "hiqdev/hidev-webapp": "<2.0 || dev-master",
+        "php-amqplib/php-amqplib": "^2.7.2"
     },
     "require-dev": {
         "hiqdev/hidev-php": "<2.0 || dev-master",
