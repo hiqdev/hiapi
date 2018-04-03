@@ -52,9 +52,11 @@ return [
             \hiapi\event\EventStorageInterface::class => \hiapi\event\EventStorage::class,
             \League\Event\EmitterInterface::class => [
                 '__class' => \hiapi\event\ConfigurableEmitter::class,
-                'listeners' => [
-                    ['event' => '*', 'listener' => \hiapi\event\listener\LogEventsListener::class],
-                ]
+                'listeners' => array_filter([
+                    YII_ENV === 'dev'
+                        ? ['event' => '*', 'listener' => \hiapi\event\listener\LogEventsListener::class]
+                        : null,
+                ])
             ],
 
         /// General
@@ -67,6 +69,9 @@ return [
             \yii\mail\MailerInterface::class => function () {
                 return Yii::$app->get('mailer');
             },
+            \Psr\Log\LoggerInterface::class => function () {
+                return Yii::getLogger();
+            }
         ],
     ],
 ];

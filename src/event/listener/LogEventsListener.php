@@ -6,6 +6,7 @@ use League\Event\EventInterface;
 use League\Event\ListenerInterface;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\helpers\FileHelper;
 
 /**
  * Class LogEventsListener
@@ -23,7 +24,10 @@ class LogEventsListener implements ListenerInterface
      */
     public function handle(EventInterface $event)
     {
-        file_put_contents(Yii::getAlias('@runtime/events.log'), $this->serializeEvent($event) . PHP_EOL, FILE_APPEND | LOCK_EX);
+        $dir = Yii::getAlias('@runtime');
+
+        FileHelper::createDirectory($dir);
+        file_put_contents($dir . DIRECTORY_SEPARATOR . 'events.log', $this->serializeEvent($event) . PHP_EOL, FILE_APPEND | LOCK_EX);
     }
 
     /**
