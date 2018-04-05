@@ -49,12 +49,12 @@ class SearchHandler
         return $this->getRepository($command)->findAll($this->buildSpecification($command));
     }
 
-    protected function buildSpecification(EntityCommandInterface $command)
+    protected function buildSpecification(SearchCommand $command)
     {
         $spec = $this->createSpecification();
-        $spec->where($command->where);
+        $spec->where($command->filter ?? $command->where);
         $spec->limit($command->limit ?: 25);
-        $spec->with($command->with);
+        $spec->with($command->include ?? $command->with);
         
         return $spec;
     }
