@@ -4,7 +4,9 @@ namespace hiapi\middlewares;
 
 use hiapi\event\EventStorageInterface;
 use League\Event\EmitterInterface;
+use League\Event\EventInterface;
 use League\Tactician\Middleware;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class EventEmitterMiddleware
@@ -21,11 +23,16 @@ class EventEmitterMiddleware implements Middleware
      * @var EmitterInterface
      */
     private $emitter;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
-    public function __construct(EventStorageInterface $eventStorage, EmitterInterface $emitter)
+    public function __construct(EventStorageInterface $eventStorage, EmitterInterface $emitter, LoggerInterface $logger)
     {
         $this->eventStorage = $eventStorage;
         $this->emitter = $emitter;
+        $this->logger = $logger;
     }
 
     /**
@@ -39,10 +46,24 @@ class EventEmitterMiddleware implements Middleware
         $result = $next($command);
 
         $events = $this->eventStorage->release();
-        if (!empty($events)) {
-            $this->emitter->emitBatch($events);
-        }
+        $this->emitEvents($events);
 
         return $result;
+    }
+
+    /**
+     * @param EventInterface[] $events
+     */
+    private function emitEvents(array $events = []): void
+    {
+        foreach ($events as $event) {
+            try {
+                $this->emitter->emit($event);
+            } catch (\Exception $exception) {
+                $this->logger->error("Failed to handle event {$event->getName()}: {$exception->getMessage()}", [
+                    'exception' => $exception,
+                ]);
+            }
+        }
     }
 }

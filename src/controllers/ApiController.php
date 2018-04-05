@@ -11,6 +11,8 @@
 namespace hiapi\controllers;
 
 use hiapi\bus\ApiCommandsBusInterface;
+use hiqdev\yii2\autobus\components\AutoBusInterface;
+use hiqdev\yii2\autobus\components\BranchedAutoBus;
 use Psr\Http\Message\ResponseInterface;
 use Yii;
 use yii\base\Module;
