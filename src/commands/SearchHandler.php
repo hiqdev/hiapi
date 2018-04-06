@@ -52,9 +52,9 @@ class SearchHandler
     protected function buildSpecification(SearchCommand $command)
     {
         $spec = $this->createSpecification();
-        $spec->where($command->filter ?? $command->where);
+        $spec->where(array_merge($command->filter, $command->where));
         $spec->limit($command->limit ?: 25);
-        $spec->with($command->include ?? $command->with);
+        $spec->with(array_merge($command->include, $command->with));
         
         return $spec;
     }
