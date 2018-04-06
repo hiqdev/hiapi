@@ -13,5 +13,8 @@ return [
         'hiapi' => [
             'class' => \hiapi\console\HiapiController::class,
         ],
+        'queue' => [
+            'class' => \hiapi\console\QueueController::class,
+        ],
     ],
 ];

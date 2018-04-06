@@ -58,6 +58,17 @@ return [
                 ])
             ],
 
+        /// Queue
+            \PhpAmqpLib\Connection\AMQPStreamConnection::class => [
+                '__class' => \PhpAmqpLib\Connection\AMQPLazyConnection::class,
+                '__construct()' => [
+                    $params['amqp.host'],
+                    $params['amqp.port'],
+                    $params['amqp.user'],
+                    $params['amqp.password'],
+                ],
+            ],
+
         /// General
             \yii\di\Container::class => function ($container) {
                 return $container;

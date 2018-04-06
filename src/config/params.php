@@ -26,4 +26,9 @@ return [
     'db.name'               => 'hiapi',
     'db.user'               => 'hiapi',
     'db.password'           => '*',
+
+    'amqp.host'             => 'localhost',
+    'amqp.port'             => 5672,
+    'amqp.user'             => null,
+    'amqp.password'         => null,
 ];
