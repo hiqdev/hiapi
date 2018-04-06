@@ -55,7 +55,7 @@ return [
                     YII_ENV === 'dev'
                         ? ['event' => '*', 'listener' => \hiapi\event\listener\LogEventsListener::class]
                         : null,
-                ])
+                ]),
             ],
 
         /// Queue
