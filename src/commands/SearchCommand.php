@@ -20,8 +20,8 @@ use hiapi\validators\RefValidator;
 abstract class SearchCommand extends EntityCommand
 {
     public $select;
-    public $where;
-    public $filter;
+    public $where = [];
+    public $filter = [];
     public $limit;
     public $with = [];
     public $include = [];
