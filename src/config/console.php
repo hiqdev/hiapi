@@ -11,10 +11,10 @@
 return [
     'controllerMap' => [
         'hiapi' => [
-            'class' => \hiapi\console\HiapiController::class,
+            '__class' => \hiapi\console\HiapiController::class,
         ],
         'queue' => [
-            'class' => \hiapi\console\QueueController::class,
+            '__class' => \hiapi\console\QueueController::class,
         ],
     ],
 ];

@@ -61,30 +61,31 @@ class QueueController extends \yii\console\Controller
     }
 
     /**
+     * @param string $queueName
      * @param int $messagesCount
      * @return int
      */
-    public function actionConsume(string $queue, $messagesCount = 100)
+    public function actionConsume(string $queueName, $messagesCount = 100)
     {
-        $channel = $this->createChannel($queue);
+        $channel = $this->createChannel($queueName);
+        $bus = $this->busFactory->get($queueName);
 
         Console::output(' [*] Waiting for messages. To exit press CTRL+C');
 
-        $callback = function (AMQPMessage $msg) use (&$messagesCount, $channel) {
+        $callback = function (AMQPMessage $msg) use (&$messagesCount, $channel, $bus) {
             Console::output(' [x] Received ' . $msg->body);
             $channel->basic_ack($msg->delivery_info['delivery_tag']);
             $messagesCount--;
 
             try {
-                $bus = $this->busFactory->get($queue);
-                $this->handle($queue, $msg);
+                $this->handle($bus, $msg);
             } catch (\Error $e) {
                 $this->logger->error('Failed to handle message', ['message' => $msg, 'exception' => $e]);
             }
         };
 
         $channel->basic_qos(null, 1, null);
-        $channel->basic_consume($queue, '', false, false, false, false, $callback);
+        $channel->basic_consume($queueName, '', false, false, false, false, $callback);
 
         while ($channel->callbacks && $messagesCount > 0) {
             $channel->wait();
