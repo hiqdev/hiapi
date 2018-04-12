@@ -32,6 +32,8 @@ class PublishToQueueListener implements ListenerInterface
      */
     protected $channel;
 
+    public $queue;
+
     public function __construct(AMQPStreamConnection $amqp, LoggerInterface $logger)
     {
         $this->amqp = $amqp;
@@ -43,22 +45,24 @@ class PublishToQueueListener implements ListenerInterface
      * @param EventInterface $event
      * @return void
      */
-    public function handle(EventInterface $event)
+    public function handle(EventInterface $event): void
     {
         try {
-            $msg = $this->createMessage($event);
-            $this->channel->basic_publish($msg, '', $this->queue);
+            $message = $this->createMessage($event);
+            $this->getChannel()->basic_publish($message, '', $this->queue);
         } catch (InvalidConfigException $exception) {
             $this->logger->critical($exception->getMessage());
         }
     }
 
-    protected function getChannel()
+    protected function getChannel(): AMQPChannel
     {
         if ($this->channel === null) {
             $this->channel = $channel = $this->amqp->channel();
-            $channel->queue_declare($this->event, false, true, false, false);
+            $channel->queue_declare($this->queue, false, true, false, false);
         }
+
+        return $this->channel;
     }
 
     public function isListener($listener)
@@ -69,7 +73,7 @@ class PublishToQueueListener implements ListenerInterface
     private function createMessage($event): AMQPMessage
     {
         if (!$event instanceof \JsonSerializable) {
-            throw new InvalidConfigException('Event "' . get_class($event) . '" can not be sent to advert schedule updates queue');
+            throw new InvalidConfigException('Event "' . get_class($event) . '" can not be sent to queue');
         }
 
         return new AMQPMessage(json_encode($event->jsonSerialize(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), [
