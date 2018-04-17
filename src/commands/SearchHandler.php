@@ -49,7 +49,7 @@ class SearchHandler
         return $this->getRepository($command)->findAll($this->buildSpecification($command));
     }
 
-    protected function buildSpecification(SearchCommand $command)
+    protected function buildSpecification(EntityCommandInterface $command)
     {
         $spec = $this->createSpecification();
         $spec->where(array_merge($command->filter, $command->where));
