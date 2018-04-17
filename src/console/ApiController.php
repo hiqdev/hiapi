@@ -41,9 +41,9 @@ class ApiController extends Controller
 
     public function runAction($id, $params = [])
     {
-        $args = [$params[0], $params['_aliases']];
+        $args = [$params[0], $params['_aliases'] ?? []];
 
-        return \yii\base\Controller::runAction($id, $params);
+        return \yii\base\Controller::runAction($id, $args);
     }
 
     public function actionCommand($route, $args)
