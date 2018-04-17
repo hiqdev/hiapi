@@ -112,9 +112,11 @@ class QueueController extends \yii\console\Controller
         if (!isset($body['name'])) {
             $this->logger->error('Message is not supported', ['message' => $body]);
         }
+        $parts = explode('\\', $body['name']);
+        $name =  array_pop($parts);
 
         try {
-            $bus->runCommand($body['name'], $body);
+            $bus->runCommand($name, $body);
         } catch (\Exception $e) {
             $this->logger->error('Failed to load message to command', ['message' => $body, 'exception' => $e]);
         }
