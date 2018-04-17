@@ -31,8 +31,9 @@ return [
                 'login' => 'console_user',
             ],
         /// BUS
-            'bus.responder-middleware' => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
-            'bus.loader-middleware' => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
+            'bus.responder-middleware'          => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
+            'bus.handle-exceptions-middleware'  => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
+            'bus.loader-middleware'             => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
         ],
     ],
 ];

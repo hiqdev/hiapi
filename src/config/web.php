@@ -61,6 +61,7 @@ return array_filter([
                     ? \hiapi\middlewares\JsonApiMiddleware::class
                     : \hiapi\middlewares\LegacyResponderMiddleware::class,
             ],
+            'bus.handle-exceptions-middleware' => \hiapi\middlewares\HandleExceptionsMiddleware::class,
             'bus.loader-middleware' => \hiqdev\yii2\autobus\bus\LoadFromRequestMiddleware::class,
 
         /// Request & response

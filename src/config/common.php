@@ -60,7 +60,7 @@ return [
                 ],
                 'middlewares' => [
                     'bus.responder-middleware',
-                    \hiapi\middlewares\HandleExceptionsMiddleware::class,
+                    'bus.handle-exceptions-middleware',
                     'bus.loader-middleware',
                     \hiqdev\yii2\autobus\bus\ValidateMiddleware::class,
                     \hiapi\middlewares\EventEmitterMiddleware::class,
