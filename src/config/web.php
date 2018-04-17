@@ -8,8 +8,6 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-use yii\di\Instance;
-
 return array_filter([
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -58,30 +56,12 @@ return array_filter([
     'container' => [
         'singletons' => [
         /// BUS
-            'bus.http-request' => [
-                '__class' => \hiqdev\yii2\autobus\components\TacticianCommandBus::class,
-                '__construct()' => [
-                    Instance::of('bus.http-request.default-command-handler'),
-                ],
-                'middlewares' => [
-                    $_ENV['ENABLE_JSONAPI_RESPONSE'] ?? false
-                        ? \hiapi\middlewares\JsonApiMiddleware::class
-                        : \hiapi\middlewares\LegacyResponderMiddleware::class,
-                    \hiapi\middlewares\HandleExceptionsMiddleware::class,
-                    \hiqdev\yii2\autobus\bus\LoadFromRequestMiddleware::class,
-                    \hiqdev\yii2\autobus\bus\ValidateMiddleware::class,
-                    \hiapi\middlewares\EventEmitterMiddleware::class,
-                    'bus.per-command-middleware',
-                ],
+            'bus.responder-middleware' => [
+                '__class' => ($_ENV['ENABLE_JSONAPI_RESPONSE'] ?? false)
+                    ? \hiapi\middlewares\JsonApiMiddleware::class
+                    : \hiapi\middlewares\LegacyResponderMiddleware::class,
             ],
-            'bus.http-request.default-command-handler' => [
-                '__class' => \League\Tactician\Handler\CommandHandlerMiddleware::class,
-                '__construct()' => [
-                    Instance::of(\League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor::class),
-                    Instance::of(\hiqdev\yii2\autobus\bus\NearbyHandlerLocator::class),
-                    Instance::of(\League\Tactician\Handler\MethodNameInflector\HandleInflector::class),
-                ],
-            ],
+            'bus.loader-middleware' => \hiqdev\yii2\autobus\bus\LoadFromRequestMiddleware::class,
 
         /// Request & response
             \Psr\Http\Message\ServerRequestInterface::class => function ($container) {

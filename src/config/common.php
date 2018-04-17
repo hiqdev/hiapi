@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
+use yii\di\Instance;
+
 return [
     'id' => 'hiapi',
     'name' => 'HiAPI',
@@ -24,24 +26,46 @@ return [
     ],
     'components' => [
         'user' => [
-            'identityClass' => \hiapi\models\HiamUserIdentity::class,
-            'enableSession' => false,
+            '__class' => \yii\web\User::class,
         ],
     ],
     'container' => [
         'singletons' => [
-            \yii\web\User::class => function ($container, $params, $config) {
-                return new \yii\web\User($config);
-            },
+            \yii\web\User::class => [
+                'identityClass' => \hiapi\models\HiamUserIdentity::class,
+                'enableSession' => false,
+            ],
         /// BUS
             \hiapi\bus\ApiCommandsBusInterface::class => [
                 '__class' => \hiapi\bus\ApiCommandsBus::class,
                 '__construct()' => [
-                    0 => \yii\di\Instance::of('bus.http-request'),
+                    0 => Instance::of('bus.the-bus'),
                 ],
             ],
             'bus.per-command-middleware' => [
                 '__class' => \hiapi\middlewares\PerCommandMiddleware::class,
+            ],
+            'bus.default-command-handler' => [
+                '__class' => \League\Tactician\Handler\CommandHandlerMiddleware::class,
+                '__construct()' => [
+                    Instance::of(\League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor::class),
+                    Instance::of(\hiqdev\yii2\autobus\bus\NearbyHandlerLocator::class),
+                    Instance::of(\League\Tactician\Handler\MethodNameInflector\HandleInflector::class),
+                ],
+            ],
+            'bus.the-bus' => [
+                '__class' => \hiqdev\yii2\autobus\components\TacticianCommandBus::class,
+                '__construct()' => [
+                    Instance::of('bus.default-command-handler'),
+                ],
+                'middlewares' => [
+                    'bus.responder-middleware',
+                    \hiapi\middlewares\HandleExceptionsMiddleware::class,
+                    'bus.loader-middleware',
+                    \hiqdev\yii2\autobus\bus\ValidateMiddleware::class,
+                    \hiapi\middlewares\EventEmitterMiddleware::class,
+                    'bus.per-command-middleware',
+                ],
             ],
         /// Bus accessories
             \League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor::class => \League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor::class,
