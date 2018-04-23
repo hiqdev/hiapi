@@ -80,6 +80,7 @@ class QueueController extends \yii\console\Controller
             try {
                 $this->handle($bus, $msg);
             } catch (\Error $e) {
+                Console::error(' [E] Error: ' . $e->getMessage());
                 $this->logger->error('Failed to handle message', ['message' => $msg, 'exception' => $e]);
             }
         };
