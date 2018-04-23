@@ -49,6 +49,10 @@ class SearchHandler
         return $this->getRepository($command)->findAll($this->buildSpecification($command));
     }
 
+    /**
+     * @param EntityCommandInterface|SearchCommand $command
+     * @return Specification
+     */
     protected function buildSpecification(EntityCommandInterface $command)
     {
         $spec = $this->createSpecification();
