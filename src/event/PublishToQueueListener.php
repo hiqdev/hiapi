@@ -32,6 +32,9 @@ class PublishToQueueListener implements ListenerInterface
      */
     protected $channel;
 
+    /**
+     * @var string the queue name for the published messages
+     */
     public $queue;
 
     public function __construct(AMQPStreamConnection $amqp, LoggerInterface $logger)
@@ -47,6 +50,10 @@ class PublishToQueueListener implements ListenerInterface
      */
     public function handle(EventInterface $event): void
     {
+        if ($this->queue === null) {
+            throw new \RuntimeException('Property PublishToQueueListener::queue must be set');
+        }
+
         try {
             $message = $this->createMessage($event);
             $this->getChannel()->basic_publish($message, '', $this->queue);
