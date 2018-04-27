@@ -11,19 +11,16 @@
 namespace hiapi\controllers;
 
 use hiapi\bus\ApiCommandsBusInterface;
+use hiapi\components\QueryParamAuth;
 use hiqdev\yii2\autobus\components\AutoBusInterface;
 use hiqdev\yii2\autobus\components\BranchedAutoBus;
-use Psr\Http\Message\ResponseInterface;
 use Yii;
 use yii\base\Module;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
-use yii\filters\auth\HttpHeaderAuth;
-use yii\filters\auth\QueryParamAuth;
 use yii\filters\ContentNegotiator;
 use yii\web\Controller;
 use yii\web\Response;
-use Zend\Hydrator\ExtractionInterface;
 
 /**
  * Class ApiController
