@@ -4,7 +4,8 @@
 namespace hiapi\middlewares;
 
 use hiapi\commands\BaseCommand;
-use hiapi\commands\RuntimeError;
+use hiapi\commands\error\AuthenticationError;
+use hiapi\commands\error\CommandError;
 use League\Tactician\Middleware;
 use WoohooLabs\Yin\JsonApi\Document\AbstractSuccessfulDocument;
 use WoohooLabs\Yin\JsonApi\Document\ErrorDocument;
@@ -12,6 +13,7 @@ use WoohooLabs\Yin\JsonApi\JsonApi;
 use WoohooLabs\Yin\JsonApi\Schema\Error;
 use yii\base\InvalidConfigException;
 use yii\di\Container;
+use yii\web\HttpException;
 
 /**
  * Class JsonApiMiddleware
@@ -52,13 +54,13 @@ class JsonApiMiddleware implements JsonApiMiddlewareInterface, Middleware
         $response = $this->jsonApi->respond();
         $result = $next($command);
 
-        if ($result instanceof RuntimeError) {
+        if ($result instanceof CommandError) {
             return $response->genericError(new ErrorDocument(), [
                 Error::create()
                     ->setTitle($result->getException()->getMessage())
                     ->setMeta($result->getCommand()->getAttributes())
                 ,
-            ], 500);
+            ], $result->getStatusCode());
         }
 
         return $response->ok($this->getSuccessDocumentFor($command), $result);

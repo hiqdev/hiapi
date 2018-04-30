@@ -2,7 +2,7 @@
 
 namespace hiapi\middlewares;
 
-use hiapi\commands\RuntimeError;
+use hiapi\commands\error\CommandError;
 use League\Tactician\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Hydrator\HydratorInterface;
@@ -36,7 +36,7 @@ class LegacyResponderMiddleware implements Middleware
     {
         $handledCommand = $next($command);
 
-        if ($handledCommand instanceof RuntimeError) {
+        if ($handledCommand instanceof CommandError) {
             $data = ['_error' => $handledCommand->getException()->getMessage()];
         } elseif (is_array($handledCommand)) {
             $data = array_map(function ($item) {

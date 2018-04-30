@@ -1,13 +1,15 @@
 <?php
 
-namespace hiapi\commands;
+namespace hiapi\commands\error;
+
+use hiapi\commands\BaseCommand;
 
 /**
- * Class RuntimeError
+ * Class CommandError
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  */
-class RuntimeError
+abstract class CommandError
 {
     /**
      * @var BaseCommand
@@ -39,4 +41,9 @@ class RuntimeError
     {
         return $this->exception;
     }
+
+    /**
+     * @return int the status code for HTTP response
+     */
+    abstract public function getStatusCode(): int;
 }

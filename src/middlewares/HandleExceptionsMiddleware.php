@@ -3,11 +3,14 @@
 namespace hiapi\middlewares;
 
 use hiapi\commands\BaseCommand;
-use hiapi\commands\LogicalError;
-use hiapi\commands\RuntimeError;
+use hiapi\commands\error\AuthenticationError;
+use hiapi\commands\error\LogicalError;
+use hiapi\commands\error\CommandError;
+use hiapi\commands\error\RuntimeError;
 use hiapi\exceptions\domain\DomainException;
+use hiapi\exceptions\NotAuthenticatedException;
 use League\Tactician\Middleware;
-use Zend\Hydrator\ExtractionInterface;
+use yii\web\HttpException;
 
 /**
  * Class HandleExceptionsMiddleware
@@ -26,6 +29,8 @@ class HandleExceptionsMiddleware implements Middleware
     {
         try {
             return $next($command);
+        } catch (NotAuthenticatedException $exception) {
+            return $this->handleAuthenticationError($command, $exception);
         } catch (DomainException $domainException) {
             return $this->handleDomainException($command, $domainException);
         } catch (\InvalidArgumentException $argumentException) {
@@ -48,5 +53,10 @@ class HandleExceptionsMiddleware implements Middleware
     private function handleUnclassifiedError(BaseCommand $command, \Exception $exception)
     {
         return new RuntimeError($command, $exception);
+    }
+
+    private function handleAuthenticationError(BaseCommand $command, NotAuthenticatedException $exception)
+    {
+        return new AuthenticationError($command, $exception);
     }
 }
