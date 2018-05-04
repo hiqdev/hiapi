@@ -45,11 +45,11 @@
     ],
     "require": {
         "yiisoft/yii2": "2.1.x-dev",
-        "hiqdev/yii2-autobus": "v2.x-dev",
-        "hiqdev/yii2-data-mapper": "v2.x-dev",
+        "hiqdev/hidev-webapp": "<2.0 || dev-master",
+        "hiqdev/yii2-autobus": "<2.0 || dev-master",
+        "hiqdev/yii2-data-mapper": "<2.0 || dev-master",
         "vlucas/phpdotenv": "^2.4",
         "guzzlehttp/psr7": "^1.4",
-        "hiqdev/hidev-webapp": "<2.0 || dev-master",
         "league/event": "^2.1",
         "php-amqplib/php-amqplib": "^2.7.2"
     },
