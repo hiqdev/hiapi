@@ -2,13 +2,14 @@
 
 namespace hiapi\console;
 
-use hiapi\bus\ApiCommandsBusInterface;
-use hiapi\commands\BaseCommand;
+use hiapi\exceptions\NotProcessableException;
 use hiqdev\yii2\autobus\components\AutoBusFactoryInterface;
 use hiqdev\yii2\autobus\components\AutoBusInterface;
+use hiqdev\yii2\autobus\exceptions\WrongCommandException;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use PhpAmqpLib\Wire\AMQPTable;
 use Psr\Log\LoggerInterface;
 use yii\base\Module;
 use yii\console\ExitCode;
@@ -30,7 +31,7 @@ class QueueController extends \yii\console\Controller
      */
     private $amqp;
     /**
-     * @var BusFactoryInterface
+     * @var AutoBusFactoryInterface
      */
     private $busFactory;
 
@@ -72,16 +73,17 @@ class QueueController extends \yii\console\Controller
 
         Console::output(' [*] Waiting for messages. To exit press CTRL+C');
 
-        $callback = function (AMQPMessage $msg) use (&$messagesCount, $channel, $bus) {
+        $callback = function (AMQPMessage $msg) use (&$messagesCount, $queueName, $channel, $bus) {
             Console::output(' [x] Received ' . $msg->body);
             $channel->basic_ack($msg->delivery_info['delivery_tag']);
             $messagesCount--;
 
             try {
                 $this->handle($bus, $msg);
-            } catch (\Error $e) {
-                Console::error(' [E] Error: ' . $e->getMessage());
-                $this->logger->error('Failed to handle message', ['message' => $msg, 'exception' => $e]);
+            } catch (NotProcessableException $e) {
+                $this->requeue($queueName, $msg, $e);
+            } catch (\Exception $e) {
+                $this->handleError($queueName, $msg, $e);
             }
         };
 
@@ -97,13 +99,21 @@ class QueueController extends \yii\console\Controller
         return ExitCode::OK;
     }
 
+    private function handleError(string $queueName, AMQPMessage $message, \Exception $exception)
+    {
+        Console::error(' [E] Error: ' . $exception->getMessage());
+        $this->logger->warning('Failed to handle message: ' . $exception->getMessage(), ['message' => $message, 'exception' => $exception]);
+        $this->storeRejected($queueName, $message, $exception);
+    }
+
     /**
      * Decodes AMQP message and sends it to the handler
-     * // TODO: move to separate class
+     * // TODO: move to separate class?
      *
      * @param AMQPMessage $msg
+     * @throws WrongCommandException
      */
-    protected function handle(AutoBusInterface $bus, AMQPMessage $msg)
+    protected function handle(AutoBusInterface $bus, AMQPMessage $msg): void
     {
         if ($msg->get_properties()['content_type'] !== 'application/json') {
             throw new \RuntimeException('Do not know how to decode ' . $msg->getContentEncoding());
@@ -111,15 +121,59 @@ class QueueController extends \yii\console\Controller
 
         $body = json_decode($msg->getBody(), true);
         if (!isset($body['name'])) {
-            $this->logger->error('Message is not supported', ['message' => $body]);
+            throw new WrongCommandException('Message must have a name');
         }
         $parts = explode('\\', $body['name']);
-        $name =  array_pop($parts);
+        $name = array_pop($parts);
 
-        try {
-            $bus->runCommand($name, $body);
-        } catch (\Exception $e) {
-            $this->logger->error('Failed to load message to command', ['message' => $body, 'exception' => $e]);
+        $bus->runCommand($name, $body);
+    }
+
+    /**
+     * Resends message to queue with a delay
+     *
+     * @param string $queueName
+     * @param AMQPMessage $msg
+     * @param NotProcessableException $exception
+     */
+    private function requeue(string $queueName, AMQPMessage $msg, NotProcessableException $exception): void
+    {
+        $tries = 0;
+        $headers = $msg->get_properties()['application_headers'];
+        if ($headers instanceof AMQPTable) {
+            $tries = $headers->getNativeData()['x-number-of-tries'] ?? 0;
         }
+
+        if ($exception->getMaxTries() !== null && $tries >= $exception->getMaxTries()) {
+            $this->logger->debug('No tries left for message. Marking it as an error', ['message' => $msg, 'exception' => $exception]);
+            $this->handleError($queueName, $msg, $exception);
+            return;
+        }
+
+        // Init delay exchange
+        $channel = $this->amqp->channel();
+        $delayExchange = "$queueName.delayed";
+        $channel->exchange_declare($delayExchange, 'x-delayed-message', false, true, true, false, false, new AMQPTable([
+            'x-delayed-type' => 'direct',
+        ]));
+        $channel->queue_bind($queueName, $delayExchange);
+
+        // Send message
+        $delayDuration = 1000 * $exception->getSecondsBeforeRetry() * (int)pow($exception->getProgressionMultiplier(), $tries);
+        $delayMessage = new AMQPMessage($msg->getBody(), array_merge($msg->get_properties(), [
+            'application_headers' => new AMQPTable([
+                'x-delay' => $delayDuration,
+                'x-number-of-tries' => $tries + 1,
+            ]),
+        ]));
+        $channel->basic_publish($delayMessage, $delayExchange, '');
+        $this->logger->debug('Delayed message for ' . $delayDuration, ['message' => $msg, 'exception' => $exception]);
+    }
+
+    private function storeRejected(string $queueName, AMQPMessage $message, \Exception $exception): void
+    {
+        // TODO: store $exception as well
+        $channel = $this->createChannel("$queueName.failed");
+        $channel->basic_publish($message, "$queueName.failed");
     }
 }
