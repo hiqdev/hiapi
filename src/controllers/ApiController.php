@@ -56,6 +56,7 @@ class ApiController extends Controller
                 'class' => ContentNegotiator::class,
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON,
+                    'application/vnd.api+json' => Response::FORMAT_JSON,
                 ],
             ],
             'auth' => [
