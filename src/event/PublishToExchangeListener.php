@@ -9,13 +9,14 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
 use yii\base\InvalidConfigException;
+use yii\helpers\Inflector;
 
 /**
- * Class PublishToQueueListener
+ * Class PublishToExchangeListener published events to AMQP exchange.
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  */
-class PublishToQueueListener extends AbstractListener
+class PublishToExchangeListener extends AbstractListener
 {
     /**
      * @var AMQPStreamConnection
@@ -33,9 +34,14 @@ class PublishToQueueListener extends AbstractListener
     protected $channel;
 
     /**
-     * @var string the queue name for the published messages
+     * @var string the exchange name for the published messages
      */
-    public $queue;
+    public $exchange;
+
+    /**
+     * @var string the exchange type. Defaults to 'direct'
+     */
+    public $exchangeType = 'direct';
 
     public function __construct(AMQPStreamConnection $amqp, LoggerInterface $logger)
     {
@@ -50,13 +56,13 @@ class PublishToQueueListener extends AbstractListener
      */
     public function handle(EventInterface $event): void
     {
-        if ($this->queue === null) {
+        if ($this->exchange === null) {
             throw new \RuntimeException('Property PublishToQueueListener::queue must be set');
         }
 
         try {
             $message = $this->createMessage($event);
-            $this->getChannel()->basic_publish($message, '', $this->queue);
+            $this->getChannel()->basic_publish($message, $this->exchange, $this->buildRoutingKey($event));
         } catch (InvalidConfigException $exception) {
             $this->logger->critical($exception->getMessage());
         }
@@ -66,7 +72,7 @@ class PublishToQueueListener extends AbstractListener
     {
         if ($this->channel === null) {
             $this->channel = $channel = $this->amqp->channel();
-            $channel->queue_declare($this->queue, false, true, false, false);
+            $channel->exchange_declare($this->exchange, $this->exchangeType, false, true, true, false, false);
         }
 
         return $this->channel;
@@ -75,12 +81,39 @@ class PublishToQueueListener extends AbstractListener
     private function createMessage($event): AMQPMessage
     {
         if (!$event instanceof \JsonSerializable) {
-            throw new InvalidConfigException('Event "' . get_class($event) . '" can not be sent to queue');
+            throw new InvalidConfigException('Event "' . get_class($event) . '" can not be sent to exchange');
         }
 
         return new AMQPMessage(json_encode($event->jsonSerialize(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), [
             'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT,
             'content_type' => 'application/json',
         ]);
+    }
+
+    /**
+     * Builds routing key for $event. Default logic:
+     *
+     * For events named with `Was` keyword (e.g. `ObjectWasChanged`) routing key will be `object.was.changed`.
+     * For other events [[InvalidConfigException]] will be thrown.
+     *
+     * You can override this method to implement own routing key generation logic.
+     *
+     * @param EventInterface $event
+     * @return string
+     * @throws InvalidConfigException when `Was` keyword
+     */
+    public function buildRoutingKey(EventInterface $event)
+    {
+        $className = (new \ReflectionClass($event))->getShortName();
+        if (strpos($className, 'Was') === false) {
+            throw new InvalidConfigException("Event class name \"$className\" does not contain \"Was\" keyword and can not be processed with default logic.");
+        }
+
+        [$object, $eventName] = explode('Was', $className);
+
+        $object = Inflector::camel2id($object);
+        $eventName = Inflector::camel2id($eventName);
+
+        return mb_strtolower("$object.was.$eventName");
     }
 }
