@@ -124,6 +124,10 @@ class ConfigurableEmitter extends Emitter implements EmitterInterface
             }
         }
 
+        if (empty($listeners)) {
+            return [];
+        }
+
         krsort($listeners);
 
         return call_user_func_array('array_merge', $listeners);
