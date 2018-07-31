@@ -16,7 +16,7 @@ return [
     'basePath' => dirname(__DIR__),
 
     /// aliases must be set before their use
-    'aliases' => [],
+    'aliases' => $aliases,
     'viewPath' => '@hiapi/views',
     'vendorPath' => '@root/vendor',
     'runtimePath' => '@root/runtime',
@@ -108,4 +108,5 @@ return [
             }
         ],
     ],
+    'params' => $params,
 ];
