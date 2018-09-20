@@ -25,9 +25,11 @@ return array_filter([
             'enableCsrfValidation' => false,
         ],
         'mailer' => [
-            'viewPath' => '@hiapi/views/mail',
-            'htmlLayout' => '@hiapi/views/layouts/mail-html',
-            'textLayout' => '@hiapi/views/layouts/mail-text',
+            'composer' => [
+                'viewPath' => '@hiapi/views/mail',
+                'htmlLayout' => '@hiapi/views/layouts/mail-html',
+                'textLayout' => '@hiapi/views/layouts/mail-text',
+            ],
         ],
         'urlManager' => [
             '__class' => \yii\web\UrlManager::class,
