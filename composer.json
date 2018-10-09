@@ -57,6 +57,9 @@
         "hiqdev/hidev-php": "<2.0 || dev-master",
         "hiqdev/hidev-hiqdev": "<2.0 || dev-master"
     },
+    "suggest": {
+        "woohoolabs/yin": "To work with JsonAPI requests/responses"
+    },
     "autoload": {
         "psr-4": {
             "hiapi\\": "src"
