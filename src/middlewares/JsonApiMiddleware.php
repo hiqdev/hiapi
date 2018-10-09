@@ -4,16 +4,13 @@
 namespace hiapi\middlewares;
 
 use hiapi\commands\BaseCommand;
-use hiapi\commands\error\AuthenticationError;
 use hiapi\commands\error\CommandError;
 use League\Tactician\Middleware;
+use Psr\Container\ContainerInterface;
 use WoohooLabs\Yin\JsonApi\Document\AbstractSuccessfulDocument;
 use WoohooLabs\Yin\JsonApi\Document\ErrorDocument;
 use WoohooLabs\Yin\JsonApi\JsonApi;
 use WoohooLabs\Yin\JsonApi\Schema\Error;
-use yii\base\InvalidConfigException;
-use yii\di\Container;
-use yii\web\HttpException;
 
 /**
  * Class JsonApiMiddleware
@@ -27,7 +24,7 @@ class JsonApiMiddleware implements JsonApiMiddlewareInterface, Middleware
      */
     private $commandToDocumentMap = [];
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     private $di;
     /**
@@ -39,10 +36,10 @@ class JsonApiMiddleware implements JsonApiMiddlewareInterface, Middleware
      * JsonApiMiddleware constructor.
      *
      * @param array $commandToDocumentMap
-     * @param Container $di
+     * @param ContainerInterface $di
      * @param JsonApi $jsonApi
      */
-    public function __construct(array $commandToDocumentMap, Container $di, JsonApi $jsonApi)
+    public function __construct(array $commandToDocumentMap, ContainerInterface $di, JsonApi $jsonApi)
     {
         $this->commandToDocumentMap = $commandToDocumentMap;
         $this->di = $di;
@@ -69,14 +66,12 @@ class JsonApiMiddleware implements JsonApiMiddlewareInterface, Middleware
     /**
      * @param BaseCommand $command
      * @return AbstractSuccessfulDocument
-     * @throws InvalidConfigException
-     * @throws \yii\di\NotInstantiableException
      */
     public function getSuccessDocumentFor($command): AbstractSuccessfulDocument
     {
         $className = get_class($command);
         if (!isset($this->commandToDocumentMap[$className])) {
-            throw new InvalidConfigException('Document map for "' . $className . "' does not exist");
+            throw new \OutOfRangeException('Document map for "' . $className . "' does not exist");
         }
 
         return $this->di->get($this->commandToDocumentMap[$className]);
