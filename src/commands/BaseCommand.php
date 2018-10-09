@@ -10,6 +10,14 @@
 
 namespace hiapi\commands;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 abstract class BaseCommand extends \yii\base\Model
 {
+    public function loadFromServerRequest(ServerRequestInterface $request): bool
+    {
+        $data = $request->getParsedBody() ?: $request->getQueryParams();
+
+        return $this->load($data, '');
+    }
 }
