@@ -30,9 +30,43 @@ class SkipExceptionsIn implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $isExecutingNextHandler = false;
+        $next = new class($isExecutingNextHandler, $handler) implements RequestHandlerInterface {
+            /**
+             * @var bool
+             */
+            private $isExecutingNextHandler;
+            /**
+             * @var RequestHandlerInterface
+             */
+            private $nextHandler;
+
+            public function __construct(bool &$isExecutingNextHandler, RequestHandlerInterface $realHandler)
+            {
+                $this->isExecutingNextHandler = &$isExecutingNextHandler;
+                $this->nextHandler = $realHandler;
+            }
+
+            /**
+             * Handle the request and return a response.
+             */
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                $this->isExecutingNextHandler = true;
+                $result = $this->nextHandler->handle($request);
+                $this->isExecutingNextHandler = false;
+
+                return $result;
+            }
+        };
+
         try {
-            return $this->middleware->process($request, $handler);
+            return $this->middleware->process($request, $next);
         } catch (\Throwable $throwable) {
+            if ($isExecutingNextHandler) {
+                throw $throwable;
+            }
+
             return $handler->handle($request);
         }
     }
