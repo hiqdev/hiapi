@@ -5,6 +5,7 @@ namespace hiapi\event;
 use League\Event\Emitter;
 use League\Event\EmitterInterface;
 use League\Event\ListenerInterface;
+use Psr\Container\ContainerInterface;
 use yii\base\InvalidConfigException;
 use yii\base\UnknownPropertyException;
 use yii\di\Container;
@@ -18,16 +19,16 @@ use yii\helpers\StringHelper;
 class ConfigurableEmitter extends Emitter implements EmitterInterface
 {
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     private $container;
 
     /**
      * ConfigurableEmitter constructor.
      *
-     * @param Container $container
+     * @param ContainerInterface $container
      */
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
