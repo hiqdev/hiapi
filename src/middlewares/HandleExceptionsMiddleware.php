@@ -5,12 +5,11 @@ namespace hiapi\middlewares;
 use hiapi\commands\BaseCommand;
 use hiapi\commands\error\AuthenticationError;
 use hiapi\commands\error\LogicalError;
-use hiapi\commands\error\CommandError;
 use hiapi\commands\error\RuntimeError;
 use hiapi\exceptions\domain\DomainException;
 use hiapi\exceptions\NotAuthenticatedException;
 use League\Tactician\Middleware;
-use yii\web\HttpException;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class HandleExceptionsMiddleware
@@ -19,6 +18,21 @@ use yii\web\HttpException;
  */
 class HandleExceptionsMiddleware implements Middleware
 {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
+     * @var bool
+     */
+    protected $keepSystemErrorMessage = false;
+
     /**
      * @param object|BaseCommand $command
      * @param callable $next
@@ -40,23 +54,39 @@ class HandleExceptionsMiddleware implements Middleware
         }
     }
 
+    public function setKeepSystemErrorMessage(bool $keepSystemErrorMessage): void
+    {
+        $this->keepSystemErrorMessage = $keepSystemErrorMessage;
+    }
+
     private function handleDomainException(BaseCommand $command, DomainException $domainException)
     {
         return new LogicalError($command, $domainException);
     }
 
-    private function handleArgumentException(BaseCommand $command, \InvalidArgumentException $argumentException)
+    private function handleArgumentException(BaseCommand $command, \InvalidArgumentException $exception)
     {
-        return new LogicalError($command, $argumentException);
+        return new RuntimeError($command, $this->ensureExceptionCanBeKept($exception));
     }
 
     private function handleUnclassifiedError(BaseCommand $command, \Exception $exception)
     {
-        return new RuntimeError($command, $exception);
+        return new RuntimeError($command, $this->ensureExceptionCanBeKept($exception));
     }
 
     private function handleAuthenticationError(BaseCommand $command, NotAuthenticatedException $exception)
     {
         return new AuthenticationError($command, $exception);
+    }
+
+    private function ensureExceptionCanBeKept(\Exception $exception): \Exception
+    {
+        $this->logger->warning('Uncaught exception ' . \get_class($exception), ['message' => $exception->getMessage()]);
+
+        if (!$this->keepSystemErrorMessage) {
+            return new \Exception('System error', $exception->getCode(), $exception);
+        }
+
+        return $exception;
     }
 }
