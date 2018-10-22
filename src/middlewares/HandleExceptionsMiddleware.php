@@ -45,7 +45,7 @@ class HandleExceptionsMiddleware implements Middleware
             return $next($command);
         } catch (NotAuthenticatedException $exception) {
             return $this->handleAuthenticationError($command, $exception);
-        } catch (DomainException $domainException) {
+        } catch (DomainException|\DomainException $domainException) {
             return $this->handleDomainException($command, $domainException);
         } catch (\InvalidArgumentException $argumentException) {
             return $this->handleArgumentException($command, $argumentException);
@@ -59,7 +59,7 @@ class HandleExceptionsMiddleware implements Middleware
         $this->keepSystemErrorMessage = $keepSystemErrorMessage;
     }
 
-    private function handleDomainException(BaseCommand $command, DomainException $domainException)
+    private function handleDomainException(BaseCommand $command, \Exception $domainException)
     {
         return new LogicalError($command, $domainException);
     }
