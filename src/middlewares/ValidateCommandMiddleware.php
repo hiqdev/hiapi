@@ -4,13 +4,14 @@ namespace hiapi\middlewares;
 
 use hiapi\commands\BaseCommand;
 use hiapi\exceptions\domain\ValidationException;
+use League\Tactician\Middleware;
 
 /**
  * Class ValidateCommandMiddleware
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  */
-class ValidateCommandMiddleware
+class ValidateCommandMiddleware implements Middleware
 {
     /**
      * @param object|BaseCommand $command
