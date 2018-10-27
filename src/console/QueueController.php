@@ -25,11 +25,11 @@ class QueueController extends \yii\console\Controller
     /**
      * @var LoggerInterface
      */
-    private $logger;
+    protected $logger;
     /**
      * @var AMQPStreamConnection
      */
-    private $amqp;
+    protected $amqp;
     /**
      * @var AutoBusFactoryInterface
      */
@@ -43,11 +43,11 @@ class QueueController extends \yii\console\Controller
         AutoBusFactoryInterface $busFactory,
         array $config = []
     ) {
-        parent::__construct($id, $module, $config);
-
         $this->logger = $logger;
         $this->amqp = $amqp;
         $this->busFactory = $busFactory;
+
+        parent::__construct($id, $module, $config);
     }
 
     /**
