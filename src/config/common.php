@@ -8,8 +8,6 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-use yii\di\Instance;
-
 return [
     'id' => 'hiapi',
     'name' => 'HiAPI',
@@ -39,7 +37,7 @@ return [
             \hiapi\bus\ApiCommandsBusInterface::class => [
                 '__class' => \hiapi\bus\ApiCommandsBus::class,
                 '__construct()' => [
-                    0 => Instance::of('bus.the-bus'),
+                    0 => new \yii\di\Reference('bus.the-bus'),
                 ],
             ],
             'bus.per-command-middleware' => [
@@ -48,15 +46,15 @@ return [
             'bus.default-command-handler' => [
                 '__class' => \League\Tactician\Handler\CommandHandlerMiddleware::class,
                 '__construct()' => [
-                    Instance::of(\League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor::class),
-                    Instance::of(\hiqdev\yii2\autobus\bus\NearbyHandlerLocator::class),
-                    Instance::of(\League\Tactician\Handler\MethodNameInflector\HandleInflector::class),
+                    new \yii\di\Reference(\League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor::class),
+                    new \yii\di\Reference(\hiqdev\yii2\autobus\bus\NearbyHandlerLocator::class),
+                    new \yii\di\Reference(\League\Tactician\Handler\MethodNameInflector\HandleInflector::class),
                 ],
             ],
             'bus.the-bus' => [
                 '__class' => \hiqdev\yii2\autobus\components\TacticianCommandBus::class,
                 '__construct()' => [
-                    Instance::of('bus.default-command-handler'),
+                    new \yii\di\Reference('bus.default-command-handler'),
                 ],
                 'middlewares' => [
                     'bus.responder-middleware',
