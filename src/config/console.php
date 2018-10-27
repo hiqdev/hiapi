@@ -23,7 +23,7 @@ return [
     'container' => [
         'singletons' => [
             \yii\web\User::class => [
-                'identity' => \yii\di\Instance::of('console.default-user'),
+                'identity' => new \yii\di\Reference('console.default-user'),
             ],
             'console.default-user' => [
                 '__class' => \hiapi\models\HiamUserIdentity::class,
