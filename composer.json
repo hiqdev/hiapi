@@ -44,6 +44,7 @@
         }
     ],
     "require": {
+        "psr/container": "*",
         "yiisoft/yii2": "^3.0",
         "hiqdev/hidev-webapp": "<2.0 || dev-master",
         "hiqdev/yii2-autobus": "<2.0 || dev-master",
