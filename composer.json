@@ -47,7 +47,7 @@
         "psr/container": "*",
         "yiisoft/yii-core": "^3.0@dev",
         "hiqdev/hidev-webapp": "<2.0 || dev-master",
-        "hiqdev/yii2-autobus": "<2.0 || dev-master",
+        "hiqdev/yii2-autobus": "^1.0@dev",
         "hiqdev/yii2-data-mapper": "<2.0 || dev-master",
         "vlucas/phpdotenv": "^2.4",
         "guzzlehttp/psr7": "^1.4",
