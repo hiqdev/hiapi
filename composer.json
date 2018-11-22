@@ -70,6 +70,9 @@
         }
     },
     "extra": {
+        "branch-alias": {
+            "1.0": "1.0.x-dev"
+        },
         "config-plugin": {
             "defines": "src/config/defines.php",
             "params": "src/config/params.php",
