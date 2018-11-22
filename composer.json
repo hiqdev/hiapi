@@ -45,7 +45,7 @@
     ],
     "require": {
         "psr/container": "*",
-        "yiisoft/yii2": "^3.0",
+        "yiisoft/yii-core": "^3.0@dev",
         "hiqdev/hidev-webapp": "<2.0 || dev-master",
         "hiqdev/yii2-autobus": "<2.0 || dev-master",
         "hiqdev/yii2-data-mapper": "<2.0 || dev-master",
@@ -55,6 +55,9 @@
         "php-amqplib/php-amqplib": "^2.7.2"
     },
     "require-dev": {
+        "yiisoft/di": "^3.0@dev",
+        "yiisoft/log": "^3.0@dev",
+        "yiisoft/cache": "^3.0@dev",
         "hiqdev/hidev-php": "<2.0 || dev-master",
         "hiqdev/hidev-hiqdev": "<2.0 || dev-master"
     },
