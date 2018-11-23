@@ -9,31 +9,29 @@
  */
 
 return [
-    'controllerMap' => [
-        'api' => [
-            '__class' => \hiapi\console\ApiController::class,
-        ],
-        'hiapi' => [
-            '__class' => \hiapi\console\HiapiController::class,
-        ],
-        'queue' => [
-            '__class' => \hiapi\console\QueueController::class,
+    'app' => [
+        'controllerMap' => [
+            'api' => [
+                '__class' => \hiapi\console\ApiController::class,
+            ],
+            'hiapi' => [
+                '__class' => \hiapi\console\HiapiController::class,
+            ],
+            'queue' => [
+                '__class' => \hiapi\console\QueueController::class,
+            ],
         ],
     ],
-    'container' => [
-        'singletons' => [
-            \yii\web\User::class => [
-                'identity' => \yii\di\Instance::of('console.default-user'),
-            ],
-            'console.default-user' => [
-                '__class' => \hiapi\models\HiamUserIdentity::class,
-                'id' => 1,
-                'login' => 'console_user',
-            ],
-        /// BUS
-            'bus.responder-middleware'          => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
-            'bus.handle-exceptions-middleware'  => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
-            'bus.loader-middleware'             => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
-        ],
+    \yii\web\User::class => [
+        'identity' => \yii\di\Reference::to('console.default-user'),
     ],
+    'console.default-user' => [
+        '__class' => \hiapi\models\HiamUserIdentity::class,
+        'id' => 1,
+        'login' => 'console_user',
+    ],
+/// BUS
+    'bus.responder-middleware'          => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
+    'bus.handle-exceptions-middleware'  => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
+    'bus.loader-middleware'             => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
 ];
