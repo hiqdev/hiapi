@@ -84,36 +84,7 @@ return [
     \yii\di\Container::class => function ($container) {
         return $container;
     },
-    \Psr\Container\ContainerInterface::class => function ($container) {
-        return new class($container) implements \Psr\Container\ContainerInterface {
-            /**
-             * @var \yii\di\Container
-             */
-            private $yiiContainer;
-
-            public function __construct(\yii\di\Container $yiiContainer)
-            {
-                $this->yiiContainer = $yiiContainer;
-            }
-
-            public function get($id)
-            {
-                return $this->yiiContainer->get($id);
-            }
-
-            public function has($id)
-            {
-                return $this->yiiContainer->has($id);
-            }
-        };
-    },
-    \yii\base\Application::class => function () {
-        return Yii::$app;
-    },
     \yii\mail\MailerInterface::class => function () {
         return Yii::$app->get('mailer');
     },
-    \Psr\Log\LoggerInterface::class => function () {
-        return Yii::getLogger();
-    }
 ];
