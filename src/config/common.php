@@ -26,7 +26,7 @@ return [
     \hiapi\bus\ApiCommandsBusInterface::class => [
         '__class' => \hiapi\bus\ApiCommandsBus::class,
         '__construct()' => [
-            0 => Reference::to('bus.the-bus'),
+            'bus' => Reference::to('bus.the-bus'),
         ],
     ],
     'bus.per-command-middleware' => [
