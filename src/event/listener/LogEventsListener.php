@@ -4,7 +4,7 @@ namespace hiapi\event\listener;
 
 use League\Event\EventInterface;
 use League\Event\ListenerInterface;
-use Yii;
+use yii\helpers\Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
 

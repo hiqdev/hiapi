@@ -14,7 +14,7 @@ use hiapi\bus\ApiCommandsBusInterface;
 use hiapi\components\QueryParamAuth;
 use hiqdev\yii2\autobus\components\AutoBusInterface;
 use hiqdev\yii2\autobus\components\BranchedAutoBus;
-use Yii;
+use yii\helpers\Yii;
 use yii\base\Module;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;

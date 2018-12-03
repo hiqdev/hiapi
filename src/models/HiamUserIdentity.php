@@ -4,7 +4,7 @@ namespace hiapi\models;
 
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\EntityNotFoundException;
-use Yii;
+use yii\helpers\Yii;
 use yii\base\Model;
 use yii\db\Expression;
 use yii\db\Query;

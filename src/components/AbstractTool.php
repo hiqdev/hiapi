@@ -11,7 +11,7 @@
 namespace hiapi\components;
 
 use g;
-use Yii;
+use yii\helpers\Yii;
 
 abstract class AbstractTool extends \yii\base\Component
 {

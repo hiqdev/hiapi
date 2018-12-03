@@ -10,7 +10,7 @@
 
 namespace hiapi\controllers;
 
-use Yii;
+use yii\helpers\Yii;
 
 class CommandAction extends \yii\base\Action
 {
