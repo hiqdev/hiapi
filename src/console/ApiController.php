@@ -11,7 +11,6 @@
 namespace hiapi\console;
 
 use hiapi\bus\ApiCommandsBusInterface;
-use yii\helpers\Yii;
 use yii\base\Module;
 use yii\console\Controller;
 use yii\helpers\Inflector;

@@ -4,7 +4,6 @@ namespace hiapi\models;
 
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\EntityNotFoundException;
-use yii\helpers\Yii;
 use yii\base\Model;
 use yii\db\Expression;
 use yii\db\Query;
@@ -67,7 +66,7 @@ class HiamUserIdentity extends Model implements IdentityInterface
     public static function requestHiam($path, $data)
     {
         $scheme = 'https';
-        $host   = Yii::$app->params['hiam.site'];
+        $host   = $this->getApp()->params['hiam.site'];
         $query  = http_build_query($data);
         $url    = "$scheme://$host/$path?$query";
 
@@ -105,4 +104,8 @@ class HiamUserIdentity extends Model implements IdentityInterface
         return false;
     }
 
+    protected function getApp()
+    {
+        return class_exists('Yii') ? \Yii::$app : \yii\helpers\Yii::getApp();
+    }
 }

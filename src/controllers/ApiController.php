@@ -14,7 +14,6 @@ use hiapi\bus\ApiCommandsBusInterface;
 use hiapi\components\QueryParamAuth;
 use hiqdev\yii2\autobus\components\AutoBusInterface;
 use hiqdev\yii2\autobus\components\BranchedAutoBus;
-use yii\helpers\Yii;
 use yii\base\Module;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
@@ -46,7 +45,7 @@ class ApiController extends Controller
     ) {
         parent::__construct($id, $module, $config);
         $this->autoBus = $autoBus;
-        $this->response = Yii::$app->response; // TODO: di
+        $this->response = $this->getApp()->getResponse();
     }
 
     public function behaviors()
@@ -87,5 +86,10 @@ class ApiController extends Controller
     private function buildCommandName($resource, $action, $bulk = false) // todo use $bulk
     {
         return $resource . ucfirst($action);
+    }
+
+    protected function getApp()
+    {
+        return class_exists('Yii') ? \Yii::$app : \yii\helpers\Yii::getApp();
     }
 }
