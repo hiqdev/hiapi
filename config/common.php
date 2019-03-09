@@ -11,12 +11,13 @@
 use yii\di\Instance;
 
 return [
+    /// aliases must be set before their use
+    'aliases' => $aliases,
+
     'id' => 'hiapi',
     'name' => 'HiAPI',
     'basePath' => dirname(__DIR__) . '/src',
 
-    /// aliases must be set before their use
-    'aliases' => $aliases,
     'viewPath' => '@hiapi/views',
     'vendorPath' => '@root/vendor',
     'runtimePath' => '@root/runtime',
