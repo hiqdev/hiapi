@@ -14,7 +14,7 @@ return [
     'app' => [
         'id' => 'hiapi',
         'name' => 'HiAPI',
-        'basePath' => dirname(__DIR__),
+        'basePath' => dirname(__DIR__) . '/src',
         'viewPath' => '@hiapi/views',
     ],
 
