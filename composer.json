@@ -68,17 +68,17 @@
     },
     "extra": {
         "config-plugin": {
-            "defines": "src/config/defines.php",
-            "params": "src/config/params.php",
-            "common": "src/config/common.php",
+            "defines": "config/defines.php",
+            "params": "config/params.php",
+            "common": "config/common.php",
             "tests": "$common",
             "console": [
                 "$common",
-                "src/config/console.php"
+                "config/console.php"
             ],
             "web": [
                 "$common",
-                "src/config/web.php"
+                "config/web.php"
             ]
         }
     },
