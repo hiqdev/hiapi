@@ -11,7 +11,7 @@
 namespace hiapi\components;
 
 use g;
-use Yii;
+use hiapi\yii;
 
 abstract class AbstractTool extends \yii\base\Component
 {
@@ -30,7 +30,7 @@ abstract class AbstractTool extends \yii\base\Component
         /// XXX WTF? $base->di becomes null after passing as argument
         /// TODO fix!
         if ($this->base->di === null) {
-            $this->base->di = Yii::$container;
+            $this->base->di = yii::getContainer();
         }
         if ($this->base->dbc === null) {
             $this->base->dbc = g::dbc();
