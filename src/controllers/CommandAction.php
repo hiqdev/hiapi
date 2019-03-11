@@ -10,7 +10,7 @@
 
 namespace hiapi\controllers;
 
-use yii\helpers\Yii;
+use hiapi\yii;
 
 class CommandAction extends \yii\base\Action
 {
@@ -18,13 +18,13 @@ class CommandAction extends \yii\base\Action
 
     public function run()
     {
-        return Yii::$app->get('commandBus')->handle($this->getCommand());
+        return yii::getApp()->get('commandBus')->handle($this->getCommand());
     }
 
     public function getCommand()
     {
         if (!is_object($this->_command)) {
-            $this->_command = Yii::createObject($this->_command, [$this->controller->getEntityClass()]);
+            $this->_command = yii::createObject($this->_command, [$this->controller->getEntityClass()]);
         }
 
         return $this->_command;
