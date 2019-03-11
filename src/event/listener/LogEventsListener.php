@@ -2,9 +2,9 @@
 
 namespace hiapi\event\listener;
 
+use hiapi\yii;
 use League\Event\EventInterface;
 use League\Event\ListenerInterface;
-use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
 
@@ -24,7 +24,7 @@ class LogEventsListener implements ListenerInterface
      */
     public function handle(EventInterface $event)
     {
-        $dir = Yii::getAlias('@runtime');
+        $dir = yii::getAlias('@runtime');
 
         FileHelper::createDirectory($dir);
         file_put_contents($dir . DIRECTORY_SEPARATOR . 'events.log', $this->serializeEvent($event) . PHP_EOL, FILE_APPEND | LOCK_EX);

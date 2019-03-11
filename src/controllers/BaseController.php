@@ -10,7 +10,7 @@
 
 namespace hiapi\controllers;
 
-use Yii;
+use hiapi\yii;
 use yii\helpers\Inflector;
 
 abstract class BaseController extends \yii\web\Controller
@@ -61,7 +61,7 @@ abstract class BaseController extends \yii\web\Controller
 
     public function scanCommands($namespace)
     {
-        $dir = Yii::getAlias('@' . strtr($namespace, '\\', '/'));
+        $dir = yii::getAlias('@' . strtr($namespace, '\\', '/'));
         if (!is_dir($dir)) {
             return [];
         }
