@@ -10,7 +10,6 @@
 
 namespace hiapi\components;
 
-use g;
 use hiapi\yii;
 
 abstract class AbstractTool extends \yii\base\Component
@@ -33,7 +32,7 @@ abstract class AbstractTool extends \yii\base\Component
             $this->base->di = yii::getContainer();
         }
         if ($this->base->dbc === null) {
-            $this->base->dbc = g::dbc();
+            $this->base->dbc = $this->base->di->get('dbc');
         }
     }
 
