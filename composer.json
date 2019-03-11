@@ -44,22 +44,18 @@
         }
     ],
     "require": {
-        "psr/container": "*",
-        "yiisoft/yii-core": "^3.0@dev",
-        "hiqdev/hidev-webapp": "<2.0 || dev-master",
-        "hiqdev/yii2-autobus": "^1.0@dev",
-        "hiqdev/yii2-data-mapper": "^1.0@dev",
+        "psr/container": "^1.0",
+        "hiqdev/hidev-webapp": "dev-master",
+        "hiqdev/yii2-autobus": "dev-master",
+        "hiqdev/yii2-data-mapper": "dev-master",
         "vlucas/phpdotenv": "^2.4",
         "guzzlehttp/psr7": "^1.4",
         "league/event": "^2.1",
         "php-amqplib/php-amqplib": "^2.7.2"
     },
     "require-dev": {
-        "yiisoft/di": "^3.0@dev",
-        "yiisoft/log": "^3.0@dev",
-        "yiisoft/cache": "^3.0@dev",
-        "hiqdev/hidev-php": "<2.0 || dev-master",
-        "hiqdev/hidev-hiqdev": "<2.0 || dev-master"
+        "hiqdev/hidev-php": "dev-master",
+        "hiqdev/hidev-hiqdev": "dev-master"
     },
     "suggest": {
         "woohoolabs/yin": "To work with JsonAPI requests/responses"
