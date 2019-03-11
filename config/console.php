@@ -8,22 +8,23 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-return [
-    'app' => [
-        'controllerMap' => [
-            'api' => [
-                '__class' => \hiapi\console\ApiController::class,
-            ],
-            'hiapi' => [
-                '__class' => \hiapi\console\HiapiController::class,
-            ],
-            'queue' => [
-                '__class' => \hiapi\console\QueueController::class,
-            ],
+$app = [
+    'controllerMap' => [
+        'api' => [
+            '__class' => \hiapi\console\ApiController::class,
+        ],
+        'hiapi' => [
+            '__class' => \hiapi\console\HiapiController::class,
+        ],
+        'queue' => [
+            '__class' => \hiapi\console\QueueController::class,
         ],
     ],
+];
+
+$singletons = [
     \yii\web\User::class => [
-        'identity' => \yii\di\Reference::to('console.default-user'),
+        'identity' => \hiapi\yii::referenceTo('console.default-user'),
     ],
     'console.default-user' => [
         '__class' => \hiapi\models\HiamUserIdentity::class,
@@ -35,3 +36,11 @@ return [
     'bus.handle-exceptions-middleware'  => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
     'bus.loader-middleware'             => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
 ];
+
+return class_exists('Yii') ? array_merge([
+    'container' => [
+        'singletons' => $singletons,
+    ],
+], $app) : array_merge([
+    'app' => $app,
+], $singletons);

@@ -8,26 +8,28 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-return array_filter([
-    'app' => [
-        'controllerNamespace' => 'hiapi\controllers',
-        'bootstrap' => array_filter([
-            'debug' => empty($params['debug.enabled']) ? null : 'debug',
+$aliases = [
+    '@bower' => '@vendor/bower-asset',
+    '@npm' => '@vendor/npm-asset',
+    '@vendor/bower' => '@vendor/bower-asset',
+    '@vendor/npm' => '@vendor/npm-asset',
+];
+
+$app = array_filter([
+    'controllerNamespace' => 'hiapi\controllers',
+    'bootstrap' => array_filter([
+        'debug' => empty($params['debug.enabled']) ? null : 'debug',
+    ]),
+    'modules' => array_filter([
+        'debug' => empty($params['debug.enabled']) ? null : array_filter([
+            '__class' => \yii\debug\Module::class,
+            'allowedIPs' => isset($params['debug.allowedIps']) ? $params['debug.allowedIps'] : null,
+            'historySize' => isset($params['debug.historySize']) ? $params['debug.historySize'] : null,
         ]),
-        'modules' => array_filter([
-            'debug' => empty($params['debug.enabled']) ? null : array_filter([
-                '__class' => \yii\debug\Module::class,
-                'allowedIPs' => isset($params['debug.allowedIps']) ? $params['debug.allowedIps'] : null,
-                'historySize' => isset($params['debug.historySize']) ? $params['debug.historySize'] : null,
-            ]),
-        ]),
-    ],
-    'aliases' => [
-        '@bower' => '@vendor/bower-asset',
-        '@npm' => '@vendor/npm-asset',
-        '@vendor/bower' => '@vendor/bower-asset',
-        '@vendor/npm' => '@vendor/npm-asset',
-    ],
+    ]),
+]);
+
+$components = [
     'request' => [
         'enableCsrfCookie' => false,
         'enableCsrfValidation' => false,
@@ -55,6 +57,9 @@ return array_filter([
             ],
         ],
     ],
+];
+
+$singletons = [
 /// BUS
     'bus.responder-middleware' => [
         '__class' => ($_ENV['ENABLE_JSONAPI_RESPONSE'] ?? false)
@@ -73,4 +78,15 @@ return array_filter([
     },
     \WoohooLabs\Yin\JsonApi\Request\RequestInterface::class => \WoohooLabs\Yin\JsonApi\Request\Request::class,
     \WoohooLabs\Yin\JsonApi\Exception\ExceptionFactoryInterface::class => \WoohooLabs\Yin\JsonApi\Exception\DefaultExceptionFactory::class,
-]);
+];
+
+return class_exists('Yii') ? array_merge([
+    'aliases' => $aliases,
+    'components' => $components,
+    'container' => [
+        'singletons' => $singletons,
+    ],
+], $app) : array_merge([
+    'aliases' => $aliases,
+    'app' => $app,
+], $components, $singletons);
