@@ -8,46 +8,18 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-return array_filter([
-    'aliases' => [
-        '@bower' => '@vendor/bower-asset',
-        '@npm' => '@vendor/npm-asset',
-        '@vendor/bower' => '@vendor/bower-asset',
-        '@vendor/npm' => '@vendor/npm-asset',
-    ],
+$aliases = [
+    '@bower' => '@vendor/bower-asset',
+    '@npm' => '@vendor/npm-asset',
+    '@vendor/bower' => '@vendor/bower-asset',
+    '@vendor/npm' => '@vendor/npm-asset',
+];
+
+$app = array_filter([
     'controllerNamespace' => 'hiapi\controllers',
     'bootstrap' => array_filter([
         'debug' => empty($params['debug.enabled']) ? null : 'debug',
     ]),
-    'components' => [
-        'request' => [
-            'enableCsrfCookie' => false,
-            'enableCsrfValidation' => false,
-        ],
-        'mailer' => [
-            'composer' => [
-                'viewPath' => '@hiapi/views/mail',
-                'htmlLayout' => '@hiapi/views/layouts/mail-html',
-                'textLayout' => '@hiapi/views/layouts/mail-text',
-            ],
-        ],
-        'urlManager' => [
-            '__class' => \yii\web\UrlManager::class,
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'enableStrictParsing' => true,
-            'rules' => [
-                'default' => [
-                    'pattern' => '<version:v\d+>/<resource:[\w-]+>/<action:[\w-]+>/<bulk:(bulk)?>',
-                    'route' => 'api/command',
-                    'defaults' => [
-                        'version' => 'v1',
-                        'bulk' => false,
-                    ],
-                ],
-            ],
-        ],
-    ],
     'modules' => array_filter([
         'debug' => empty($params['debug.enabled']) ? null : array_filter([
             '__class' => \yii\debug\Module::class,
@@ -55,26 +27,66 @@ return array_filter([
             'historySize' => isset($params['debug.historySize']) ? $params['debug.historySize'] : null,
         ]),
     ]),
-    'container' => [
-        'singletons' => [
-        /// BUS
-            'bus.responder-middleware' => [
-                '__class' => ($_ENV['ENABLE_JSONAPI_RESPONSE'] ?? false)
-                    ? \hiapi\middlewares\JsonApiMiddleware::class
-                    : \hiapi\middlewares\LegacyResponderMiddleware::class,
-            ],
-            'bus.handle-exceptions-middleware' => \hiapi\middlewares\HandleExceptionsMiddleware::class,
-            'bus.loader-middleware' => \hiqdev\yii2\autobus\bus\LoadFromRequestMiddleware::class,
+]);
 
-        /// Request & response
-            \Psr\Http\Message\ServerRequestInterface::class => function ($container) {
-                return \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
-            },
-            \Psr\Http\Message\ResponseInterface::class => function ($container) {
-                return new \GuzzleHttp\Psr7\Response();
-            },
-            \WoohooLabs\Yin\JsonApi\Request\RequestInterface::class => \WoohooLabs\Yin\JsonApi\Request\Request::class,
-            \WoohooLabs\Yin\JsonApi\Exception\ExceptionFactoryInterface::class => \WoohooLabs\Yin\JsonApi\Exception\DefaultExceptionFactory::class,
+$components = [
+    'request' => [
+        'enableCsrfCookie' => false,
+        'enableCsrfValidation' => false,
+    ],
+    'mailer' => [
+        'composer' => [
+            'viewPath' => '@hiapi/views/mail',
+            'htmlLayout' => '@hiapi/views/layouts/mail-html',
+            'textLayout' => '@hiapi/views/layouts/mail-text',
         ],
     ],
-]);
+    'urlManager' => [
+        '__class' => \yii\web\UrlManager::class,
+        'enablePrettyUrl' => true,
+        'showScriptName' => false,
+        'enableStrictParsing' => true,
+        'rules' => [
+            'default' => [
+                'pattern' => '<version:v\d+>/<resource:[\w-]+>/<action:[\w-]+>/<bulk:(bulk)?>',
+                'route' => 'api/command',
+                'defaults' => [
+                    'version' => 'v1',
+                    'bulk' => false,
+                ],
+            ],
+        ],
+    ],
+];
+
+$singletons = [
+/// BUS
+    'bus.responder-middleware' => [
+        '__class' => ($_ENV['ENABLE_JSONAPI_RESPONSE'] ?? false)
+            ? \hiapi\middlewares\JsonApiMiddleware::class
+            : \hiapi\middlewares\LegacyResponderMiddleware::class,
+    ],
+    'bus.handle-exceptions-middleware' => \hiapi\middlewares\HandleExceptionsMiddleware::class,
+    'bus.loader-middleware' => \hiqdev\yii2\autobus\bus\LoadFromRequestMiddleware::class,
+
+/// Request & response
+    \Psr\Http\Message\ServerRequestInterface::class => function ($container) {
+        return \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
+    },
+    \Psr\Http\Message\ResponseInterface::class => function ($container) {
+        return new \GuzzleHttp\Psr7\Response();
+    },
+    \WoohooLabs\Yin\JsonApi\Request\RequestInterface::class => \WoohooLabs\Yin\JsonApi\Request\Request::class,
+    \WoohooLabs\Yin\JsonApi\Exception\ExceptionFactoryInterface::class => \WoohooLabs\Yin\JsonApi\Exception\DefaultExceptionFactory::class,
+];
+
+return class_exists('Yii') ? array_merge([
+    'aliases' => $aliases,
+    'components' => $components,
+    'container' => [
+        'singletons' => $singletons,
+    ],
+], $app) : array_merge([
+    'aliases' => $aliases,
+    'app' => $app,
+], $components, $singletons);

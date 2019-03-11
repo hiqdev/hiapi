@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-return [
+$app = [
     'controllerMap' => [
         'api' => [
             '__class' => \hiapi\console\ApiController::class,
@@ -20,20 +20,27 @@ return [
             '__class' => \hiapi\console\QueueController::class,
         ],
     ],
-    'container' => [
-        'singletons' => [
-            \yii\web\User::class => [
-                'identity' => \yii\di\Instance::of('console.default-user'),
-            ],
-            'console.default-user' => [
-                '__class' => \hiapi\models\HiamUserIdentity::class,
-                'id' => 1,
-                'login' => 'console_user',
-            ],
-        /// BUS
-            'bus.responder-middleware'          => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
-            'bus.handle-exceptions-middleware'  => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
-            'bus.loader-middleware'             => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
-        ],
-    ],
 ];
+
+$singletons = [
+    \yii\web\User::class => [
+        'identity' => \hiapi\yii::referenceTo('console.default-user'),
+    ],
+    'console.default-user' => [
+        '__class' => \hiapi\models\HiamUserIdentity::class,
+        'id' => 1,
+        'login' => 'console_user',
+    ],
+/// BUS
+    'bus.responder-middleware'          => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
+    'bus.handle-exceptions-middleware'  => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
+    'bus.loader-middleware'             => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
+];
+
+return class_exists('Yii') ? array_merge([
+    'container' => [
+        'singletons' => $singletons,
+    ],
+], $app) : array_merge([
+    'app' => $app,
+], $singletons);
