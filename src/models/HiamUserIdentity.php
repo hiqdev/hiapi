@@ -2,7 +2,7 @@
 
 namespace hiapi\models;
 
-use hiapi\yii;
+use hiqdev\yii\compat\yii;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\repositories\EntityNotFoundException;
 use yii\base\Model;

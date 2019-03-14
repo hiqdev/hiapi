@@ -10,7 +10,7 @@
 
 namespace hiapi\controllers;
 
-use hiapi\yii;
+use hiqdev\yii\compat\yii;
 
 class CommandAction extends \yii\base\Action
 {

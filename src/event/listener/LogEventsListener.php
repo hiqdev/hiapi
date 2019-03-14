@@ -2,7 +2,7 @@
 
 namespace hiapi\event\listener;
 
-use hiapi\yii;
+use hiqdev\yii\compat\yii;
 use League\Event\EventInterface;
 use League\Event\ListenerInterface;
 use yii\base\InvalidConfigException;

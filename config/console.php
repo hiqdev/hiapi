@@ -24,7 +24,7 @@ $app = [
 
 $singletons = [
     \yii\web\User::class => [
-        'identity' => \hiapi\yii::referenceTo('console.default-user'),
+        'identity' => \hiqdev\yii\compat\yii::referenceTo('console.default-user'),
     ],
     'console.default-user' => [
         '__class' => \hiapi\models\HiamUserIdentity::class,
@@ -37,7 +37,7 @@ $singletons = [
     'bus.loader-middleware'             => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
 ];
 
-return class_exists('Yii') ? array_merge([
+return \hiqdev\yii\compat\yii::is2() ? array_merge([
     'container' => [
         'singletons' => $singletons,
     ],

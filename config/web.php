@@ -80,7 +80,7 @@ $singletons = [
     \WoohooLabs\Yin\JsonApi\Exception\ExceptionFactoryInterface::class => \WoohooLabs\Yin\JsonApi\Exception\DefaultExceptionFactory::class,
 ];
 
-return class_exists('Yii') ? array_merge([
+return \hiqdev\yii\compat\yii::is2() ? array_merge([
     'aliases' => $aliases,
     'components' => $components,
     'container' => [

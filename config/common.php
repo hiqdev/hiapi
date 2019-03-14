@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
-use hiapi\yii;
+use hiqdev\yii\compat\yii;
 
 $app = [
     'id' => 'hiapi',
@@ -91,17 +91,17 @@ $singletons = [
         return $container;
     },
     \yii\mail\MailerInterface::class => function () {
-        return Yii::$app->get('mailer');
+        return \hiqdev\yii\compat\yii::getApp()->get('mailer');
     },
 ];
 
 $old_singletons = [
     \yii\base\Application::class => function () {
-        return Yii::$app;
+        return \hiqdev\yii\compat\yii::getApp();
     },
 
     \Psr\Log\LoggerInterface::class => function () {
-        return Yii::getLogger();
+        return \hiqdev\yii\compat\yii::getLogger();
     },
 
     \Psr\Container\ContainerInterface::class => function ($container) {
@@ -129,10 +129,10 @@ $old_singletons = [
     },
 ];
 
-return class_exists('Yii') ? array_merge([
+return yii::is2() ? array_merge([
     'aliases' => $aliases,
     'logger' => [
-        '__class' => \yii\log\Logger::class
+        '__class' => \yii\log\Logger::class,
     ],
     'components' => $components,
     'container' => [

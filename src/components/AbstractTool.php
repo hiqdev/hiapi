@@ -10,7 +10,7 @@
 
 namespace hiapi\components;
 
-use hiapi\yii;
+use hiqdev\yii\compat\yii;
 
 abstract class AbstractTool extends \yii\base\Component
 {

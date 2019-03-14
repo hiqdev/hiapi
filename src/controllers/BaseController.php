@@ -10,7 +10,7 @@
 
 namespace hiapi\controllers;
 
-use hiapi\yii;
+use hiqdev\yii\compat\yii;
 use yii\helpers\Inflector;
 
 abstract class BaseController extends \yii\web\Controller

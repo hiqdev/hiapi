@@ -12,7 +12,7 @@ namespace hiapi\controllers;
 
 use hiapi\bus\ApiCommandsBusInterface;
 use hiapi\components\QueryParamAuth;
-use hiapi\yii;
+use hiqdev\yii\compat\yii;
 use hiqdev\yii2\autobus\components\AutoBusInterface;
 use hiqdev\yii2\autobus\components\BranchedAutoBus;
 use yii\base\Module;
