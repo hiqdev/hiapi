@@ -69,8 +69,14 @@ class SearchHandler
         $spec->where(array_merge($command->filter, $command->where));
 
         if (!$command->count) {
-            $spec->limit($command->limit ?: 25);
-            $spec->offset((($command->page ?? 0) * $spec->limit) - $spec->limit);
+            if (strtolower($command->limit) === 'all') {
+                $command->limit = -1;
+            }
+            $limit = $command->limit ?? 25;
+            $spec->limit($limit);
+            if ($limit !== -1) {
+                $spec->offset((($command->page ?? 0) * $limit) - $limit);
+            }
             $spec->with(array_merge($command->include, $command->with));
         }
 
