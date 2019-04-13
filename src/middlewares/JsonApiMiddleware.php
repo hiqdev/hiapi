@@ -5,6 +5,8 @@ namespace hiapi\middlewares;
 
 use hiapi\commands\BaseCommand;
 use hiapi\commands\error\CommandError;
+use hiapi\commands\SearchCommand;
+use hiapi\jsonApi\SearchCountDocument;
 use League\Tactician\Middleware;
 use Psr\Container\ContainerInterface;
 use WoohooLabs\Yin\JsonApi\Document\AbstractSuccessfulDocument;
@@ -72,6 +74,9 @@ class JsonApiMiddleware implements JsonApiMiddlewareInterface, Middleware
         $className = get_class($command);
         if (!isset($this->commandToDocumentMap[$className])) {
             throw new \OutOfRangeException('Document map for "' . $className . "' does not exist");
+        }
+        if ($command instanceof SearchCommand && $command->count) {
+            return $this->di->get(SearchCountDocument::class);
         }
 
         return $this->di->get($this->commandToDocumentMap[$className]);

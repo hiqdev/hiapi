@@ -21,16 +21,19 @@ abstract class SearchCommand extends EntityCommand
 {
     public $select;
     public $limit;
+    public $page;
     public $where = [];
     public $filter = [];
     public $with = [];
     public $include = [];
+    public $count;
 
     public function rules()
     {
         return [
             ['select', 'safe'],
             [['where', 'filter'], 'safe'],
+            [['page'], 'integer'],
             ['limit', function () {
                 if (empty($this->limit)) {
                     return;
@@ -47,6 +50,7 @@ abstract class SearchCommand extends EntityCommand
                 }
             }],
             [['with', 'include'], 'each', 'rule' => [RefValidator::class]],
+            [['count'], 'boolean']
         ];
     }
 }

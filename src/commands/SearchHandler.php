@@ -44,9 +44,19 @@ class SearchHandler
         return new Specification();
     }
 
+    /**
+     * @param SearchCommand $command
+     */
     public function handle(EntityCommandInterface $command)
     {
-        return $this->getRepository($command)->findAll($this->buildSpecification($command));
+        $repo = $this->getRepository($command);
+        $specification = $this->buildSpecification($command);
+
+        if ($command->count) {
+            return $repo->count($specification);
+        }
+
+        return $repo->findAll($specification);
     }
 
     /**
@@ -57,9 +67,13 @@ class SearchHandler
     {
         $spec = $this->createSpecification();
         $spec->where(array_merge($command->filter, $command->where));
-        $spec->limit($command->limit ?: 25);
-        $spec->with(array_merge($command->include, $command->with));
-        
+
+        if (!$command->count) {
+            $spec->limit($command->limit ?: 25);
+            $spec->offset((($command->page ?? 0) * $spec->limit) - $spec->limit);
+            $spec->with(array_merge($command->include, $command->with));
+        }
+
         return $spec;
     }
 
