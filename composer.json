@@ -46,6 +46,7 @@
     "require": {
         "psr/container": "^1.0",
         "hiqdev/hidev-webapp": "dev-master",
+        "hiqdev/yii-compat": "dev-master",
         "hiqdev/yii2-autobus": "dev-master",
         "hiqdev/yii2-data-mapper": "dev-master",
         "vlucas/phpdotenv": "^2.4",
