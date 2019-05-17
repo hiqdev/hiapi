@@ -16,7 +16,7 @@ trait NamedEventTrait
     
     public static function create(string $name, $target = null): self
     {
-        $event = new self($target);
+        $event = new static($target);
         $event->name = $name;
         
         return $event;
