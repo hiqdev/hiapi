@@ -59,7 +59,8 @@
         "hiqdev/hidev-hiqdev": "dev-master"
     },
     "suggest": {
-        "woohoolabs/yin": "To work with JsonAPI requests/responses"
+        "woohoolabs/yin": "To work with JsonAPI requests/responses",
+        "aura/router": "To use AuraRouterController",
     },
     "autoload": {
         "psr-4": {
