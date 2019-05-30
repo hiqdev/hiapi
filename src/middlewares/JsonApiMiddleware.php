@@ -67,9 +67,9 @@ class JsonApiMiddleware implements JsonApiMiddlewareInterface, Middleware
 
     /**
      * @param BaseCommand $command
-     * @return AbstractSuccessfulDocument
+     * @return AbstractSuccessfulDocument|\WoohooLabs\Yin\JsonApi\Schema\Document\AbstractSuccessfulDocument
      */
-    public function getSuccessDocumentFor($command): AbstractSuccessfulDocument
+    public function getSuccessDocumentFor($command)
     {
         $className = get_class($command);
         if (!isset($this->commandToDocumentMap[$className])) {

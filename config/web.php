@@ -77,6 +77,7 @@ $singletons = [
         return new \GuzzleHttp\Psr7\Response();
     },
     \WoohooLabs\Yin\JsonApi\Request\RequestInterface::class => \WoohooLabs\Yin\JsonApi\Request\Request::class,
+    \WoohooLabs\Yin\JsonApi\Request\JsonApiRequestInterface::class => \WoohooLabs\Yin\JsonApi\Request\JsonApiRequest::class, // Yin > 3.1.0
     \WoohooLabs\Yin\JsonApi\Exception\ExceptionFactoryInterface::class => \WoohooLabs\Yin\JsonApi\Exception\DefaultExceptionFactory::class,
 ];
 

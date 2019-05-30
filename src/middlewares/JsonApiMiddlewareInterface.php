@@ -16,9 +16,9 @@ interface JsonApiMiddlewareInterface
 {
     /**
      * @param BaseCommand $command
-     * @return AbstractSuccessfulDocument
+     * @return AbstractSuccessfulDocument|\WoohooLabs\Yin\JsonApi\Schema\Document\AbstractSuccessfulDocument
      * @throws InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    public function getSuccessDocumentFor($command): AbstractSuccessfulDocument;
+    public function getSuccessDocumentFor($command);
 }
