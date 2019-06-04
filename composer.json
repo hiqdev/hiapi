@@ -60,7 +60,7 @@
     },
     "suggest": {
         "woohoolabs/yin": "To work with JsonAPI requests/responses",
-        "aura/router": "To use AuraRouterController",
+        "aura/router": "To use AuraRouterController"
     },
     "autoload": {
         "psr-4": {
