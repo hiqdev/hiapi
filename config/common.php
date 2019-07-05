@@ -133,6 +133,13 @@ return yii::is2() ? array_merge([
     'aliases' => $aliases,
     'logger' => [
         '__class' => \yii\log\Logger::class,
+        'targets' => [
+            [
+                '__class' => \yii\log\FileTarget::class,
+                'logFile' => '@runtime/error.log',
+                'levels' => [\Psr\Log\LogLevel::ERROR, \Psr\Log\LogLevel::CRITICAL, \Psr\Log\LogLevel::EMERGENCY],
+            ],
+        ]
     ],
     'components' => $components,
     'container' => [
