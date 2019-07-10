@@ -41,6 +41,14 @@ return \hiqdev\yii\compat\yii::is2() ? array_merge([
     'container' => [
         'singletons' => $singletons,
     ],
+    'logger' => [
+        '__class' => \yii\log\Logger::class,
+        'targets' => [
+            [
+                '__class' => \hiapi\console\ConsoleLogTarget::class,
+            ],
+        ]
+    ],
 ], $app) : array_merge([
     'app' => $app,
 ], $singletons);
