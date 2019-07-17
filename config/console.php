@@ -43,6 +43,7 @@ return \hiqdev\yii\compat\yii::is2() ? array_merge([
     ],
     'logger' => [
         '__class' => \yii\log\Logger::class,
+        'flushInterval' => 1,
         'targets' => [
             [
                 '__class' => \hiapi\console\ConsoleLogTarget::class,
