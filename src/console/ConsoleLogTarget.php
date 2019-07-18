@@ -2,6 +2,7 @@
 
 namespace hiapi\console;
 
+use hidev\components\Log;
 use Psr\Log\LogLevel;
 use yii\helpers\Console;
 use yii\helpers\VarDumper;
@@ -23,7 +24,7 @@ class ConsoleLogTarget extends \yii\log\Target
         LogLevel::WARNING   => false,
     ];
 
-    public static $styles = [
+    public $styles = [
         LogLevel::EMERGENCY => [Console::BOLD, Console::BG_RED],
         LogLevel::ERROR     => [Console::FG_RED, Console::BOLD],
         LogLevel::ALERT     => [Console::FG_RED],
@@ -49,7 +50,7 @@ class ConsoleLogTarget extends \yii\log\Target
 
     public function out($level, $message)
     {
-        $style = self::$styles[$level];
+        $style = $this->styles[$level];
         if ($style) {
             $message = Console::ansiFormat($message, $style);
         } else {
