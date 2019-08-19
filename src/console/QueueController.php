@@ -167,7 +167,7 @@ class QueueController extends \yii\console\Controller
             ]),
         ]));
         $channel->basic_publish($delayMessage, $delayExchange, '');
-        $this->logger->debug('Delayed message for ' . $delayDuration, ['message' => $msg, 'exception' => $exception]);
+        $this->logger->debug('Delayed message for ' . $delayDuration . 'ms', ['message' => $msg, 'exception' => $exception]);
     }
 
     private function storeRejected(string $queueName, AMQPMessage $message, \Exception $exception): void
