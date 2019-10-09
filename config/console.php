@@ -47,7 +47,7 @@ return \hiqdev\yii\compat\yii::is2() ? array_merge([
         'targets' => [
             [
                 '__class' => \hiapi\console\ConsoleLogTarget::class,
-                'exportContext' => YII_ENV_DEV ? [
+                'exportContext' => YII_ENV === 'dev' ? [
                     Psr\Log\LogLevel::EMERGENCY => true,
                     Psr\Log\LogLevel::ERROR     => true,
                     Psr\Log\LogLevel::ALERT     => true,
@@ -63,7 +63,7 @@ return \hiqdev\yii\compat\yii::is2() ? array_merge([
                     Psr\Log\LogLevel::CRITICAL  => false,
                     Psr\Log\LogLevel::WARNING   => false,
                 ],
-                'styles' => YII_ENV_DEV ? [
+                'styles' => YII_ENV === 'dev' ? [
                     Psr\Log\LogLevel::EMERGENCY => [yii\helpers\Console::BOLD, yii\helpers\Console::BG_RED],
                     Psr\Log\LogLevel::ERROR     => [yii\helpers\Console::FG_RED, yii\helpers\Console::BOLD],
                     Psr\Log\LogLevel::ALERT     => [yii\helpers\Console::FG_RED],
