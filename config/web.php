@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
+use hiqdev\yii\compat\yii;
+
 $aliases = [
     '@bower' => '@vendor/bower-asset',
     '@npm' => '@vendor/npm-asset',
@@ -22,7 +24,7 @@ $app = array_filter([
     ]),
     'modules' => array_filter([
         'debug' => empty($params['debug.enabled']) ? null : array_filter([
-            '__class' => \yii\debug\Module::class,
+            yii::classKey() => \yii\debug\Module::class,
             'allowedIPs' => isset($params['debug.allowedIps']) ? $params['debug.allowedIps'] : null,
             'historySize' => isset($params['debug.historySize']) ? $params['debug.historySize'] : null,
         ]),
@@ -42,7 +44,7 @@ $components = [
         ],
     ],
     'urlManager' => [
-        '__class' => \yii\web\UrlManager::class,
+        yii::classKey() => \yii\web\UrlManager::class,
         'enablePrettyUrl' => true,
         'showScriptName' => false,
         'enableStrictParsing' => true,
@@ -62,7 +64,7 @@ $components = [
 $singletons = [
 /// BUS
     'bus.responder-middleware' => [
-        '__class' => ($_ENV['ENABLE_JSONAPI_RESPONSE'] ?? false)
+        yii::classKey() => ($_ENV['ENABLE_JSONAPI_RESPONSE'] ?? false)
             ? \hiapi\middlewares\JsonApiMiddleware::class
             : \hiapi\middlewares\LegacyResponderMiddleware::class,
     ],

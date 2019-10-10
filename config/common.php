@@ -19,7 +19,7 @@ $app = [
 
 $components = [
     'user' => [
-        '__class' => \yii\web\User::class,
+        yii::classKey() => \yii\web\User::class,
     ],
 ];
 
@@ -30,16 +30,16 @@ $singletons = [
     ],
 /// BUS
     \hiapi\bus\ApiCommandsBusInterface::class => [
-        '__class' => \hiapi\bus\ApiCommandsBus::class,
+        yii::classKey() => \hiapi\bus\ApiCommandsBus::class,
         '__construct()' => [
             yii::referenceTo('bus.the-bus'),
         ],
     ],
     'bus.per-command-middleware' => [
-        '__class' => \hiapi\middlewares\PerCommandMiddleware::class,
+        yii::classKey() => \hiapi\middlewares\PerCommandMiddleware::class,
     ],
     'bus.default-command-handler' => [
-        '__class' => \League\Tactician\Handler\CommandHandlerMiddleware::class,
+        yii::classKey() => \League\Tactician\Handler\CommandHandlerMiddleware::class,
         '__construct()' => [
             yii::referenceTo(\League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor::class),
             yii::referenceTo(\hiqdev\yii2\autobus\bus\NearbyHandlerLocator::class),
@@ -47,7 +47,7 @@ $singletons = [
         ],
     ],
     'bus.the-bus' => [
-        '__class' => \hiqdev\yii2\autobus\components\TacticianCommandBus::class,
+        yii::classKey() => \hiqdev\yii2\autobus\components\TacticianCommandBus::class,
         '__construct()' => [
             yii::referenceTo('bus.default-command-handler'),
         ],
@@ -67,7 +67,7 @@ $singletons = [
 /// Event
     \hiapi\event\EventStorageInterface::class => \hiapi\event\EventStorage::class,
     \League\Event\EmitterInterface::class => [
-        '__class' => \hiapi\event\ConfigurableEmitter::class,
+        yii::classKey() => \hiapi\event\ConfigurableEmitter::class,
         'listeners' => array_filter([
             YII_ENV === 'dev'
                 ? ['event' => '*', 'listener' => \hiapi\event\listener\LogEventsListener::class]
@@ -77,7 +77,7 @@ $singletons = [
 
 /// Queue
     \PhpAmqpLib\Connection\AMQPStreamConnection::class => [
-        '__class' => \PhpAmqpLib\Connection\AMQPLazyConnection::class,
+        yii::classKey() => \PhpAmqpLib\Connection\AMQPLazyConnection::class,
         '__construct()' => [
             $params['amqp.host'],
             $params['amqp.port'],
@@ -132,10 +132,10 @@ $old_singletons = [
 return yii::is2() ? array_merge([
     'aliases' => $aliases,
     'logger' => [
-        '__class' => \yii\log\Logger::class,
+        yii::classKey() => \yii\log\Logger::class,
         'targets' => [
             [
-                '__class' => \yii\log\FileTarget::class,
+                yii::classKey() => \yii\log\FileTarget::class,
                 'logFile' => '@runtime/error.log',
                 'levels' => [\Psr\Log\LogLevel::ERROR, \Psr\Log\LogLevel::CRITICAL, \Psr\Log\LogLevel::EMERGENCY],
             ],
