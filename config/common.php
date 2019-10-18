@@ -18,8 +18,15 @@ $app = [
 ];
 
 $components = [
-    'user' => [
-        yii::classKey() => \yii\web\User::class,
+    (yii::is3() ? 'logger' : 'log') => [
+        'targets' => [
+            [
+                '__class' => \yii\log\FileTarget::class,
+                'logFile' => '@runtime/error.log',
+                'levels' => [\Psr\Log\LogLevel::ERROR],
+                'logVars' => [],
+            ],
+        ],
     ],
 ];
 
@@ -30,16 +37,16 @@ $singletons = [
     ],
 /// BUS
     \hiapi\bus\ApiCommandsBusInterface::class => [
-        yii::classKey() => \hiapi\bus\ApiCommandsBus::class,
+        '__class' => \hiapi\bus\ApiCommandsBus::class,
         '__construct()' => [
             yii::referenceTo('bus.the-bus'),
         ],
     ],
     'bus.per-command-middleware' => [
-        yii::classKey() => \hiapi\middlewares\PerCommandMiddleware::class,
+        '__class' => \hiapi\middlewares\PerCommandMiddleware::class,
     ],
     'bus.default-command-handler' => [
-        yii::classKey() => \League\Tactician\Handler\CommandHandlerMiddleware::class,
+        '__class' => \League\Tactician\Handler\CommandHandlerMiddleware::class,
         '__construct()' => [
             yii::referenceTo(\League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor::class),
             yii::referenceTo(\hiqdev\yii2\autobus\bus\NearbyHandlerLocator::class),
@@ -47,7 +54,7 @@ $singletons = [
         ],
     ],
     'bus.the-bus' => [
-        yii::classKey() => \hiqdev\yii2\autobus\components\TacticianCommandBus::class,
+        '__class' => \hiqdev\yii2\autobus\components\TacticianCommandBus::class,
         '__construct()' => [
             yii::referenceTo('bus.default-command-handler'),
         ],
@@ -67,7 +74,7 @@ $singletons = [
 /// Event
     \hiapi\event\EventStorageInterface::class => \hiapi\event\EventStorage::class,
     \League\Event\EmitterInterface::class => [
-        yii::classKey() => \hiapi\event\ConfigurableEmitter::class,
+        '__class' => \hiapi\event\ConfigurableEmitter::class,
         'listeners' => array_filter([
             YII_ENV === 'dev'
                 ? ['event' => '*', 'listener' => \hiapi\event\listener\LogEventsListener::class]
@@ -77,7 +84,7 @@ $singletons = [
 
 /// Queue
     \PhpAmqpLib\Connection\AMQPStreamConnection::class => [
-        yii::classKey() => \PhpAmqpLib\Connection\AMQPLazyConnection::class,
+        '__class' => \PhpAmqpLib\Connection\AMQPLazyConnection::class,
         '__construct()' => [
             $params['amqp.host'],
             $params['amqp.port'],
@@ -95,60 +102,17 @@ $singletons = [
     },
 ];
 
-$old_singletons = [
-    \yii\base\Application::class => function () {
-        return \hiqdev\yii\compat\yii::getApp();
-    },
-
-    \Psr\Log\LoggerInterface::class => function () {
-        return \hiqdev\yii\compat\yii::getLogger();
-    },
-
-    \Psr\Container\ContainerInterface::class => function ($container) {
-        return new class($container) implements \Psr\Container\ContainerInterface {
-            /**
-             * @var \yii\di\Container
-             */
-            private $yiiContainer;
-
-            public function __construct(\yii\di\Container $yiiContainer)
-            {
-                $this->yiiContainer = $yiiContainer;
-            }
-
-            public function get($id)
-            {
-                return $this->yiiContainer->get($id);
-            }
-
-            public function has($id)
-            {
-                return $this->yiiContainer->has($id);
-            }
-        };
-    },
-];
-
-return yii::is2() ? array_merge([
+return yii::is3() ? array_merge([
     'aliases' => $aliases,
-    'logger' => [
-        yii::classKey() => \yii\log\Logger::class,
-        'targets' => [
-            [
-                yii::classKey() => \yii\log\FileTarget::class,
-                'logFile' => '@runtime/error.log',
-                'levels' => [\Psr\Log\LogLevel::ERROR, \Psr\Log\LogLevel::CRITICAL, \Psr\Log\LogLevel::EMERGENCY],
-            ],
-        ]
-    ],
+    'app' => $app,
+], $components, $singletons) : array_merge([
+    'bootstrap' => ['log'],
+    'aliases' => $aliases,
     'components' => $components,
     'container' => [
-        'singletons' => array_merge($singletons, $old_singletons),
+        'singletons' => $singletons,
     ],
     'params' => $params,
     'vendorPath' => '@root/vendor',
     'runtimePath' => '@root/runtime',
-], $app) : array_merge([
-    'aliases' => $aliases,
-    'app' => $app,
-], $components, $singletons);
+], $app);

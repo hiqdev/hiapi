@@ -24,7 +24,7 @@ $app = array_filter([
     ]),
     'modules' => array_filter([
         'debug' => empty($params['debug.enabled']) ? null : array_filter([
-            yii::classKey() => \yii\debug\Module::class,
+            '__class' => \yii\debug\Module::class,
             'allowedIPs' => isset($params['debug.allowedIps']) ? $params['debug.allowedIps'] : null,
             'historySize' => isset($params['debug.historySize']) ? $params['debug.historySize'] : null,
         ]),
@@ -44,7 +44,7 @@ $components = [
         ],
     ],
     'urlManager' => [
-        yii::classKey() => \yii\web\UrlManager::class,
+        '__class' => \yii\web\UrlManager::class,
         'enablePrettyUrl' => true,
         'showScriptName' => false,
         'enableStrictParsing' => true,
@@ -64,7 +64,7 @@ $components = [
 $singletons = [
 /// BUS
     'bus.responder-middleware' => [
-        yii::classKey() => ($_ENV['ENABLE_JSONAPI_RESPONSE'] ?? false)
+        '__class' => ($_ENV['ENABLE_JSONAPI_RESPONSE'] ?? false)
             ? \hiapi\middlewares\JsonApiMiddleware::class
             : \hiapi\middlewares\LegacyResponderMiddleware::class,
     ],
