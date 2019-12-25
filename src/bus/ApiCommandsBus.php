@@ -11,7 +11,6 @@
 namespace hiapi\bus;
 
 use hiqdev\yii2\autobus\components\BranchedAutoBus;
-use hiqdev\yii2\autobus\components\CommandFactoryInterface;
 
 class ApiCommandsBus extends BranchedAutoBus implements ApiCommandsBusInterface
 {
