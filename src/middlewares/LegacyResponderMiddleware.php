@@ -34,19 +34,31 @@ class LegacyResponderMiddleware implements Middleware
      */
     public function execute($command, callable $next)
     {
-        $handledCommand = $next($command);
+        $result = $next($command);
 
-        if ($handledCommand instanceof CommandError) {
-            $data = ['_error' => $handledCommand->getException()->getMessage()];
-        } elseif (is_array($handledCommand)) {
-            $data = array_map(function ($item) {
-                return $this->extractor->extract($item);
-            }, $handledCommand);
-        } else {
-            $data = $this->extractor->extract($handledCommand);
-        }
+        $data = $this->extract($result);
 
         return $this->createResponseFor($data);
+    }
+
+    private function extract($result)
+    {
+        if ($result instanceof CommandError) {
+            return ['_error' => $result->getException()->getMessage()];
+        }
+
+        if (is_array($result)) {
+            return array_map(function ($item) {
+                return $this->extractOne($item);
+            }, $result);
+        }
+
+        return $this->extractOne($result);
+    }
+
+    private function extractOne($result)
+    {
+        return is_object($result) ? $this->extractor->extract($result) : $result;
     }
 
     private function createResponseFor($data)
