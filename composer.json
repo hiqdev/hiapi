@@ -52,7 +52,8 @@
         "guzzlehttp/psr7": "^1.4",
         "league/event": "^2.1",
         "php-amqplib/php-amqplib": "^2.7.2",
-        "ramsey/uuid": "^3.0"
+        "ramsey/uuid": "^3.0",
+        "hiqdev/hiapi": "dev-master"
     },
     "require-dev": {
         "hiqdev/hidev-php": "dev-master",

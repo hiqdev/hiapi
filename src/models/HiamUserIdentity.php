@@ -78,7 +78,7 @@ class HiamUserIdentity extends Model implements IdentityInterface
         $res = curl_exec($ch);
         curl_close($ch);
 
-        return Json::decode($res);
+        return Json::decode((string)$res);
     }
 
     /**

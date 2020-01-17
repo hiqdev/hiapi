@@ -43,6 +43,9 @@ class PerCommandMiddleware implements Middleware
             return null;
         }
 
+        /**
+         * @var Middleware[]
+         */
         $middlewares = [];
         foreach ($this->commandMiddlewares[$className] as $middleware) {
             if (is_array($middleware)) {

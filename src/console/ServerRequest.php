@@ -12,7 +12,7 @@ use Psr\Http\Message\StreamInterface;
  * XXX
  * XXX NOT finished, NOT used
  * XXX
- *
+ * @
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
 class ServerRequest implements ServerRequestInterface
@@ -43,8 +43,6 @@ class ServerRequest implements ServerRequestInterface
             var_dump($arg);
         }
         die;
-
-        return $params;
     }
 
     public function getParsedBody()
