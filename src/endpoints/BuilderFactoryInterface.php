@@ -4,5 +4,5 @@ namespace hiapi\endpoints;
 
 interface BuilderFactoryInterface
 {
-    public function endpoint(string $className): EndpointBuilderInterface;
+    public function endpoint(string $className);
 }
