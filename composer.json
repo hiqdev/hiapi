@@ -56,7 +56,8 @@
     },
     "require-dev": {
         "hiqdev/hidev-php": "dev-master",
-        "hiqdev/hidev-hiqdev": "dev-master"
+        "hiqdev/hidev-hiqdev": "dev-master",
+        "vimeo/psalm": "^3.8.3"
     },
     "suggest": {
         "woohoolabs/yin": "To work with JsonAPI requests/responses",
