@@ -8,7 +8,7 @@ trait PermissionAwareBuilderTrait
     /**
      * @var string
      */
-    protected $checkPermission = null;
+    protected $checkPermission;
 
     public function checkPermission(string $permission)
     {

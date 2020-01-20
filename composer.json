@@ -58,7 +58,8 @@
     "require-dev": {
         "hiqdev/hidev-php": "dev-master",
         "hiqdev/hidev-hiqdev": "dev-master",
-        "vimeo/psalm": "^3.8.3"
+        "vimeo/psalm": "^3.8.3",
+        "phpunit/phpunit": "^7.5.17"
     },
     "suggest": {
         "woohoolabs/yin": "To work with JsonAPI requests/responses",
@@ -67,6 +68,11 @@
     "autoload": {
         "psr-4": {
             "hiapi\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "hiapi\\tests\\": "tests"
         }
     },
     "extra": {

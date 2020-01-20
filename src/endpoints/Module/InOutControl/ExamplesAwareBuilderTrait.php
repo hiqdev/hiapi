@@ -3,6 +3,9 @@
 
 namespace hiapi\endpoints\Module\InOutControl;
 
+use hiapi\endpoints\EndpointConfig;
+use hiapi\endpoints\Exception\EndpointBuildingException;
+
 /**
  * Trait ExamplesAwareBuilderTrait
  *
@@ -18,6 +21,18 @@ trait ExamplesAwareBuilderTrait
     public function withExamples(array $examples)
     {
         $this->examples = $examples;
+
+        return $this;
+    }
+
+    /**
+     * @param EndpointConfig $config
+     * @return $this
+     * @throws EndpointBuildingException
+     */
+    protected function buildExamples(EndpointConfig $config)
+    {
+        $config->set('examples', $this->examples);
 
         return $this;
     }

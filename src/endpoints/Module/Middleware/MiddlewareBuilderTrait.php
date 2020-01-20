@@ -19,7 +19,7 @@ trait MiddlewareBuilderTrait
 
     public function pipe(...$middlewares)
     {
-        $this->middlewares = $middlewares;
+        $this->pipe = $middlewares;
 
         return $this;
     }
