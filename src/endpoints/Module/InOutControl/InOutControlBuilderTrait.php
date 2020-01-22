@@ -3,7 +3,8 @@
 
 namespace hiapi\endpoints\Module\InOutControl;
 
-use hiapi\endpoints\EndpointConfig;
+use hiapi\endpoints\EndpointConfiguration;
+use hiapi\endpoints\EndpointConfigurationInterface;
 use hiapi\endpoints\Exception\EndpointBuildingException;
 
 /**
@@ -38,11 +39,11 @@ trait InOutControlBuilderTrait
     }
 
     /**
-     * @param EndpointConfig $config
+     * @param EndpointConfigurationInterface $config
      * @return $this
      * @throws EndpointBuildingException
      */
-    protected function buildInOutparameters(EndpointConfig $config)
+    protected function buildInOutParameters(EndpointConfigurationInterface $config)
     {
         if (empty($this->take) || empty($this->return)) {
             // TODO: think how to include command name in the exception text

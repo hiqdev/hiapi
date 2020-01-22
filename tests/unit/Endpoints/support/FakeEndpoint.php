@@ -2,10 +2,24 @@
 
 namespace hiapi\tests\unit\Endpoints\support;
 
+use hiapi\endpoints\EndpointConfigurationInterface;
+
 class FakeEndpoint
 {
-    public static function fromConfig(\hiapi\endpoints\EndpointConfig $config)
+    /**
+     * @var \ArrayAccess
+     */
+    private $config;
+
+    public static function fromConfig(EndpointConfigurationInterface $config)
     {
-        return new self();
+        $self = new self();
+        $self->config = $config;
+        return $self;
+    }
+
+    public function getConfig(): \ArrayAccess
+    {
+        return $this->config;
     }
 }

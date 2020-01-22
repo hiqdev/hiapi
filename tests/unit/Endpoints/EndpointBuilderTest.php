@@ -4,7 +4,7 @@ namespace hiapi\tests\unit\Endpoints;
 
 use Closure;
 use hiapi\endpoints\EndpointBuilderInterface;
-use hiapi\endpoints\EndpointConfig;
+use hiapi\endpoints\EndpointConfiguration;
 use hiapi\endpoints\Module\Builder\OrderedBuildersCallTrait;
 use hiapi\endpoints\Module\Builder\ReflectionBasedEndpointBuilderTrait;
 use hiapi\endpoints\Module\InOutControl\ExamplesAwareBuilderInterface;
@@ -30,13 +30,16 @@ class EndpointBuilderTest extends TestCase
         $this->builder = new FakeEndpointBuilder();
     }
 
-    public function testBuilderProducesEndpoints()
+    public function testBuilderCanProduceEndpoint()
     {
         $builder = $this->builder
             ->take(InputStub::class)
             ->return(ReturnStub::class);
 
         $endpoint = $builder->build();
+
+        $this->assertSame(InputStub::class, $endpoint->getConfig()['take']);
+        $this->assertSame(ReturnStub::class, $endpoint->getConfig()['return']);
     }
 }
 
@@ -73,7 +76,7 @@ class FakeEndpointBuilder implements
     {
         $builders = $this->getBuildersList();
 
-        $config = new EndpointConfig();
+        $config = new EndpointConfiguration();
         foreach ($builders as $builder) {
             $builder($config);
         }

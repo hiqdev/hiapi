@@ -3,7 +3,7 @@
 
 namespace hiapi\endpoints\Module\Middleware;
 
-use Closure;
+use hiapi\endpoints\EndpointConfigurationInterface;
 
 /**
  * Trait MiddlewareBuilderTrait
@@ -22,5 +22,10 @@ trait MiddlewareBuilderTrait
         $this->pipe = $middlewares;
 
         return $this;
+    }
+
+    protected function buildMiddlewares(EndpointConfigurationInterface $configuration)
+    {
+        $configuration->set('middlewares', $this->pipe);
     }
 }

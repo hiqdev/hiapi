@@ -3,7 +3,8 @@
 
 namespace hiapi\endpoints\Module\InOutControl;
 
-use hiapi\endpoints\EndpointConfig;
+use hiapi\endpoints\EndpointConfiguration;
+use hiapi\endpoints\EndpointConfigurationInterface;
 use hiapi\endpoints\Exception\EndpointBuildingException;
 
 /**
@@ -26,11 +27,11 @@ trait ExamplesAwareBuilderTrait
     }
 
     /**
-     * @param EndpointConfig $config
+     * @param EndpointConfigurationInterface $config
      * @return $this
      * @throws EndpointBuildingException
      */
-    protected function buildExamples(EndpointConfig $config)
+    protected function buildExamples(EndpointConfigurationInterface $config)
     {
         $config->set('examples', $this->examples);
 

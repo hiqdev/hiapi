@@ -3,6 +3,8 @@
 
 namespace hiapi\endpoints\Module\Multitenant;
 
+use hiapi\endpoints\EndpointConfigurationInterface;
+
 /**
  * Trait MultitenantEndpointBuilderTrait
  *
@@ -21,5 +23,10 @@ trait MultitenantEndpointBuilderTrait
         $this->exportTo = $tenants;
 
         return $this;
+    }
+
+    protected function buildTenants(EndpointConfigurationInterface $configuration): void
+    {
+        $configuration->set('tenants', $this->exportTo);
     }
 }

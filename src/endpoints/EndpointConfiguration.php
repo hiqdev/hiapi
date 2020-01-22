@@ -4,17 +4,11 @@ namespace hiapi\endpoints;
 
 use hiapi\endpoints\Exception\EndpointBuildingException;
 
-class EndpointConfig implements \ArrayAccess
+class EndpointConfiguration implements \ArrayAccess, EndpointConfigurationInterface
 {
     private $config = [];
 
-    /**
-     * @param string $property
-     * @param $value
-     * @return $this
-     * @throws EndpointBuildingException
-     */
-    public function set(string $property, $value): self
+    public function set(string $property, $value): EndpointConfigurationInterface
     {
         if (array_key_exists($property, $this->config)) {
             throw new EndpointBuildingException(sprintf(
@@ -28,14 +22,14 @@ class EndpointConfig implements \ArrayAccess
         return $this;
     }
 
-    public function overwrite(string $property, $value): self
+    public function overwrite(string $property, $value): EndpointConfigurationInterface
     {
         $this->unset($property);
 
         return $this->set($property, $value);
     }
 
-    public function unset(string $property): self
+    public function unset(string $property): EndpointConfigurationInterface
     {
         unset($this->config[$property]);
 
