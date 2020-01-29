@@ -13,8 +13,8 @@ namespace hiapi\endpoints\Module\Multitenant;
 interface MultitenantEndpointBuilderInterface
 {
     /**
-     * @psalm-param Tenant::WEB|Tenant::CLI|Tenant::QUEUE|Tenant::ALL $tenants
+     * @psalm-param Tenant::WEB|Tenant::CLI|Tenant::QUEUE|Tenant::ALL $tenantMask
      * @return T
      */
-    public function exportTo(string $tenants);
+    public function exportTo(string $tenantMask);
 }

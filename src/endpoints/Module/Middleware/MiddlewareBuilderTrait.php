@@ -15,17 +15,17 @@ trait MiddlewareBuilderTrait
     /**
      * @psalm-var list<string|Closure>
      */
-    protected $pipe = [];
+    protected $middlewares = [];
 
-    public function pipe(...$middlewares)
+    public function middlewares(...$middlewares)
     {
-        $this->pipe = $middlewares;
+        $this->middlewares = $middlewares;
 
         return $this;
     }
 
     protected function buildMiddlewares(EndpointConfigurationInterface $configuration)
     {
-        $configuration->set('middlewares', $this->pipe);
+        $configuration->set('middlewares', $this->middlewares);
     }
 }

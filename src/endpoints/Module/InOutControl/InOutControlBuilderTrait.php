@@ -49,8 +49,8 @@ trait InOutControlBuilderTrait
             // TODO: think how to include command name in the exception text
             throw EndpointBuildingException::fromBuilder('Both input and output MUST be specified', $this);
         }
-        $config->set('take', $this->take);
-        $config->set('return', $this->return);
+        $config->set('inputClassName', $this->take);
+        $config->set('returnClassName', $this->return);
 
         return $this;
     }

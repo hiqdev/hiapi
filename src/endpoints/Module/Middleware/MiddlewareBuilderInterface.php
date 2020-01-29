@@ -17,5 +17,5 @@ interface MiddlewareBuilderInterface
      * @param string|Closure ...$middlewares
      * @return T
      */
-    public function pipe(...$middlewares);
+    public function middlewares(...$middlewares);
 }

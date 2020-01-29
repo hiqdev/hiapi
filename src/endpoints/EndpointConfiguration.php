@@ -49,7 +49,7 @@ class EndpointConfiguration implements \ArrayAccess, EndpointConfigurationInterf
      */
     public function offsetGet($offset)
     {
-        return $this->config[$offset];
+        return $this->config[$offset] ?? null;
     }
 
     /**

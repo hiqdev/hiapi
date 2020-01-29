@@ -15,18 +15,18 @@ trait MultitenantEndpointBuilderTrait
     /**
      * @var string
      */
-    protected $exportTo;
+    protected $tenantMask;
 
     /** {@inheritDoc} */
-    public function exportTo(string $tenants)
+    public function exportTo(string $tenantMask)
     {
-        $this->exportTo = $tenants;
+        $this->tenantMask = $tenantMask;
 
         return $this;
     }
 
     protected function buildTenants(EndpointConfigurationInterface $configuration): void
     {
-        $configuration->set('tenants', $this->exportTo);
+        $configuration->set('tenantMask', $this->tenantMask);
     }
 }

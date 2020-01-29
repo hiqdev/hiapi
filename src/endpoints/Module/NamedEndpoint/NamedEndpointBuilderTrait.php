@@ -11,6 +11,10 @@ trait NamedEndpointBuilderTrait
      * @var string
      */
     protected $name;
+    /**
+     * @var string
+     */
+    protected $definitionClassName;
 
     public function name(string $name)
     {
@@ -19,8 +23,16 @@ trait NamedEndpointBuilderTrait
         return $this;
     }
 
+    public function definedBy(string $className)
+    {
+        $this->definitionClassName = $className;
+
+        return $this;
+    }
+
     protected function buildName(EndpointConfigurationInterface $configuration)
     {
         $configuration->set('name', $this->name);
+        $configuration->set('definitionClassName', $this->definitionClassName);
     }
 }

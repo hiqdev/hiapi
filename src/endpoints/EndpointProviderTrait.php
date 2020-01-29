@@ -6,6 +6,15 @@ use Closure;
 
 trait EndpointProviderTrait
 {
+    protected function handler(string $className): \Closure
+    {
+        return function ($input, callable $next) use ($className) {
+            // TODO: separate class
+            xdebug_break();
+            return \Yii::$container->get($className)->__invoke($input);
+        };
+    }
+
     // TODO: move to internal project
     protected function checkSelf(): Closure
     {

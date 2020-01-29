@@ -13,8 +13,14 @@ namespace hiapi\endpoints\Module\NamedEndpoint;
 interface NamedEndpointBuilderInterface
 {
     /**
-     * @param string $permission
+     * @param string $name
      * @return T
      */
-    public function name(string $permission);
+    public function name(string $name);
+
+    /**
+     * @param string $className
+     * @return T
+     */
+    public function definedBy(string $className);
 }
