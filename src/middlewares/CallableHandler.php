@@ -30,6 +30,6 @@ class CallableHandler implements Middleware
      */
     public function execute($command, callable $next)
     {
-        return call_user_func($this->callable, $command);
+        return call_user_func($this->callable, $command, $next);
     }
 }
