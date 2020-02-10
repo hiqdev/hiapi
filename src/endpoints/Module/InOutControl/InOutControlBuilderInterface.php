@@ -13,14 +13,16 @@ namespace hiapi\endpoints\Module\InOutControl;
 interface InOutControlBuilderInterface
 {
     /**
-     * @psalm-param class-string $className
+     * @psalm-param class-string|object $classNameOrObject
+     * @param string|object $classNameOrObject
      * @return T
      */
-    public function take(string $className);
+    public function take($classNameOrObject);
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param class-string|object $classNameOrObject
+     * @param string|object $classNameOrObject
      * @return T
      */
-    public function return(string $className);
+    public function return($classNameOrObject);
 }

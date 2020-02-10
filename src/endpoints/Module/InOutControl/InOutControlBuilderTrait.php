@@ -24,16 +24,16 @@ trait InOutControlBuilderTrait
      */
     protected $return;
 
-    public function take(string $className)
+    public function take($classNameOrObject)
     {
-        $this->take = $className;
+        $this->take = $classNameOrObject;
 
         return $this;
     }
 
-    public function return(string $className)
+    public function return($classNameOrObject)
     {
-        $this->return = $className;
+        $this->return = $classNameOrObject;
 
         return $this;
     }
@@ -49,8 +49,8 @@ trait InOutControlBuilderTrait
             // TODO: think how to include command name in the exception text
             throw EndpointBuildingException::fromBuilder('Both input and output MUST be specified', $this);
         }
-        $config->set('inputClassName', $this->take);
-        $config->set('returnClassName', $this->return);
+        $config->set('inputType', $this->take);
+        $config->set('returnType', $this->return);
 
         return $this;
     }
