@@ -6,6 +6,7 @@ use ArrayAccess;
 use Countable;
 use Doctrine\Common\Collections\ArrayCollection;
 use IteratorAggregate;
+use yii\base\Model;
 
 /**
  * Class BulkCommand
@@ -40,11 +41,20 @@ final class BulkCommand extends BaseCommand implements Countable, IteratorAggreg
 
     public function load($data, $formName = null): bool
     {
+        $data = array_filter($data, 'is_array');
+
         for ($i = 0, $iMax = count($data); $i < $iMax; $i++) {
             $this->collection->add(new $this->commandClassName);
         }
 
         return self::loadMultiple($this->collection, $data, $formName);
+    }
+
+    public function validate($attributeNames = null, $clearErrors = true)
+    {
+        return array_reduce($this->collection->toArray(), static function (bool $isValid, BaseCommand $command): bool {
+            return $command->validate() && $isValid;
+        }, true);
     }
 
     public function add($command): self
