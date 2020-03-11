@@ -11,6 +11,7 @@
 namespace hiapi\commands;
 
 use hiapi\validators\RefValidator;
+use hiqdev\yii\DataMapper\query\Specification;
 
 /**
  * Class SearchCommand
@@ -52,5 +53,17 @@ abstract class SearchCommand extends EntityCommand
             [['with', 'include'], 'each', 'rule' => [RefValidator::class]],
             [['count'], 'boolean']
         ];
+    }
+
+    public function getSpecification(): Specification
+    {
+        $spec = new Specification();
+        foreach (['select', 'limit', 'with', 'where'] as $key) {
+            if (!empty($this->{$key})) {
+                $spec->{$key} = $this->{$key};
+            }
+        }
+
+        return $spec;
     }
 }
