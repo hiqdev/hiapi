@@ -68,7 +68,8 @@
     },
     "autoload": {
         "psr-4": {
-            "hiapi\\": "src"
+            "hiapi\\": "src",
+            "hiapi\\Core\\": "src"
         }
     },
     "autoload-dev": {
