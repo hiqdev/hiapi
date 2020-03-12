@@ -44,6 +44,7 @@
         }
     ],
     "require": {
+        "psr/log": "^1.0",
         "psr/container": "^1.0",
         "hiqdev/yii-compat": "dev-master",
         "hiqdev/yii2-autobus": "dev-master",
