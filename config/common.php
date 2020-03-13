@@ -121,6 +121,13 @@ $singletons = [
         ],
     ],
 
+    \hiapi\Core\Endpoint\EndpointRepository::class => [
+        '__class' => \hiapi\Core\Endpoint\EndpointRepository::class,
+        '__construct()' => [
+            new \hiqdev\composer\config\utils\RemoveArrayKeys(),
+        ],
+    ],
+
 /// Queue
     \PhpAmqpLib\Connection\AMQPStreamConnection::class => [
         '__class' => \PhpAmqpLib\Connection\AMQPLazyConnection::class,
