@@ -82,6 +82,22 @@ $singletons = [
         ]),
     ],
 
+    \Lcobucci\ContentNegotiation\ContentTypeMiddleware::class => [
+        '__construct()' => [
+            yii::referenceTo('content-types'),
+            [
+                'text/json'             => new \hiapi\Core\Console\Formatter\Json(),
+                'application/json'      => new \hiapi\Core\Console\Formatter\Json(),
+                'application/x-json'    => new \hiapi\Core\Console\Formatter\Json(),
+                'text/plain'            => new \hiapi\Core\Console\Formatter\Text(),
+                'text/php'              => new \hiapi\Core\Console\Formatter\Php(),
+                'text/x-php'            => new \hiapi\Core\Console\Formatter\Php(),
+                'application/php'       => new \hiapi\Core\Console\Formatter\Php(),
+            ],
+            new \Laminas\Diactoros\StreamFactory(),
+        ],
+    ],
+
 /// Queue
     \PhpAmqpLib\Connection\AMQPStreamConnection::class => [
         '__class' => \PhpAmqpLib\Connection\AMQPLazyConnection::class,
