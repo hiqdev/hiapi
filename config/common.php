@@ -121,6 +121,12 @@ $singletons = [
         ],
     ],
 
+    \hiapi\Core\Http\Psr15\Middleware\UserRealIpMiddleware::class => [
+        '__construct()' => [
+            $params['hiapi.trustedRemoteNetworks'],
+        ],
+    ],
+
     \hiapi\Core\Endpoint\EndpointRepository::class => [
         '__class' => \hiapi\Core\Endpoint\EndpointRepository::class,
         '__construct()' => [

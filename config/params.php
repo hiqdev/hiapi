@@ -31,4 +31,6 @@ return [
     'amqp.port'             => 5672,
     'amqp.user'             => null,
     'amqp.password'         => null,
+
+    'hiapi.trustedRemoteNetworks' => [],
 ];
