@@ -82,6 +82,7 @@ $singletons = [
         ]),
     ],
 
+/// Middlewares
     \Lcobucci\ContentNegotiation\ContentTypeMiddleware::class => [
         '__construct()' => [
             yii::referenceTo('content-types'),
@@ -95,6 +96,28 @@ $singletons = [
                 'application/php'       => new \hiapi\Core\Console\Formatter\Php(),
             ],
             new \Laminas\Diactoros\StreamFactory(),
+        ],
+    ],
+    'content-types' => [
+        '__class' => \Middlewares\ContentType::class,
+        '__construct()' => [
+            [
+                'json' => [
+                    'extension' => ['json'],
+                    'mime-type' => ['application/json', 'application/x-json', 'text/json'],
+                    'charset' => true,
+                ],
+                'text' => [
+                    'extension' => ['txt'],
+                    'mime-type' => ['text/plain'],
+                    'charset' => true,
+                ],
+                'php' => [
+                    'extension' => ['php'],
+                    'mime-type' => ['text/php', 'text/x-php', 'application/php'],
+                    'charset' => true,
+                ],
+            ],
         ],
     ],
 
