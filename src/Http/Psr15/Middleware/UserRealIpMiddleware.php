@@ -2,15 +2,15 @@
 
 namespace hiapi\Core\Http\Psr15\Middleware;
 
-use hiapi\legacy\lib\deps\cidr;
+use hiapi\Core\Utils\CIDR;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class ClientIpMiddleware implements MiddlewareInterface
+class UserRealIpMiddleware implements MiddlewareInterface
 {
-    public const ATTRIBUTE_NAME = 'client-ip';
+    public const ATTRIBUTE_NAME = 'user-real-ip';
     /**
      * @var array
      */
@@ -36,10 +36,9 @@ class ClientIpMiddleware implements MiddlewareInterface
         $oldip = $this->getIp($request);
         $request = $request->withAttribute($this->ipAttribute, $oldip);
 
-        if (!cidr::matchBulk($oldip, $this->nets)) {
+        if (!CIDR::matchBulk($oldip, $this->nets)) {
             return $request;
         }
-
 
         $newip = $this->getNewIp($request);
         if (empty($newip) || $newip == $oldip) {
