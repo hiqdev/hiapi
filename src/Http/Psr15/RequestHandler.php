@@ -2,8 +2,6 @@
 
 namespace hiapi\Core\Http\Psr15;
 
-use hiapi\Core\Endpoint\EndpointProcessor;
-use hiapi\Core\Endpoint\EndpointRepository;
 use hiapi\Core\Http\Psr15\Middleware\AuthMiddleware;
 use hiapi\Core\Http\Psr15\Middleware\BlacklistMiddleware;
 use hiapi\Core\Http\Psr15\Middleware\UserRealIpMiddleware;
