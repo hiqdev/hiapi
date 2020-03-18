@@ -4,7 +4,7 @@ namespace hiapi\Core\Endpoint\Middleware;
 
 use hiapi\Core\Endpoint\Endpoint;
 use hiapi\exceptions\InsufficientPermissionsException;
-use hiapi\legacy\components\User;
+use yii\web\User;
 use League\Tactician\Middleware;
 
 /**

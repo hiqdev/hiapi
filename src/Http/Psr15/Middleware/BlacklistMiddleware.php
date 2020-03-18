@@ -3,7 +3,7 @@
 namespace hiapi\Core\Http\Psr15\Middleware;
 
 use hiapi\exceptions\NotAuthenticatedException;
-use hiapi\legacy\lib\deps\dbc;
+use hiapi\Core\Utils\CIDR;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -11,11 +11,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class BlacklistMiddleware implements MiddlewareInterface
 {
-    private $dbc;
+    private $restriction;
 
-    public function __construct(dbc $dbc)
+    public function __construct($restriction)
     {
-        $this->dbc = $dbc;
+        $this->restriction = $restriction;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -30,21 +30,17 @@ class BlacklistMiddleware implements MiddlewareInterface
 
     private function isForbidden(string $ip): bool
     {
-        $qip = $this->dbc->quote($ip);
-        $found = $this->dbc->value("
-            SELECT      1
-            FROM        blacklisted
-            WHERE       client_id = root_client_id()
-                    AND type_id = ztype_id('blacklisted,ip')
-                    AND state_id = state_id('blacklisted,ok')
-                    AND str2inet(name) >>= str2inet($qip)
-        ");
-        return (bool)$found;
+        if (is_array($this->restriction)) {
+            return CIDR::matchBulk($ip, $this->restriction);
+        } elseif ($this->restriction instanceof \Closure) {
+            return call_user_func($this->restriction, $ip);
+        }
+        return false;
     }
 
     private function getIp(ServerRequestInterface $request): string
     {
-        $ip = $request->getAttribute(ClientIpMiddleware::ATTRIBUTE_NAME);
+        $ip = $request->getAttribute(UserRealIpMiddleware::ATTRIBUTE_NAME);
         if (!empty($ip)) {
             return $ip;
         }

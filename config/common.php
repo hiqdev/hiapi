@@ -127,6 +127,12 @@ $singletons = [
         ],
     ],
 
+    \hiapi\Core\Http\Psr15\Middleware\BlacklistMiddleware::class => [
+        '__construct()' => [
+            $params['hiapi.BlacklistMiddleware.restriction'],
+        ],
+    ],
+
     \hiapi\Core\Endpoint\EndpointRepository::class => [
         '__class' => \hiapi\Core\Endpoint\EndpointRepository::class,
         '__construct()' => [

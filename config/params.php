@@ -33,4 +33,5 @@ return [
     'amqp.password'         => null,
 
     'hiapi.trustedRemoteNetworks' => [],
+    'hiapi.BlacklistMiddleware.restriction' => [],
 ];

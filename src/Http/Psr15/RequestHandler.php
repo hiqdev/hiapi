@@ -6,7 +6,7 @@ use hiapi\Core\Endpoint\EndpointProcessor;
 use hiapi\Core\Endpoint\EndpointRepository;
 use hiapi\Core\Http\Psr15\Middleware\AuthMiddleware;
 use hiapi\Core\Http\Psr15\Middleware\BlacklistMiddleware;
-use hiapi\Core\Http\Psr15\Middleware\ClientIpMiddleware;
+use hiapi\Core\Http\Psr15\Middleware\UserRealIpMiddleware;
 use hiapi\Core\Http\Psr15\Middleware\CommandForEndpointMiddleware;
 use hiapi\Core\Http\Psr15\Middleware\CorsMiddleware;
 use hiapi\Core\Http\Psr15\Middleware\ExceptionMiddleware;
@@ -44,7 +44,7 @@ class RequestHandler implements RequestHandlerInterface
         $httpMiddlewares[] = $this->di->get(ContentTypeMiddleware::class);
         $httpMiddlewares[] = $this->di->get(ExceptionMiddleware::class);
         $httpMiddlewares[] = $this->di->get(BlacklistMiddleware::class);
-        $httpMiddlewares[] = $this->di->get(ClientIpMiddleware::class);
+        $httpMiddlewares[] = $this->di->get(UserRealIpMiddleware::class);
         $httpMiddlewares[] = $this->di->get(AuthMiddleware::class);
         $httpMiddlewares[] = $this->di->get(CorsMiddleware::class);
 
