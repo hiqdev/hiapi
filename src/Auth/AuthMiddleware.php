@@ -20,4 +20,24 @@ abstract class AuthMiddleware implements MiddlewareInterface
     }
 
     abstract public function authenticate(ServerRequestInterface $request);
+
+    protected function getAccessToken(ServerRequestInterface $request): ?string
+    {
+        return $this->getBearerToken($request) ?? $this->getParam($request, 'access_token');
+    }
+
+    protected function getBearerToken(ServerRequestInterface $request): ?string
+    {
+        $header = $request->getHeader('Authorization');
+        if (preg_match('/^Bearer\s+([a-fA-F0-9]{30,50})$/', $header, $matches)) {
+            return $matches[1];
+        }
+
+        return null;
+    }
+
+    public function getParam(ServerRequestInterface $request, string $name): ?string
+    {
+        return $request->getParsedBody()[$name] ?? $request->getQueryParams()[$name] ?? null;
+    }
 }
