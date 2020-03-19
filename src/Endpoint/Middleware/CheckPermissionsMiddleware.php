@@ -19,13 +19,13 @@ class CheckPermissionsMiddleware implements Middleware
      */
     private $user;
     /**
-     * @var string[]
+     * @var Endpoint
      */
-    private $permissions;
+    private $endpoint;
 
     public function __construct(Endpoint $endpoint, User $user)
     {
-        $this->permissions = $endpoint->getPermissions();
+        $this->endpoint = $endpoint;
         $this->user = $user;
     }
 
@@ -34,7 +34,7 @@ class CheckPermissionsMiddleware implements Middleware
      */
     public function execute($command, callable $next)
     {
-        foreach ($this->permissions as $permission) {
+        foreach ($this->endpoint->getPermissions() as $permission) {
             if (! $this->user->can($permission)) {
                 throw new InsufficientPermissionsException($permission);
             }

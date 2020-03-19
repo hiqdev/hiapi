@@ -32,7 +32,7 @@ $components = [
 
 $singletons = [
     \yii\web\User::class => [
-        'identityClass' => \hiapi\models\HiamUserIdentity::class,
+        'identityClass' => \hiapi\Core\Auth\UserIdentity::class,
         'enableSession' => false,
     ],
 /// BUS
