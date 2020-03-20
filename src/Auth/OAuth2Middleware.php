@@ -74,19 +74,4 @@ class OAuth2Middleware extends AuthMiddleware
             'timeout' => 1.0,
         ]);
     }
-
-    private function getAccessToken(ServerRequestInterface $request): ?string
-    {
-        $header = $request->getHeaderLine('Authorization');
-        if (preg_match('/^Bearer\s+([a-fA-F0-9]{30,50})$/', $header, $matches)) {
-            return $matches[1];
-        }
-
-        return $this->getParam($request, 'access_token');
-    }
-
-    public function getParam(ServerRequestInterface $request, string $name): ?string
-    {
-        return $request->getParsedBody()[$name] ?? $request->getQueryParams()[$name] ?? null;
-    }
 }
