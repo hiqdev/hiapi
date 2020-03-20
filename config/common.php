@@ -133,6 +133,13 @@ $singletons = [
         ],
     ],
 
+    \hiapi\Core\Auth\AuthMiddleware::class =>
+        yii::referenceTo(\hiapi\Core\Auth\OAuth2Middleware::class),
+
+    \hiapi\Core\Auth\OAuth2Middleware::class => [
+        'userinfoUrl' => $params['hiapi.oauth2.userinfoUrl'],
+    ],
+
     \hiapi\Core\Endpoint\EndpointRepository::class => [
         '__class' => \hiapi\Core\Endpoint\EndpointRepository::class,
         '__construct()' => [
