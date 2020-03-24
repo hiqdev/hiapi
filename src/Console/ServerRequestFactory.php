@@ -10,13 +10,15 @@ use Laminas\Diactoros\Uri;
  */
 class ServerRequestFactory
 {
-    const PROTOCOL_VERSION = '1.1';
+    public const PROTOCOL_VERSION = '1.1';
 
-    private $program;
+    public const ATTRIBUTE_NAME = 'from-console';
 
     private $command;
 
-    private $ops = [];
+    private $ops = [
+        self::ATTRIBUTE_NAME => true,
+    ];
 
     private $query = [];
 
