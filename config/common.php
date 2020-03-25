@@ -92,12 +92,12 @@ $singletons = [
             'user-real-ip'  => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\UserRealIpMiddleware::class),
             'auth'          => yii::referenceTo(\hiapi\Core\Auth\AuthMiddleware::class),
             'cors'          => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\CorsMiddleware::class),
-            'perform'       => yii::referenceTo('use-endpoint-middleware'),
+            'perform'       => yii::referenceTo('hiapi-endpoint-middleware'),
             new \hiqdev\composer\config\utils\RemoveArrayKeys(),
         ],
     ],
 
-    'use-endpoint-middleware' => [
+    'hiapi-endpoint-middleware' => [
         '__class' => \hiapi\Core\Http\Psr15\Middleware\RelayMiddleware::class,
         '__construct()' => [
             'resolve'       => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\ResolveEndpointMiddleware::class),
