@@ -29,6 +29,8 @@ abstract class SearchCommand extends EntityCommand
     public $include = [];
     public $count;
 
+    const DEFAULT_LIMIT = 25;
+
     public function rules()
     {
         return [
@@ -62,6 +64,9 @@ abstract class SearchCommand extends EntityCommand
             if (!empty($this->{$key})) {
                 $spec->{$key} = $this->{$key};
             }
+        }
+        if (empty($spec->limit)) {
+            $spec->limit = self::DEFAULT_LIMIT;
         }
 
         return $spec;
