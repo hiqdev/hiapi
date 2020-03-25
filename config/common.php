@@ -83,6 +83,30 @@ $singletons = [
     ],
 
 /// Middlewares
+    \hiapi\Core\Http\Psr15\RequestHandler::class => [
+        '__construct()' => [
+            'quiet'         => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\QuietMiddleware::class),
+            'content-type'  => yii::referenceTo(\Lcobucci\ContentNegotiation\ContentTypeMiddleware::class),
+            'exception'     => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\ExceptionMiddleware::class),
+            'blacklist'     => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\BlacklistMiddleware::class),
+            'user-real-ip'  => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\UserRealIpMiddleware::class),
+            'auth'          => yii::referenceTo(\hiapi\Core\Auth\AuthMiddleware::class),
+            'cors'          => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\CorsMiddleware::class),
+            'perform'       => yii::referenceTo('use-endpoint-middleware'),
+            new \hiqdev\composer\config\utils\RemoveArrayKeys(),
+        ],
+    ],
+
+    'use-endpoint-middleware' => [
+        '__class' => \hiapi\Core\Http\Psr15\Middleware\RelayMiddleware::class,
+        '__construct()' => [
+            'resolve'       => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\ResolveEndpointMiddleware::class),
+            'build-command' => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\CommandForEndpointMiddleware::class),
+            'run'           => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\RunEndpointBusMiddleware::class),
+            new \hiqdev\composer\config\utils\RemoveArrayKeys(),
+        ],
+    ],
+
     \Lcobucci\ContentNegotiation\ContentTypeMiddleware::class => [
         '__construct()' => [
             yii::referenceTo('content-types'),
