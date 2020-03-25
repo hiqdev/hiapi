@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use hiqdev\yii\compat\DiInvoker;
+use hiqdev\yii\compat\Injector;
 
 class IfMiddleware implements MiddlewareInterface
 {
@@ -24,16 +24,16 @@ class IfMiddleware implements MiddlewareInterface
      */
     private $else;
     /**
-     * @var DiInvoker
+     * @var Injector
      */
-    private $invoker;
+    private $injector;
 
-    public function __construct(Closure $if, MiddlewareInterface $then, MiddlewareInterface $else, DiInvoker $invoker)
+    public function __construct(Closure $if, MiddlewareInterface $then, MiddlewareInterface $else, Injector $injector)
     {
         $this->if = $if;
         $this->then = $then;
         $this->else = $else;
-        $this->invoker = $invoker;
+        $this->injector = $injector;
     }
 
     /**
@@ -41,7 +41,7 @@ class IfMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $if = $this->invoker->invoke($this->if, ['request' => $request]);
+        $if = $this->injector->invoke($this->if, ['request' => $request]);
         $middleware = $if ? $this->then : $this->else;
 
         return $middleware->process($request, $handler);
