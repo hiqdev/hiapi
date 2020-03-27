@@ -56,18 +56,31 @@
         "ramsey/uuid": "^3.0",
         "hiqdev/hiapi": "dev-master",
         "doctrine/collections": "*",
-        "lcobucci/content-negotiation-middleware": "2.0.*",
-        "laminas/laminas-diactoros": "^2.2"
+        "psr/http-server-middleware": "^1.0.1"
     },
     "require-dev": {
         "hiqdev/hidev-php": "dev-master",
         "hiqdev/hidev-hiqdev": "dev-master",
         "vimeo/psalm": "^3.8.3",
-        "phpunit/phpunit": "^7.5.17"
+        "phpunit/phpunit": "^7.5.17",
+
+        "cebe/php-openapi": "^1.4.0",
+        "laminas/laminas-httphandlerrunner": "^1.1",
+        "lcobucci/content-negotiation-middleware": "2.0.*",
+        "laminas/laminas-diactoros": "^2.2",
+        "relay/relay": "2.0.0",
+        "middlewares/negotiation": "^2.0",
+        "doctrine/collections": "^1.6.4"
     },
     "suggest": {
         "woohoolabs/yin": "To work with JsonAPI requests/responses",
-        "aura/router": "To use AuraRouterController"
+        "aura/router": "To use AuraRouterController",
+
+        "relay/relay": "To use HTTP Request handlers",
+        "laminas/laminas-httphandlerrunner": "To use HTTP request handlers",
+        "lcobucci/content-negotiation-middleware": "To use ContentNegotiation Middleware",
+        "middlewares/negotiation": "To use ContentNegotiation Middleware",
+        "laminas/laminas-diactoros": "To handle CLI request and use some Middlewares",
     },
     "autoload": {
         "psr-4": {
