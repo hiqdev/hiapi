@@ -80,7 +80,7 @@
         "laminas/laminas-httphandlerrunner": "To use HTTP request handlers",
         "lcobucci/content-negotiation-middleware": "To use ContentNegotiation Middleware",
         "middlewares/negotiation": "To use ContentNegotiation Middleware",
-        "laminas/laminas-diactoros": "To handle CLI request and use some Middlewares",
+        "laminas/laminas-diactoros": "To handle CLI request and use some Middlewares"
     },
     "autoload": {
         "psr-4": {
