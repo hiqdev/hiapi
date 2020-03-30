@@ -2,6 +2,7 @@
 
 namespace hiapi\Core\Auth;
 
+use GuzzleHttp\RequestOptions;
 use hiapi\exceptions\NotAuthenticatedException;
 use Psr\Http\Message\ServerRequestInterface;
 use yii\web\User;
@@ -60,9 +61,11 @@ class OAuth2Middleware extends AuthMiddleware
 
     private function getUserInfo(string $token)
     {
-        $res = $this->getClient()->request('GET', '', ['headers' => [
-            'Authorization' => 'Bearer ' . $token,
-        ]]);
+        $res = $this->getClient()->request('GET', '', [
+            RequestOptions::HEADERS => [
+                'Authorization' => 'Bearer ' . $token,
+            ],
+        ]);
 
         return \json_decode((string)$res->getBody(), true);
     }
@@ -71,7 +74,7 @@ class OAuth2Middleware extends AuthMiddleware
     {
         return new Client([
             'base_uri' => $this->userinfoUrl,
-            'timeout' => 1.0,
+            'timeout' => 5.0,
         ]);
     }
 }
