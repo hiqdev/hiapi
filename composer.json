@@ -55,7 +55,7 @@
         "php-amqplib/php-amqplib": "^2.7.2",
         "ramsey/uuid": "^3.0",
         "hiqdev/hiapi": "dev-master",
-        "doctrine/collections": "*",
+        "doctrine/collections": "^1.6.4",
         "psr/http-server-middleware": "^1.0.1"
     },
     "require-dev": {
