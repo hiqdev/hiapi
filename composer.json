@@ -98,7 +98,7 @@
             "1.0": "1.0.x-dev"
         },
         "config-plugin": {
-            "defines": "config/defines.php",
+            "constants": "config/constants.php",
             "params": "config/params.php",
             "common": "config/common.php",
             "tests": "$common",
