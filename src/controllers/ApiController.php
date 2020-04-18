@@ -77,9 +77,10 @@ class ApiController extends Controller
     {
         $handledCommand = $this->autoBus->runCommand($this->buildCommandName($resource, $action, $bulk), []);
 
-        $this->response->setHeaders($handledCommand->getHeaders());
+        $this->response->getHeaders()->fromArray($handledCommand->getHeaders());
         $this->response->setStatusCode($handledCommand->getStatusCode());
-        $this->response->setBody($handledCommand->getBody());
+        $this->response->content = $handledCommand->getBody();
+
 
         return $this->response->send();
     }
