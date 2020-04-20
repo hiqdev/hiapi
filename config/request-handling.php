@@ -14,7 +14,7 @@ return [
             'auth'          => yii::referenceTo(\hiapi\Core\Auth\AuthMiddleware::class),
             'cors'          => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\CorsMiddleware::class),
             'perform'       => yii::referenceTo('hiapi-endpoint-middleware'),
-            new \Yiisoft\Composer\Config\Utils\RemoveArrayKeys(),
+            new \Yiisoft\Arrays\Modifier\RemoveKeys(),
         ],
     ],
 
@@ -24,7 +24,7 @@ return [
             'resolve'       => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\ResolveEndpointMiddleware::class),
             'build-command' => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\CommandForEndpointMiddleware::class),
             'run'           => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\RunEndpointBusMiddleware::class),
-            new \Yiisoft\Composer\Config\Utils\RemoveArrayKeys(),
+            new \Yiisoft\Arrays\Modifier\RemoveKeys(),
         ],
     ],
 
@@ -88,7 +88,7 @@ return [
     \hiapi\Core\Endpoint\EndpointRepository::class => [
         '__class' => \hiapi\Core\Endpoint\EndpointRepository::class,
         '__construct()' => [
-            new \Yiisoft\Composer\Config\Utils\RemoveArrayKeys(),
+            new \Yiisoft\Arrays\Modifier\RemoveKeys(),
         ],
     ],
 ];
