@@ -2,29 +2,44 @@
 
 namespace hiapi\endpoints\Module\InOutControl\VO;
 
+use hiapi\commands\BaseCommand;
+
+/**
+ * Class Collection
+ *
+ * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
+ *
+ * @template-covariant T of \hiapi\commands\BaseCommand
+ * @psalm-immutable
+ */
 class Collection
 {
     /**
-     * @var string
+     * @psalm-var class-string<T>
      */
-    private $entriesClass;
+    private string $entriesClass;
 
-    private function __construct()
+    /**
+     * @psalm-param class-string $entriesClass
+     */
+    private function __construct(string $entriesClass)
     {
+        $this->entriesClass = $entriesClass;
     }
 
     /**
-     * @return string
+     * @psalm-return class-string<T>
      */
     public function getEntriesClass(): string
     {
         return $this->entriesClass;
     }
 
+    /**
+     * @psalm-param class-string $className
+     */
     public static function of(string $className): self
     {
-        $self = new self();
-        $self->entriesClass= $className;
-        return $self;
+        return new self($className);
     }
 }

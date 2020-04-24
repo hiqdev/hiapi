@@ -10,10 +10,7 @@ use League\Tactician\Middleware;
 
 class TypeCheckMiddleware implements Middleware
 {
-    /**
-     * @var Endpoint
-     */
-    private $endpoint;
+    private Endpoint $endpoint;
 
     public function __construct(Endpoint $endpoint)
     {
@@ -34,12 +31,12 @@ class TypeCheckMiddleware implements Middleware
 
     private function ensureInputIsCorrect($command): void
     {
-        $inputType = $this->endpoint->getInputType();
+        $inputType = $this->endpoint->inputType;
         if ($inputType instanceof Collection) {
             if (!$command instanceof IteratorAggregate) {
                 throw new \RuntimeException(sprintf(
                     'Endpoint "%s" expects IteratorAggregate of "%s" as input, got "%s" instead',
-                    $this->endpoint->getName(),
+                    $this->endpoint->name,
                     $inputType->getEntriesClass(),
                     get_class($command),
                 ));
@@ -49,7 +46,7 @@ class TypeCheckMiddleware implements Middleware
                 if (get_class($item) !== $inputType->getEntriesClass()) {
                     throw new \RuntimeException(sprintf(
                         'Endpoint "%s" expects IteratorAggregate of "%s" as input, one of collection items is "%s"',
-                        $this->endpoint->getName(),
+                        $this->endpoint->name,
                         $inputType->getEntriesClass(),
                         get_class($item),
                     ));
@@ -62,7 +59,7 @@ class TypeCheckMiddleware implements Middleware
         if (get_class($command) !== $inputType) {
             throw new \RuntimeException(sprintf(
                 'Endpoint "%s" expects "%s" as input, got "%s" instead',
-                $this->endpoint->getName(),
+                $this->endpoint->name,
                 $inputType,
                 get_class($command),
             ));
@@ -71,12 +68,12 @@ class TypeCheckMiddleware implements Middleware
 
     private function ensureResultIsCorrect($result): void
     {
-        $returnType = $this->endpoint->getReturnType();
+        $returnType = $this->endpoint->returnType;
         if ($returnType instanceof Collection) {
             if (!$result instanceof DoctrineCollection) {
                 throw new \RuntimeException(sprintf(
                     'Endpoint "%s" expects collection of "%s" as a result, got "%s" instead',
-                    $this->endpoint->getName(),
+                    $this->endpoint->name,
                     $returnType->getEntriesClass(),
                     get_class($result),
                 ));
@@ -86,7 +83,7 @@ class TypeCheckMiddleware implements Middleware
                 if (get_class($item) !== $returnType->getEntriesClass()) {
                     throw new \RuntimeException(sprintf(
                         'Endpoint "%s" expects collection of "%s" as a result, one of collection items is "%s"',
-                        $this->endpoint->getName(),
+                        $this->endpoint->name,
                         $returnType->getEntriesClass(),
                         get_class($item),
                     ));
@@ -96,12 +93,17 @@ class TypeCheckMiddleware implements Middleware
             return;
         }
 
+        if (is_subclass_of($result, $returnType)) {
+            return;
+        }
 
-        if (get_class($result) !== $this->endpoint->getReturnType()) {
+        if (get_class($result) !== $this->endpoint->returnType) {
             throw new \RuntimeException(sprintf(
                 'Endpoint "%s" expects "%s" as a result, got "%s" instead',
-                $this->endpoint->getName(),
-                $this->endpoint->getReturnType(),
+                $this->endpoint->name,
+                is_object($this->endpoint->returnType)
+                    ? get_class($this->endpoint->returnType)
+                    : $this->endpoint->returnType,
                 get_class($result),
             ));
         }

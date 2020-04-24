@@ -48,7 +48,7 @@ class CommandForEndpointMiddleware implements MiddlewareInterface
         /** @var Endpoint $endpoint */
         $endpoint = $request->getAttribute(ResolveEndpointMiddleware::class);
 
-        $inputType = $endpoint->getInputType();
+        $inputType = $endpoint->inputType;
         if ($inputType instanceof Collection) {
             $command = BulkCommand::of($inputType->getEntriesClass());
         } else {

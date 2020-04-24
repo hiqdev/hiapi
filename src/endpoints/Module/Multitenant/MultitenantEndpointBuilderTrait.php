@@ -12,13 +12,10 @@ use hiapi\endpoints\EndpointConfigurationInterface;
  */
 trait MultitenantEndpointBuilderTrait
 {
-    /**
-     * @var string
-     */
-    protected $tenantMask;
+    protected int $tenantMask;
 
     /** {@inheritDoc} */
-    public function exportTo(string $tenantMask)
+    public function exportTo(int $tenantMask)
     {
         $this->tenantMask = $tenantMask;
 

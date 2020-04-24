@@ -16,5 +16,5 @@ interface MultitenantEndpointBuilderInterface
      * @psalm-param Tenant::WEB|Tenant::CLI|Tenant::QUEUE|Tenant::ALL $tenantMask
      * @return T
      */
-    public function exportTo(string $tenantMask);
+    public function exportTo(int $tenantMask);
 }

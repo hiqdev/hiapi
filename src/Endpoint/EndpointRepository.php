@@ -4,20 +4,19 @@
 namespace hiapi\Core\Endpoint;
 
 use hiapi\exceptions\ConfigurationException;
+use Psalm\Type\Atomic\TLiteralClassString;
 use Psr\Container\ContainerInterface;
 
 class EndpointRepository
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-    /**
-     * @var BuilderFactory
-     */
-    private $builderFactory;
+    private ContainerInterface $container;
 
-    private $endpoints = [];
+    private BuilderFactory $builderFactory;
+
+    /**
+     * @var array<string, string|TLiteralClassString>
+     */
+    private array $endpoints = [];
 
     public function __construct(array $endpoints, ContainerInterface $container, BuilderFactory $builderFactory)
     {
@@ -30,9 +29,15 @@ class EndpointRepository
 
     public function has(string $name): bool
     {
-        return isset($this->getEndpoints()[$name]);
+        return isset($this->endpoints[$name]);
     }
 
+    /**
+     * @param string $name
+     * @param string $handlerClassName
+     * @psalm-param TLiteralClassString $handlerClassName
+     * @return $this
+     */
     public function addEndpoint(string $name, string $handlerClassName): self
     {
         $this->endpoints[$name] = $handlerClassName;
@@ -46,11 +51,14 @@ class EndpointRepository
             throw new ConfigurationException(sprintf('Endpoint %s does not exist', $name));
         }
 
-        return $this->container->get($this->getEndpoints()[$name])($this->builderFactory);
+        return $this->container->get($this->endpoints[$name])($this->builderFactory);
     }
 
-    private function getEndpoints(): iterable
+    /**
+     * @psalm-return list<string>
+     */
+    public function getEndpointNames(): array
     {
-        return $this->endpoints;
+        return array_keys($this->endpoints);
     }
 }

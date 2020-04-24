@@ -6,32 +6,44 @@ namespace hiapi\endpoints\Module\InOutControl;
 use hiapi\endpoints\EndpointConfiguration;
 use hiapi\endpoints\EndpointConfigurationInterface;
 use hiapi\endpoints\Exception\EndpointBuildingException;
+use hiapi\endpoints\Module\InOutControl\VO\Collection;
 
 /**
  * Trait InOutControlBuilderTrait
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
+ *
+ * @template TakenType as class-string<BaseCommand>|Collection
+ * @template ReturnedType as Collection|Collection<object>
  */
 trait InOutControlBuilderTrait
 {
     /**
-     * @psalm-var class-string
+     * @psalm-var TakenType
      */
     protected $take;
 
     /**
-     * @psalm-var class-string
+     * @psalm-var ReturnedType
      */
     protected $return;
 
-    public function take($classNameOrObject)
+    /**
+     * @psalm-param TakenType $classNameOrObject
+     * @return $this
+     */
+    public function take($classNameOrObject): self
     {
         $this->take = $classNameOrObject;
 
         return $this;
     }
 
-    public function return($classNameOrObject)
+    /**
+     * @psalm-param TakenType $classNameOrObject
+     * @return $this
+     */
+    public function return($classNameOrObject): self
     {
         $this->return = $classNameOrObject;
 

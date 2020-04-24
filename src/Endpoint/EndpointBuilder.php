@@ -5,6 +5,8 @@ namespace hiapi\Core\Endpoint;
 use Closure;
 use hiapi\endpoints\EndpointBuilderInterface;
 use hiapi\endpoints\EndpointConfiguration;
+use hiapi\endpoints\Module\Description\DescriptionBuilderInterface;
+use hiapi\endpoints\Module\Description\DescriptionBuilderTrait;
 use hiapi\endpoints\Module\InOutControl\ExamplesAwareBuilderInterface;
 use hiapi\endpoints\Module\InOutControl\ExamplesAwareBuilderTrait;
 use hiapi\endpoints\Module\InOutControl\InOutControlBuilderInterface;
@@ -37,7 +39,8 @@ class EndpointBuilder implements
     MultitenantEndpointBuilderInterface,
     InOutControlBuilderInterface,
     MiddlewareBuilderInterface,
-    ExamplesAwareBuilderInterface
+    ExamplesAwareBuilderInterface,
+    DescriptionBuilderInterface
 {
     use PermissionAwareBuilderTrait;
     use NamedEndpointBuilderTrait;
@@ -45,6 +48,7 @@ class EndpointBuilder implements
     use InOutControlBuilderTrait;
     use MiddlewareBuilderTrait;
     use ExamplesAwareBuilderTrait;
+    use DescriptionBuilderTrait;
 
     /**
      * @return Closure[]
@@ -58,6 +62,7 @@ class EndpointBuilder implements
             Closure::fromCallable([$this, 'buildTenants']),
             Closure::fromCallable([$this, 'buildMiddlewares']),
             Closure::fromCallable([$this, 'buildExamples']),
+            Closure::fromCallable([$this, 'buildDescription']),
         ];
     }
 

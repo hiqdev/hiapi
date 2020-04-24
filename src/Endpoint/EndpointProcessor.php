@@ -83,6 +83,6 @@ class EndpointProcessor
             }
 
             throw new ConfigurationException(sprintf('Do not know how to instantiate %s', (string)$item));
-        }, $this->endpoint->getMiddlewares());
+        }, $this->endpoint->middlewares);
     }
 }

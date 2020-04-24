@@ -37,24 +37,24 @@ class RunEndpointBusMiddleware implements MiddlewareInterface
 
         $result = $this->endpointProcessor->__invoke($command, $endpoint);
 
+        if ($result instanceof ResponseInterface) {
+            return $result;
+        }
+
         $transformedResult = $this->transformResult($result);
         return FatResponse::create($transformedResult, $request);
     }
 
     /**
      * TODO: Re-implement as a ResourceTransformer, that can serialize Result to an Http\Response
-     * TODO: It should be useful to serialize file to StreamResponse, or search result to Reponse with
-     * TODO: an appropriate headers.
+     *       It should be useful to serialize file to StreamResponse, or search result to Reponse with
+     *       pagination headers.
      *
      * @param array|ArrayCollection|object|mixed $result
      * @return array|string|null|boolean
      */
     private function transformResult($result)
     {
-        if ($result instanceof ResponseInterface) {
-            return $result;
-        }
-
         if ($result instanceof ArrayCollection) {
             return array_map(function ($item) {
                 return $this->transformResult($item);

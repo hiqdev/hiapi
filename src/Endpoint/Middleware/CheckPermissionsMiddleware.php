@@ -14,14 +14,8 @@ use League\Tactician\Middleware;
  */
 class CheckPermissionsMiddleware implements Middleware
 {
-    /**
-     * @var User
-     */
-    private $user;
-    /**
-     * @var Endpoint
-     */
-    private $endpoint;
+    private User $user;
+    private Endpoint $endpoint;
 
     public function __construct(Endpoint $endpoint, User $user)
     {
@@ -34,7 +28,7 @@ class CheckPermissionsMiddleware implements Middleware
      */
     public function execute($command, callable $next)
     {
-        foreach ($this->endpoint->getPermissions() as $permission) {
+        foreach ($this->endpoint->permissions as $permission) {
             if (! $this->user->can($permission)) {
                 throw new InsufficientPermissionsException($permission);
             }
