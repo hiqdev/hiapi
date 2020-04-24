@@ -34,5 +34,9 @@ return [
 
     'hiapi.trustedRemoteNetworks' => [],
     'hiapi.BlacklistMiddleware.restriction' => [],
+
     'hiapi.oauth2.userinfoUrl' => null,
+    'hiapi.oauth2.authorizationUrl' => null,
+    'hiapi.oauth2.tokenUrl' => null,
+    'hiapi.oauth2.scopes' => null,
 ];

@@ -21,7 +21,7 @@ final class Endpoint
     public string $name;
     public ?string $description;
 
-    /** @psalm-param ?class-string */
+    /** @psalm-var ?class-string */
     public ?string $definedBy;
     /** @psalm-var Tenant::CLI|Tenant::WEB */
     public int $tenantMask;
