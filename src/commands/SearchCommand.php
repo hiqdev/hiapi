@@ -10,8 +10,10 @@
 
 namespace hiapi\commands;
 
+use hiapi\validators\LimitValidator;
 use hiapi\validators\RefValidator;
 use hiqdev\yii\DataMapper\query\Specification;
+use hiqdev\yii\DataMapper\query\attributes\validators\WhereValidator;
 
 /**
  * Class SearchCommand
@@ -35,23 +37,9 @@ abstract class SearchCommand extends EntityCommand
     {
         return [
             ['select', 'safe'],
-            [['where', 'filter'], 'safe'],
+            [['where', 'filter'], WhereValidator::class],
             [['page'], 'integer'],
-            ['limit', function () {
-                if (empty($this->limit)) {
-                    return;
-                }
-
-                if (mb_strtolower($this->limit) === 'all') {
-                    $this->limit = 'all';
-                    return;
-                }
-
-                if ($this->limit < 1 || $this->limit > 1000) {
-                    $this->addError('limit', 'Limit must be between 1 and 1000');
-                    return;
-                }
-            }],
+            ['limit', LimitValidator::class],
             [['with', 'include'], 'each', 'rule' => [RefValidator::class]],
             [['count'], 'boolean']
         ];
