@@ -100,7 +100,6 @@ class OpenAPIGenerator
                 $input = $endpoint->inputType;
 
                 yield "/$name" => new PathItem(array_filter([
-                    'summary' => $endpoint,
                     'post' => new Operation([
                         'tags' => [], // TODO: parse endpoint name
                         'summary' => $endpoint->description,
