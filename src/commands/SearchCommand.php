@@ -12,6 +12,8 @@ namespace hiapi\commands;
 
 use hiapi\validators\LimitValidator;
 use hiapi\validators\RefValidator;
+use hiqdev\yii\DataMapper\models\ModelInterface;
+use hiqdev\yii\DataMapper\models\Reflection\ModelReflection;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\query\attributes\validators\WhereValidator;
 
@@ -37,7 +39,11 @@ abstract class SearchCommand extends EntityCommand
     {
         return [
             ['select', 'safe'],
-            [['where', 'filter'], WhereValidator::class],
+            [
+                ['where', 'filter'],
+                WhereValidator::class,
+                'targetEntityClass' => $this->getEntityClass(),
+            ],
             [['page'], 'integer'],
             ['limit', LimitValidator::class],
             [['with', 'include'], 'each', 'rule' => [RefValidator::class]],
