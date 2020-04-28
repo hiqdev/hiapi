@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace hiapi\validators\Reflection;
 
-use hiapi\commands\BaseCommand;
 use hiapi\validators\IdValidator;
+use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Reflection\Types\ContextFactory;
@@ -66,23 +66,41 @@ class ValidatorReflection
         return 'string';
     }
 
+    private function getDocBlock(): ?DocBlock
+    {
+        try {
+            return $this->docBlockFactory->create($this->reflection);
+        } catch (\InvalidArgumentException $e) {
+            return null;
+        }
+    }
+
     public function getSummary(): string
     {
-        $docBlock = $this->docBlockFactory->create($this->reflection);
+        $docBlock = $this->getDocBlock();
+        if ($docBlock === null) {
+            return '';
+        }
 
         return $docBlock->getSummary();
     }
 
     public function getDescription(): string
     {
-        $docBlock = $this->docBlockFactory->create($this->reflection);
+        $docBlock = $this->getDocBlock();
+        if ($docBlock === null) {
+            return '';
+        }
 
         return $docBlock->getDescription()->__toString();
     }
 
     public function getExample(): ?string
     {
-        $docBlock = $this->docBlockFactory->create($this->reflection);
+        $docBlock = $this->getDocBlock();
+        if ($docBlock === null) {
+            return null;
+        }
 
         $examples = $docBlock->getTagsByName('example');
         if (empty($examples)) {
