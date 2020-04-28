@@ -23,7 +23,14 @@ class ValidateCommandMiddleware implements Middleware
     public function execute($command, callable $next)
     {
         if (!$command->validate()) {
-            throw new ValidationException(implode(', ', $command->getFirstErrors()));
+            // TODO: enhance handling of multiple errors in the same command.
+            $errors = $command->getFirstErrors();
+
+            throw new ValidationException(sprintf(
+                '%s: %s',
+                array_key_first($errors),
+                reset($errors)
+            ));
         }
 
         return $next($command);
