@@ -43,7 +43,7 @@ class TypeCheckMiddleware implements Middleware
             }
 
             foreach ($command as $item) {
-                if (get_class($item) !== $inputType->getEntriesClass()) {
+                if (!is_a($item, $inputType->getEntriesClass())) {
                     throw new \RuntimeException(sprintf(
                         'Endpoint "%s" expects IteratorAggregate of "%s" as input, one of collection items is "%s"',
                         $this->endpoint->name,
@@ -80,7 +80,7 @@ class TypeCheckMiddleware implements Middleware
             }
 
             foreach ($result as $item) {
-                if (get_class($item) !== $returnType->getEntriesClass()) {
+                if (!is_a($item, $returnType->getEntriesClass())) {
                     throw new \RuntimeException(sprintf(
                         'Endpoint "%s" expects collection of "%s" as a result, one of collection items is "%s"',
                         $this->endpoint->name,
