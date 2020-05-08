@@ -12,8 +12,6 @@ namespace hiapi\commands;
 
 use hiapi\validators\LimitValidator;
 use hiapi\validators\RefValidator;
-use hiqdev\yii\DataMapper\models\ModelInterface;
-use hiqdev\yii\DataMapper\models\Reflection\ModelReflection;
 use hiqdev\yii\DataMapper\query\Specification;
 use hiqdev\yii\DataMapper\query\attributes\validators\WhereValidator;
 
@@ -51,9 +49,15 @@ abstract class SearchCommand extends EntityCommand
         ];
     }
 
+    /**
+     * @var string
+     * @psalm-var class-string<Specification>
+     */
+    protected string $specificationClassName = Specification::class;
+
     public function getSpecification(): Specification
     {
-        $spec = new Specification();
+        $spec = new $this->specificationClassName();
         foreach (['select', 'limit', 'with', 'where'] as $key) {
             if (!empty($this->{$key})) {
                 $spec->{$key} = $this->{$key};
