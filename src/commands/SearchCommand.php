@@ -58,14 +58,12 @@ abstract class SearchCommand extends EntityCommand
     public function getSpecification(): Specification
     {
         $spec = new $this->specificationClassName();
-        foreach (['select', 'limit', 'with', 'where'] as $key) {
+        foreach (['select', 'with', 'where'] as $key) {
             if (!empty($this->{$key})) {
                 $spec->{$key} = $this->{$key};
             }
         }
-        if (empty($spec->limit)) {
-            $spec->limit = self::DEFAULT_LIMIT;
-        }
+        $spec->limit = $this->limit ?? self::DEFAULT_LIMIT;
 
         return $spec;
     }
