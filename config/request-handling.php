@@ -88,6 +88,9 @@ return [
     \hiapi\Core\Endpoint\EndpointRepository::class => [
         '__class' => \hiapi\Core\Endpoint\EndpointRepository::class,
         '__construct()' => [
+            'endpoints' => [
+                'OpenAPISchema' => \hiapi\Service\OpenApi\Endpoint\OpenAPISchema::class,
+            ],
             new \Yiisoft\Arrays\Modifier\RemoveKeys(),
         ],
     ],
