@@ -32,7 +32,7 @@ class OAuth2Middleware extends AuthMiddleware
         $identity = $this->findIdentity($request);
 
         if (empty($identity)) {
-            throw new NotAuthenticatedException('failed login by token');
+            return $this->buildUnathorizedIdentity();
         }
 
         $ok = $this->user->login($identity);
@@ -45,7 +45,7 @@ class OAuth2Middleware extends AuthMiddleware
     {
         $token = $this->getAccessToken($request);
         if (empty($token)) {
-            throw new NotAuthenticatedException('no access token given');
+            return null;
         }
 
         try {
@@ -54,6 +54,21 @@ class OAuth2Middleware extends AuthMiddleware
             throw new NotAuthenticatedException($e->getMessage());
         }
 
+        return $this->buildIdentity($info);
+    }
+
+    private function buildUnathorizedIdentity(): IdentityInterface
+    {
+        return $this->buildIdentity([
+            'sub' => -1,
+            'username' => 'unauthorized',
+            'state' => 'disabled',
+            'roles' => 'role:unauthorized',
+        ]);
+    }
+
+    private function buildIdentity(array $info): IdentityInterface
+    {
         $class = $this->user->identityClass;
 
         return $class::fromArray($info);
