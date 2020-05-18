@@ -30,7 +30,9 @@ class ValidatorReflection
      */
     public static function fromClassname(string $className): self
     {
-        return new self(new $className());
+        $validator = (new \ReflectionClass($className))->newInstanceWithoutConstructor();
+
+        return new self($validator);
     }
 
     public function __construct(
