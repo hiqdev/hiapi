@@ -45,7 +45,9 @@ final class Json implements Formatter
             '_error' => $message,
             '_error_ops' => [
                 'class' => get_class($e),
-                'trace' => $e->getTrace()
+                # XXX causes Uncaught JsonException: Recursion detected
+                # TODO fix and return the trace back
+                #'trace' => $e->getTrace()
             ],
         ]);
     }
