@@ -50,7 +50,7 @@ class ConsoleLogTarget extends \yii\log\Target
 
     public function out($level, $message)
     {
-        $style = $this->styles[$level];
+        $style = $this->styles[$level] ?? null;
         if ($style) {
             $message = Console::ansiFormat($message, $style);
         } else {
