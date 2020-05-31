@@ -29,7 +29,7 @@ abstract class AuthMiddleware implements MiddlewareInterface
     protected function getBearerToken(ServerRequestInterface $request): ?string
     {
         $header = $request->getHeaderLine('Authorization');
-        if (preg_match('/^Bearer\s+([a-fA-F0-9]{30,50})$/', $header, $matches)) {
+        if (preg_match('/^Bearer\s+([a-zA-Z0-9._-]{30,50})$/', $header, $matches)) {
             return $matches[1];
         }
 
