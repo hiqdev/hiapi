@@ -10,9 +10,9 @@
 
 namespace hiapi\commands;
 
-use hiqdev\yii\DataMapper\components\EntityManagerInterface;
-use hiqdev\yii\DataMapper\query\Specification;
-use hiqdev\yii\DataMapper\repositories\BaseRepository;
+use hiqdev\DataMapper\Query\Specification;
+use hiqdev\DataMapper\Repository\RepositoryInterface;
+use hiqdev\DataMapper\Repository\EntityManagerInterface;
 
 /**
  * Class SearchHandler
@@ -85,7 +85,7 @@ class SearchHandler
 
     /**
      * @param SearchCommand $command
-     * @return BaseRepository
+     * @return RepositoryInterface
      */
     protected function getRepository(EntityCommand $command)
     {

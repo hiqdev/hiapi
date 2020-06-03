@@ -12,8 +12,8 @@ namespace hiapi\commands;
 
 use hiapi\validators\LimitValidator;
 use hiapi\validators\RefValidator;
-use hiqdev\yii\DataMapper\query\Specification;
-use hiqdev\yii\DataMapper\query\attributes\validators\WhereValidator;
+use hiqdev\DataMapper\Query\Specification;
+use hiqdev\DataMapper\Validator\WhereValidator;
 
 /**
  * Class SearchCommand

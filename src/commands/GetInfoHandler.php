@@ -10,9 +10,9 @@
 
 namespace hiapi\commands;
 
-use hiqdev\yii\DataMapper\components\EntityManagerInterface;
-use hiqdev\yii\DataMapper\query\Specification;
-use hiqdev\yii\DataMapper\repositories\BaseRepository;
+use hiqdev\DataMapper\Query\Specification;
+use hiqdev\DataMapper\Repository\BaseRepository;
+use hiqdev\DataMapper\Repository\EntityManagerInterface;
 
 /**
  * Class GetInfoHandler
