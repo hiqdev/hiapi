@@ -11,5 +11,5 @@ use yii\validators\RegularExpressionValidator;
  */
 class RefValidator extends RegularExpressionValidator
 {
-    public $pattern = '/^[0-9A-Za-z_]+$/';
+    public $pattern = '/^[0-9A-Za-z_-]+$/';
 }
