@@ -68,6 +68,15 @@ $singletons = array_merge(
         \yii\mail\MailerInterface::class => function () {
             return \hiqdev\yii\compat\yii::getApp()->get('mailer');
         },
+
+        \hiapi\jsonApi\ResourceFactoryInterface::class => \hiapi\jsonApi\ResourceFactory::class,
+
+        \hiapi\jsonApi\ResourceFactory::class => [
+            '__construct()' => [
+                'resourceMap' => [],
+                new \Yiisoft\Arrays\Modifier\RemoveKeys(),
+            ],
+        ],
     ]
 );
 
