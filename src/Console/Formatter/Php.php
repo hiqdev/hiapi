@@ -2,11 +2,11 @@
 
 namespace hiapi\Core\Console\Formatter;
 
-use Lcobucci\ContentNegotiation\Formatter;
+use Lcobucci\ContentNegotiation\ContentFormatter;
 
-class Php implements Formatter
+class Php extends ContentFormatter
 {
-    public function format($content, array $attributes = []): string
+    public function formatContent($content, $attributes = []): string
     {
         return var_export($content, true);
     }

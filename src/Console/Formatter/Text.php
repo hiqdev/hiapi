@@ -2,11 +2,11 @@
 
 namespace hiapi\Core\Console\Formatter;
 
-use Lcobucci\ContentNegotiation\Formatter;
+use Lcobucci\ContentNegotiation\ContentFormatter;
 
-final class Text implements Formatter
+final class Text extends ContentFormatter
 {
-    public function format($content, array $attributes = []): string
+    public function formatContent($content, $attributes = []): string
     {
         if (\is_string($content)) {
             return $content;

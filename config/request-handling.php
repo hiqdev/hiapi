@@ -32,13 +32,14 @@ return [
         '__construct()' => [
             yii::referenceTo('content-types'),
             [
-                'text/json'             => new \hiapi\Core\Console\Formatter\Json(),
-                'application/json'      => new \hiapi\Core\Console\Formatter\Json(),
-                'application/x-json'    => new \hiapi\Core\Console\Formatter\Json(),
-                'text/plain'            => new \hiapi\Core\Console\Formatter\Text(),
-                'text/php'              => new \hiapi\Core\Console\Formatter\Php(),
-                'text/x-php'            => new \hiapi\Core\Console\Formatter\Php(),
-                'application/php'       => new \hiapi\Core\Console\Formatter\Php(),
+                'text/json'                 => yii::referenceTo(\hiapi\Core\Console\Formatter\Json::class),
+                'application/json'          => yii::referenceTo(\hiapi\Core\Console\Formatter\Json::class),
+                'application/x-json'        => yii::referenceTo(\hiapi\Core\Console\Formatter\Json::class),
+                'application/vnd.api+json'  => yii::referenceTo(\hiapi\Core\Console\Formatter\JsonApi::class),
+                'text/plain'                => yii::referenceTo(\hiapi\Core\Console\Formatter\Text::class),
+                'text/php'                  => yii::referenceTo(\hiapi\Core\Console\Formatter\Php::class),
+                'text/x-php'                => yii::referenceTo(\hiapi\Core\Console\Formatter\Php::class),
+                'application/php'           => yii::referenceTo(\hiapi\Core\Console\Formatter\Php::class),
             ],
             new \Laminas\Diactoros\StreamFactory(),
         ],
@@ -50,6 +51,11 @@ return [
                 'json' => [
                     'extension' => ['json'],
                     'mime-type' => ['application/json', 'application/x-json', 'text/json'],
+                    'charset' => true,
+                ],
+                'jsonapi' => [
+                    'extension' => ['jsonapi'],
+                    'mime-type' => ['application/vnd.api+json'],
                     'charset' => true,
                 ],
                 'text' => [
