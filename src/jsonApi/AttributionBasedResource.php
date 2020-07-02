@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace hiapi\jsonApi;
 
 use hiapi\jsonApi\ResourceFactoryInterface;
+use hiqdev\DataMapper\Attribute\DateTimeAttribute;
 use hiqdev\DataMapper\Attribution\AttributionInterface;
 use WoohooLabs\Yin\JsonApi\Schema\Link\ResourceLinks;
 use WoohooLabs\Yin\JsonApi\Schema\Relationship\ToOneRelationship;
@@ -53,10 +54,19 @@ abstract class AttributionBasedResource extends AbstractResource
             if (! method_exists($entity, $method)) {
                 continue;
             }
-            $res[$key] = fn($po): ?string => $po->{$method}();
+            $res[$key] = $this->buildAttributeMethod($method, $type);
         }
 
         return $res;
+    }
+
+    protected function buildAttributeMethod(string $method, $type): callable
+    {
+        if ($type === DateTimeAttribute::class) {
+            return fn($po): ?string => $po->{$method}()->format('c');
+        }
+
+        return fn($po): ?string => $po->{$method}();
     }
 
     public function getDefaultIncludedRelationships($entity): array
@@ -84,10 +94,25 @@ abstract class AttributionBasedResource extends AbstractResource
     public function getAttribution(): AttributionInterface
     {
         if (! isset($this->attribution)) {
-            $this->attribution = new $this->attributionClass();
+            $class = $this->getAttributionClass();
+            $this->attribution = new $class();
         }
 
         return $this->attribution;
+    }
+
+    public function getAttributionClass(): string
+    {
+        if (empty($this->attributionClass)) {
+            $this->attributionClass = $this->findAttributionClass();
+        }
+
+        return $this->attributionClass;
+    }
+
+    private function findAttributionClass(): string
+    {
+        return substr(get_class($this), 0, -8) . 'Attribution';
     }
 
     public function getResourceFor($entity)
