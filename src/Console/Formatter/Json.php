@@ -8,10 +8,10 @@ use const JSON_HEX_QUOT;
 use const JSON_HEX_TAG;
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
-use Lcobucci\ContentNegotiation\ContentFormatter;
+use Lcobucci\ContentNegotiation\Formatter\ContentOnly;
 use Throwable;
 
-final class Json extends ContentFormatter
+final class Json extends ContentOnly
 {
     private const DEFAULT_FLAGS = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES;
 
@@ -25,7 +25,7 @@ final class Json extends ContentFormatter
         $this->flags = $flags;
     }
 
-    protected function formatContent($content, array $attributes = []): string
+    public function formatContent($content, array $attributes = []): string
     {
         if ($content instanceof Throwable) {
             return $this->formatException($content);

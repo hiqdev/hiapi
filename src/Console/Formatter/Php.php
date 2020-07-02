@@ -2,9 +2,9 @@
 
 namespace hiapi\Core\Console\Formatter;
 
-use Lcobucci\ContentNegotiation\ContentFormatter;
+use Lcobucci\ContentNegotiation\Formatter\ContentOnly;
 
-class Php extends ContentFormatter
+class Php extends ContentOnly
 {
     public function formatContent($content, $attributes = []): string
     {
