@@ -56,7 +56,6 @@
         "php-amqplib/php-amqplib": "^2.7.2",
         "ramsey/uuid": "^3.0",
         "doctrine/collections": "^1.6.4",
-        "lcobucci/content-negotiation-middleware": "^3.0",
         "psr/http-server-middleware": "^1.0.1"
     },
     "require-dev": {

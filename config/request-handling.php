@@ -5,9 +5,11 @@ use hiqdev\yii\compat\yii;
 return [
     /// Middlewares
     \hiapi\Core\Http\Psr15\RequestHandler::class => [
-        '__construct()' => [
+        '__construct()' => array_filter([
             'quiet'         => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\QuietMiddleware::class),
-            'content-type'  => yii::referenceTo(\Lcobucci\ContentNegotiation\ContentTypeMiddleware::class),
+            'content-type'  => class_exists(\Lcobucci\ContentNegotiation\ContentTypeMiddleware::class)
+                ? yii::referenceTo(\Lcobucci\ContentNegotiation\ContentTypeMiddleware::class)
+                : null,
             'exception'     => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\ExceptionMiddleware::class),
             'blacklist'     => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\BlacklistMiddleware::class),
             'user-real-ip'  => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\UserRealIpMiddleware::class),
@@ -15,7 +17,7 @@ return [
             'cors'          => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\CorsMiddleware::class),
             'perform'       => yii::referenceTo('hiapi-endpoint-middleware'),
             new \Yiisoft\Arrays\Modifier\RemoveKeys(),
-        ],
+        ]),
     ],
 
     'hiapi-endpoint-middleware' => [
