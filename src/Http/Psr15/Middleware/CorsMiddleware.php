@@ -9,6 +9,18 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class CorsMiddleware implements MiddlewareInterface
 {
+    protected $headers = [
+        'Access-Control-Allow-Origin' => ['*'],
+        'Access-Control-Request-Method' => ['GET POST'],
+    ];
+
+    public function addHeader($name, $value): self
+    {
+        $this->headers[$name] = array_merge($this->headers[$name] ?? [], [$value]);
+
+        return $this;
+    }
+
     /**
      * @inheritDoc
      */
@@ -21,8 +33,10 @@ class CorsMiddleware implements MiddlewareInterface
 
     private function addHeaders(ResponseInterface $response)
     {
-        return $response
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Request-Method', 'GET POST');
+        foreach ($this->headers as $name => $headers) {
+            $response = $response->withHeader($name, $headers);
+        }
+
+        return $response;
     }
 }
