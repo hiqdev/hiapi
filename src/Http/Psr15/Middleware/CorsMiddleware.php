@@ -21,6 +21,13 @@ class CorsMiddleware implements MiddlewareInterface
         return $this;
     }
 
+    public function __construct(array $headers = [])
+    {
+        foreach ($headers as $name => $value) {
+            $this->addHeader($name, $value);
+        }
+    }
+
     /**
      * @inheritDoc
      */
