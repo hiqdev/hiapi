@@ -28,6 +28,11 @@ $components = [
             ],
         ],
     ],
+    'mailer' => [
+        'viewPath' => '@hiapi/views/mail',
+        'htmlLayout' => '@hiapi/views/layouts/mail-html',
+        'textLayout' => '@hiapi/views/layouts/mail-text',
+    ],
 ];
 
 $singletons = array_merge(
