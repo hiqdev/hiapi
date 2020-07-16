@@ -36,13 +36,6 @@ $components = [
         'enableCsrfCookie' => false,
         'enableCsrfValidation' => false,
     ],
-    'mailer' => [
-        'composer' => [
-            'viewPath' => '@hiapi/views/mail',
-            'htmlLayout' => '@hiapi/views/layouts/mail-html',
-            'textLayout' => '@hiapi/views/layouts/mail-text',
-        ],
-    ],
     'urlManager' => [
         '__class' => \yii\web\UrlManager::class,
         'enablePrettyUrl' => true,
