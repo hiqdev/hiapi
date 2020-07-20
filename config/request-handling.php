@@ -7,6 +7,7 @@ return [
     \hiapi\Core\Http\Psr15\RequestHandler::class => [
         '__construct()' => array_filter([
             'quiet'         => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\QuietMiddleware::class),
+            'cors'          => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\CorsMiddleware::class),
             'content-type'  => class_exists(\Lcobucci\ContentNegotiation\ContentTypeMiddleware::class)
                 ? yii::referenceTo(\Lcobucci\ContentNegotiation\ContentTypeMiddleware::class)
                 : null,
@@ -14,7 +15,6 @@ return [
             'blacklist'     => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\BlacklistMiddleware::class),
             'user-real-ip'  => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\UserRealIpMiddleware::class),
             'auth'          => yii::referenceTo(\hiapi\Core\Auth\AuthMiddleware::class),
-            'cors'          => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\CorsMiddleware::class),
             'perform'       => yii::referenceTo('hiapi-endpoint-middleware'),
             new \Yiisoft\Arrays\Modifier\RemoveKeys(),
         ]),
