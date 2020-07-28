@@ -82,6 +82,9 @@ class ResourceFactory implements ResourceFactoryInterface
 
     private function getCollection(array $rows): ResourceDocumentInterface
     {
+        if (empty($content)) {
+            return new EmptyCollectionDocument;
+        }
         $class = get_class(reset($rows));
         if (empty($this->collections[$class])) {
             $this->collections[$class] = $this->findCollection($class);
