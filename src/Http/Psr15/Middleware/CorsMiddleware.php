@@ -2,6 +2,7 @@
 
 namespace hiapi\Core\Http\Psr15\Middleware;
 
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -13,6 +14,16 @@ class CorsMiddleware implements MiddlewareInterface
         'Access-Control-Allow-Origin' => ['*'],
         'Access-Control-Request-Method' => ['GET POST'],
     ];
+    public bool $interceptOptionsRequests = false;
+    private ResponseFactoryInterface $responseFactory;
+
+    public function __construct(array $headers = [], ResponseFactoryInterface $responseFactory)
+    {
+        foreach ($headers as $name => $value) {
+            $this->addHeader($name, $value);
+        }
+        $this->responseFactory = $responseFactory;
+    }
 
     public function addHeader($name, $value): self
     {
@@ -21,18 +32,15 @@ class CorsMiddleware implements MiddlewareInterface
         return $this;
     }
 
-    public function __construct(array $headers = [])
-    {
-        foreach ($headers as $name => $value) {
-            $this->addHeader($name, $value);
-        }
-    }
-
     /**
      * @inheritDoc
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        if ($this->interceptOptionsRequests && $request->getMethod() === 'OPTIONS') {
+            return $this->addHeaders($this->responseFactory->createResponse(201));
+        }
+
         $response = $handler->handle($request);
 
         return $this->addHeaders($response);
