@@ -82,7 +82,7 @@ class ResourceFactory implements ResourceFactoryInterface
 
     private function getCollection(array $rows): ResourceDocumentInterface
     {
-        if (empty($content)) {
+        if (empty($rows)) {
             return new EmptyCollectionDocument;
         }
         $class = get_class(reset($rows));
