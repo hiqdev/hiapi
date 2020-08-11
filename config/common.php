@@ -86,11 +86,9 @@ $singletons = array_merge(
 );
 
 return yii::is3() ? array_merge([
-    'aliases' => $aliases,
     'app' => $app,
 ], $components, $singletons) : array_merge([
     'bootstrap' => ['log'],
-    'aliases' => $aliases,
     'components' => $components,
     'container' => [
         'singletons' => $singletons,
