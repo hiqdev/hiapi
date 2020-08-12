@@ -17,6 +17,10 @@ $app = [
     'viewPath' => '@hiapi/views',
 ];
 
+$aliases = [
+    '@hiapi' => dirname(__DIR__) . '/src',
+];
+
 $components = [
     (yii::is3() ? 'logger' : 'log') => [
         'targets' => [
@@ -87,7 +91,9 @@ $singletons = array_merge(
 
 return yii::is3() ? array_merge([
     'app' => $app,
+    'aliases' => $aliases,
 ], $components, $singletons) : array_merge([
+    'aliases' => $aliases,
     'bootstrap' => ['log'],
     'components' => $components,
     'container' => [
