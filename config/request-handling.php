@@ -1,6 +1,7 @@
 <?php
 
 use hiqdev\yii\compat\yii;
+use Laminas\Diactoros\StreamFactory;
 
 return [
     /// Middlewares
@@ -43,7 +44,7 @@ return [
                 'text/x-php'                => yii::referenceTo(\hiapi\Core\Console\Formatter\Php::class),
                 'application/php'           => yii::referenceTo(\hiapi\Core\Console\Formatter\Php::class),
             ],
-            new \Laminas\Diactoros\StreamFactory(),
+            class_exists(StreamFactory::class) ? new StreamFactory() : null,
         ],
     ],
     'content-types' => [
