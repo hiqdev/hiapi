@@ -50,4 +50,10 @@ abstract class AbstractTool extends \yii\base\Component
     {
         return $this->base->dbc;
     }
+
+    public function getAccessId(): int
+    {
+        $id = $this->data['id'] ?? null;
+        return (int)$id;
+    }
 }
