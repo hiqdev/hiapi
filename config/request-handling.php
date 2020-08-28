@@ -17,7 +17,7 @@ return [
             'user-real-ip'  => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\UserRealIpMiddleware::class),
             'auth'          => yii::referenceTo(\hiapi\Core\Auth\AuthMiddleware::class),
             'perform'       => yii::referenceTo('hiapi-endpoint-middleware'),
-            new \Yiisoft\Arrays\Modifier\RemoveKeys(),
+            'remove-keys'   => new \Yiisoft\Arrays\Modifier\RemoveKeys(),
         ]),
     ],
 
