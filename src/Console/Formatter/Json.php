@@ -8,6 +8,7 @@ use const JSON_HEX_QUOT;
 use const JSON_HEX_TAG;
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
+use hiapi\exceptions\SystemError;
 use Lcobucci\ContentNegotiation\Formatter\ContentOnly;
 use Throwable;
 
@@ -36,16 +37,17 @@ final class Json extends ContentOnly
 
     protected function formatException(Throwable $e): string
     {
-        $message = $e->getMessage();
+        $system = $e instanceof SystemError;
+        $source = $system ? $e->getPrevious() ?? $e : $e;
 
         return $this->encode([
-            '_error' => $message,
-            '_error_ops' => [
-                'class' => get_class($e),
-                // XXX causes Uncaught JsonException: Recursion detected
-                // TODO fix and return the trace back
-                //'trace' => $e->getTrace()
-            ],
+            '_error' => $e->getMessage(),
+            '_error_ops' => array_filter([
+                'at' => Json::class,
+                'class' => get_class($source),
+                'data' =>  $system ? $e->getData() : null,
+                'message' => getenv('ENV') === 'prod' ? '' : $source->getMessage(),
+            ]),
         ]);
     }
 

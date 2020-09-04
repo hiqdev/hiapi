@@ -10,6 +10,7 @@ use hiapi\exceptions\domain\DomainException;
 use hiapi\exceptions\NotAuthenticatedException;
 use League\Tactician\Middleware;
 use Psr\Log\LoggerInterface;
+use hiapi\exceptions\SystemError;
 
 /**
  * Class HandleExceptionsMiddleware
@@ -84,7 +85,7 @@ class HandleExceptionsMiddleware implements Middleware
         $this->logger->warning('Uncaught exception ' . \get_class($exception), ['message' => $exception->getMessage()]);
 
         if (!$this->keepSystemErrorMessage) {
-            return new \Exception('System error', $exception->getCode(), $exception);
+            return new SystemError('From HandleExceptionsMiddleware', $exception, $exception->getCode());
         }
 
         return $exception;
