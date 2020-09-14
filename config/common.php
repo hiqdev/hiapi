@@ -108,6 +108,7 @@ return yii::is3() ? array_merge([
     'bootstrap' => ['log'],
     'components' => $components,
     'container' => [
+        'resolveArrays' => true,
         'singletons' => $singletons,
     ],
     'params' => $params,
