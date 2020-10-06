@@ -13,7 +13,7 @@ final class Text extends ContentOnly
         }
 
         if (!\is_array($content)) {
-            return \var_export($content, true);
+            return \print_r($content, true);
         }
 
         $res = '';
