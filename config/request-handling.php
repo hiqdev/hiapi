@@ -4,6 +4,9 @@ use hiqdev\yii\compat\yii;
 use Laminas\Diactoros\StreamFactory;
 
 return [
+    \Yiisoft\Router\MiddlewareFactoryInterface::class => \Yiisoft\Router\MiddlewareFactory::class,
+    \Yiisoft\Router\MiddlewareStackInterface::class => \Yiisoft\Router\MiddlewareStack::class,
+
     /// Middlewares
     \hiapi\Core\Http\Psr15\RequestHandler::class => [
         '__construct()' => array_filter([
@@ -16,19 +19,10 @@ return [
             'blacklist'     => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\BlacklistMiddleware::class),
             'user-real-ip'  => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\UserRealIpMiddleware::class),
             'auth'          => yii::referenceTo(\hiapi\Core\Auth\AuthMiddleware::class),
-            'perform'       => yii::referenceTo('hiapi-endpoint-middleware'),
+            'router'        => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\RouterMiddleware::class),
+            'perform'       => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\EndpointMiddleware::class),
             'remove-keys'   => new \Yiisoft\Arrays\Modifier\RemoveKeys(),
         ]),
-    ],
-
-    'hiapi-endpoint-middleware' => [
-        '__class' => \hiapi\Core\Http\Psr15\Middleware\RelayMiddleware::class,
-        '__construct()' => [
-            'resolve'       => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\ResolveEndpointMiddleware::class),
-            'build-command' => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\CommandForEndpointMiddleware::class),
-            'run'           => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\RunEndpointBusMiddleware::class),
-            new \Yiisoft\Arrays\Modifier\RemoveKeys(),
-        ],
     ],
 
     \Lcobucci\ContentNegotiation\ContentTypeMiddleware::class => [
