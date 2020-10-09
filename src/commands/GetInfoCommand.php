@@ -10,9 +10,14 @@
 
 namespace hiapi\commands;
 
+use hiqdev\DataMapper\Query\Specification;
+use hiapi\validators\RefValidator;
+
 abstract class GetInfoCommand extends EntityCommand
 {
     public $id;
+
+    public $with;
 
     public function getId()
     {
@@ -24,6 +29,17 @@ abstract class GetInfoCommand extends EntityCommand
         return [
             ['id', 'integer', 'min' => 1],
             ['id', 'required'],
+
+            ['with', 'each', 'rule' => [RefValidator::class]],
         ];
+    }
+
+    public function getSpecification(): Specification
+    {
+        $spec = new Specification();
+        $spec->where = ['id' => $this->getId()];
+        $spec->with = $this->with;
+
+        return $spec;
     }
 }
