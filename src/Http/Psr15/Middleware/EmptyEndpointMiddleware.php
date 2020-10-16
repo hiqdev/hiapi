@@ -1,8 +1,7 @@
 <?php
-
+declare(strict_types=1);
 
 namespace hiapi\Core\Http\Psr15\Middleware;
-
 
 use hiapi\Core\Http\Psr7\Response\FatResponse;
 use Psr\Http\Message\ResponseInterface;
