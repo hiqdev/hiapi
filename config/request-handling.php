@@ -18,6 +18,7 @@ return [
             'exception'     => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\ExceptionMiddleware::class),
             'blacklist'     => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\BlacklistMiddleware::class),
             'user-real-ip'  => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\UserRealIpMiddleware::class),
+            'empty-endpoint'=> yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\EmptyEndpointMiddleware::class),
             'auth'          => yii::referenceTo(\hiapi\Core\Auth\AuthMiddleware::class),
             'router'        => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\RouterMiddleware::class),
             'perform'       => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\EndpointMiddleware::class),
