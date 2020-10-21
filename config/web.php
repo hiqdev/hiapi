@@ -9,6 +9,7 @@
  */
 
 use hiqdev\yii\compat\yii;
+use hiqdev\yii\compat\Buildtime;
 
 $aliases = [
     '@bower' => '@vendor/bower-asset',
@@ -66,7 +67,7 @@ $singletons = [
 
 ];
 
-return \hiqdev\yii\compat\yii::is2() ? array_merge([
+return Buildtime::run(yii::is2()) ? array_merge([
     'aliases' => $aliases,
     'components' => $components,
     'container' => [

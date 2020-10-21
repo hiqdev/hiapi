@@ -9,6 +9,7 @@
  */
 
 use hiqdev\yii\compat\yii;
+use hiqdev\yii\compat\Buildtime;
 
 $app = [
     'id' => 'hiapi',
@@ -22,7 +23,7 @@ $aliases = [
 ];
 
 $components = [
-    (yii::is3() ? 'logger' : 'log') => [
+    (Buildtime::run(yii::is3()) ? 'logger' : 'log') => [
         'targets' => [
             [
                 '__class' => \yii\log\FileTarget::class,
@@ -40,8 +41,8 @@ $components = [
 ];
 
 $singletons = array_merge(
-    include __DIR__ . '/old-bus-request-handling.php',
-    include __DIR__ . '/request-handling.php',
+    Buildtime::run(include __DIR__ . '/old-bus-request-handling.php'),
+    Buildtime::run(include __DIR__ . '/request-handling.php'),
     [
         \yii\web\User::class => [
             'identityClass' => \hiapi\Core\Auth\UserIdentity::class,
@@ -94,13 +95,13 @@ $singletons = array_merge(
         \hiapi\jsonApi\ResourceFactory::class => [
             '__construct()' => [
                 'resourceMap' => [],
-                new \Yiisoft\Arrays\Modifier\RemoveKeys(),
+                Buildtime::run(new \Yiisoft\Arrays\Modifier\RemoveKeys()),
             ],
         ],
     ]
 );
 
-return yii::is3() ? array_merge([
+return Buildtime::run(yii::is3()) ? array_merge([
     'app' => $app,
     'aliases' => $aliases,
 ], $components, $singletons) : array_merge([

@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2017, HiQDev (http://hiqdev.com/)
  */
 
+use hiqdev\yii\compat\Buildtime;
+
 $app = [
     'controllerMap' => [
         'api' => [
@@ -37,7 +39,7 @@ $singletons = [
     'bus.loader-middleware'             => \hiqdev\yii2\autobus\bus\BypassMiddleware::class,
 ];
 
-return \hiqdev\yii\compat\yii::is2() ? array_merge([
+return Buildtime::run(\hiqdev\yii\compat\yii::is2()) ? array_merge([
     'container' => [
         'singletons' => $singletons,
     ],
