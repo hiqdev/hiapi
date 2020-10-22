@@ -10,7 +10,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Yiisoft\Router\FastRoute\UrlMatcher;
 use Yiisoft\Router\Group;
 use Yiisoft\Router\RouteCollection;
-use Yiisoft\Router\MiddlewareDispatcher;
+use Yiisoft\Middleware\Dispatcher\MiddlewareDispatcher;
 
 /**
  * Performs matched route.
