@@ -4,8 +4,8 @@ use hiqdev\yii\compat\yii;
 use Laminas\Diactoros\StreamFactory;
 
 return [
-    \Yiisoft\Router\MiddlewareFactoryInterface::class => \Yiisoft\Router\MiddlewareFactory::class,
-    \Yiisoft\Router\MiddlewareStackInterface::class => \Yiisoft\Router\MiddlewareStack::class,
+    \Yiisoft\Middleware\Dispatcher\MiddlewareFactoryInterface::class => \Yiisoft\Middleware\Dispatcher\MiddlewareFactory::class,
+    \Yiisoft\Middleware\Dispatcher\MiddlewareStackInterface::class => \Yiisoft\Middleware\Dispatcher\MiddlewareStack::class,
 
     /// Middlewares
     \hiapi\Core\Http\Psr15\RequestHandler::class => [
