@@ -9,14 +9,16 @@ use Psr\Http\Message\ResponseInterface;
 
 class FatResponse
 {
-    public static function create($data, RequestInterface $request = null): ResponseInterface
+    public const REQUEST_ATTRIBUTE = 'request';
+
+    public static function create($content, RequestInterface $request = null): ResponseInterface
     {
         if ($request === null) {
-            return new UnformattedResponse(new Response(), $data);
+            return new UnformattedResponse(new Response(), $content);
         }
 
-        return new UnformattedResponse(new Response(), $data, [
-            'request' => $request,
+        return new UnformattedResponse(new Response(), $content, [
+            self::REQUEST_ATTRIBUTE => $request,
         ]);
     }
 
@@ -25,8 +27,13 @@ class FatResponse
         if (!$response instanceof UnformattedResponse) {
             return null;
         }
-        $request = $response->getAttributes()['request'] ?? null;
+        $request = $response->getAttributes()[self::REQUEST_ATTRIBUTE] ?? null;
 
         return $request instanceof RequestInterface ? $request : null;
+    }
+
+    public static function getContent(ResponseInterface $response)
+    {
+        return $response instanceof UnformattedResponse ? $response->getUnformattedContent() : null;
     }
 }
