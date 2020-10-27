@@ -64,6 +64,9 @@ abstract class SearchCommand extends EntityCommand
             }
         }
         $spec->limit = $this->limit ?? self::DEFAULT_LIMIT;
+        if ($this->page>1) {
+            $spec->offset = $spec->limit*($this->page - 1);
+        }
 
         return $spec;
     }
