@@ -6,6 +6,7 @@ use hidev\components\Log;
 use Psr\Log\LogLevel;
 use yii\helpers\Console;
 use yii\helpers\VarDumper;
+use yii\log\Logger;
 
 /**
  * Class ConsoleLogTarget
@@ -31,12 +32,21 @@ class ConsoleLogTarget extends \yii\log\Target
         LogLevel::CRITICAL  => [Console::FG_RED],
         LogLevel::WARNING   => [Console::FG_YELLOW],
     ];
+    
+    private $convertYiiToPSR = [
+        Logger::LEVEL_ERROR => LogLevel::ERROR,
+        Logger::LEVEL_WARNING => LogLevel::WARNING,
+        Logger::LEVEL_INFO => LogLevel::INFO,
+        Logger::LEVEL_TRACE => LogLevel::DEBUG,
+    ];
 
     public function export()
     {
         foreach ($this->messages as $message) {
-            $this->out($message[0], $message[1]);
-            $this->outContext($message[0], $message[2]);
+            $level = $this->convertYiiToPSR[$message[1]] ?? $message[1];
+            
+            $this->out($level, $message[0]);
+            $this->outContext($level, $message[2]);
         }
     }
 
