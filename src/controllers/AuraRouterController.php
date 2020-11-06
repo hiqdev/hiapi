@@ -13,7 +13,7 @@ class AuraRouterController extends Controller
     /**
      * @var \yii\web\Response
      */
-    protected $response;
+    public $response;
     /**
      * @var RouterContainer
      */

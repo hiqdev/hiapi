@@ -32,7 +32,7 @@ class ApiController extends Controller
     /**
      * @var \yii\web\Response
      */
-    private $response;
+    public $response;
     /**
      * @var AutoBusInterface|BranchedAutoBus
      */
