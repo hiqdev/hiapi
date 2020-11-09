@@ -22,7 +22,7 @@ return [
             'auth'          => yii::referenceTo(\hiapi\Core\Auth\AuthMiddleware::class),
             'router'        => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\RouterMiddleware::class),
             'perform'       => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\EndpointMiddleware::class),
-            'remove-keys'   => new \Yiisoft\Arrays\Modifier\RemoveKeys(),
+            '~remove-keys'  => new \Yiisoft\Arrays\Modifier\RemoveKeys(),
         ]),
     ],
 
