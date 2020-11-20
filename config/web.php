@@ -26,8 +26,8 @@ $app = array_filter([
     'modules' => array_filter([
         'debug' => empty($params['debug.enabled']) ? null : array_filter([
             '__class' => \yii\debug\Module::class,
-            'allowedIPs' => isset($params['debug.allowedIps']) ? $params['debug.allowedIps'] : null,
-            'historySize' => isset($params['debug.historySize']) ? $params['debug.historySize'] : null,
+            'allowedIPs' => $params['debug.allowedIps'],
+            'historySize' => $params['debug.historySize'],
         ]),
     ]),
 ]);
