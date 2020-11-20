@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace hiapi\Core\Http\Psr15;
 
 use Psr\Http\Message\ResponseInterface;
@@ -11,7 +13,7 @@ use Relay\Relay;
 class RequestHandler implements RequestHandlerInterface
 {
     /**
-     * @var MiddlewareInterface
+     * @var MiddlewareInterface[]
      */
     private $middlewares;
 
