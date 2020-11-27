@@ -30,10 +30,6 @@ use yii\web\Response;
 class ApiController extends Controller
 {
     /**
-     * @var \yii\web\Response
-     */
-    public $response;
-    /**
      * @var AutoBusInterface|BranchedAutoBus
      */
     private $autoBus;
@@ -44,9 +40,9 @@ class ApiController extends Controller
         ApiCommandsBusInterface $autoBus,
         array $config = []
     ) {
-        parent::__construct($id, $module, $config);
         $this->autoBus = $autoBus;
-        $this->response = yii::getApp()->getResponse();
+
+        parent::__construct($id, $module, $config);
     }
 
     public function behaviors()
