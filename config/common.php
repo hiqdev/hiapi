@@ -59,6 +59,8 @@ $singletons = array_merge(
                     : null,
             ]),
         ],
+        \Psr\EventDispatcher\EventDispatcherInterface::class => \Yiisoft\EventDispatcher\Dispatcher\Dispatcher::class,
+        \Psr\EventDispatcher\ListenerProviderInterface::class => \Yiisoft\EventDispatcher\Provider\Provider::class,
 
     /// Queue
         \PhpAmqpLib\Connection\AMQPStreamConnection::class => [
