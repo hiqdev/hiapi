@@ -12,7 +12,7 @@ use yii\validators\RegularExpressionValidator;
  */
 class UsernameValidator extends RegularExpressionValidator
 {
-    public $pattern = '/^[a-z][a-z0-9_]{2,31}$/';
+    public $pattern = '/^[a-z][a-z0-9_]{1,31}$/';
 
     public function init()
     {
