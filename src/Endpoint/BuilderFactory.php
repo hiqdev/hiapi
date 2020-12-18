@@ -10,6 +10,7 @@ use hiapi\Core\Endpoint\Middleware\ReduceHandler;
 use hiapi\Core\Endpoint\Middleware\RepeatHandler;
 use hiapi\endpoints\BuilderFactoryInterface;
 use hiqdev\yii\compat\yii;
+use League\Tactician\Middleware;
 
 /**
  * Class BuilderFactory
@@ -39,19 +40,32 @@ class BuilderFactory implements BuilderFactoryInterface
         ];
     }
 
-    public function repeat(string $className)
+    /**
+     * @param Middleware|callable|string $handler
+     * @return array
+     */
+    public function repeat($handler)
     {
         return [
             '__class' => RepeatHandler::class,
-            '__construct()' => [yii::referenceTo($className)]
+            '__construct()' => [$this->prepareHandler($handler)],
         ];
     }
 
-    public function reduce(string $className)
+    private function prepareHandler($handler)
+    {
+        return is_string($handler) ? yii::referenceTo($handler) : $handler;
+    }
+
+    /**
+     * @param Middleware|callable|string $handler
+     * @return array
+     */
+    public function reduce($handler)
     {
         return [
             '__class' => ReduceHandler::class,
-            '__construct()' => [yii::referenceTo($className)]
+            '__construct()' => [$this->prepareHandler($handler)],
         ];
     }
 

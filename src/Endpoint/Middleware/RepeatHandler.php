@@ -7,12 +7,10 @@ use League\Tactician\Middleware;
 
 class RepeatHandler implements Middleware
 {
-    /**
-     * @var callable
-     */
+    /** @var Middleware|callable */
     private $handler;
 
-    public function __construct(callable $handler)
+    public function __construct($handler)
     {
         $this->handler = $handler;
     }
@@ -24,15 +22,26 @@ class RepeatHandler implements Middleware
     public function execute($command, callable $next)
     {
         $this->ensureCommandIsIterable($command);
-
-        $handler = $this->handler;
         $items = iterator_to_array($command, true);
+        $res = array_map(function ($item) {
+            return $this->handle($item);
+        }, $items);
 
-        return new ArrayCollection(
-            array_map(static function ($item) use ($handler) {
-                return $handler($item);
-            }, $items)
-        );
+        return $next(new ArrayCollection($res));
+    }
+
+    private function handle($item)
+    {
+        $handler = $this->handler;
+        if (is_callable($handler)) {
+            return $handler($item);
+        } elseif ($handler instanceof Middleware) {
+            return $handler->execute($item, fn ($command) => $command);
+        }
+        throw new \RuntimeException(sprintf(
+            '%s expects handler to be closure or Middleware',
+            self::class
+        ));
     }
 
     private function ensureCommandIsIterable($command): void
