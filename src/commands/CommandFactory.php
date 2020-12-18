@@ -8,6 +8,7 @@ use hiapi\Core\Endpoint\Endpoint;
 use hiapi\endpoints\Module\InOutControl\VO\Collection;
 use hiapi\exceptions\ConfigurationException;
 use hiapi\exceptions\HiapiException;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use yii\base\Model;
 
@@ -18,6 +19,13 @@ use yii\base\Model;
  */
 class CommandFactory
 {
+    private ContainerInterface $di;
+
+    public function __construct(ContainerInterface $di)
+    {
+        $this->di = $di;
+    }
+
     public function createByEndpoint(Endpoint $endpoint, ServerRequestInterface $request): Model
     {
         $data = $this->extractData($request);
@@ -34,15 +42,20 @@ class CommandFactory
     {
         $inputType = $endpoint->inputType;
         if ($inputType instanceof Collection) {
-            $command = BulkCommand::of($inputType->getEntriesClass());
+            $command = BulkCommand::of($inputType->getEntriesClass(), $this);
         } else {
-            $command = new $inputType();
+            $command = $this->createByClass($inputType);
         }
         if (!$command instanceof Model) {
             throw new ConfigurationException('This middleware can load only commands of Model class');
         }
 
         return $command;
+    }
+
+    public function createByClass(string $className): Model
+    {
+        return $this->di->get($className);
     }
 
     private function extractData(ServerRequestInterface $request): array

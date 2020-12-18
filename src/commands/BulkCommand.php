@@ -5,8 +5,8 @@ namespace hiapi\commands;
 use ArrayAccess;
 use Countable;
 use Doctrine\Common\Collections\ArrayCollection;
+use hiapi\Core\commands\CommandFactory;
 use IteratorAggregate;
-use yii\base\Model;
 
 /**
  * Class BulkCommand
@@ -24,12 +24,13 @@ final class BulkCommand extends BaseCommand implements Countable, IteratorAggreg
      */
     private $commandClassName;
 
-    public static function of(string $className): self
-    {
-        $self = new self();
-        $self->commandClassName = $className;
+    private CommandFactory $factory;
 
-        return $self;
+    public function __construct(string $className, CommandFactory $factory, $config = [])
+    {
+        $this->commandClassName = $className;
+        $this->factory = $factory;
+        parent::__construct($config);
     }
 
     public function init(): void
@@ -39,12 +40,17 @@ final class BulkCommand extends BaseCommand implements Countable, IteratorAggreg
         $this->collection = new ArrayCollection();
     }
 
+    public static function of(string $className, CommandFactory $factory): self
+    {
+        return new self($className, $factory);
+    }
+
     public function load($data, $formName = null): bool
     {
         $data = array_filter($data, 'is_array');
 
         for ($i = 0, $iMax = count($data); $i < $iMax; $i++) {
-            $this->collection->add(new $this->commandClassName);
+            $this->collection->add($this->factory->createByClass($this->commandClassName));
         }
 
         return self::loadMultiple($this->collection, $data, $formName);
