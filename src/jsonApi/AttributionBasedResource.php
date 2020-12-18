@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace hiapi\jsonApi;
 
-use hiapi\jsonApi\ResourceFactoryInterface;
+use hiapi\jsonApi\ResourceDocumentFactoryInterface;
 use hiqdev\DataMapper\Attribute\DateTimeAttribute;
 use hiqdev\DataMapper\Attribution\AttributionInterface;
 use WoohooLabs\Yin\JsonApi\Schema\Link\ResourceLinks;
 use WoohooLabs\Yin\JsonApi\Schema\Relationship\ToOneRelationship;
 use WoohooLabs\Yin\JsonApi\Schema\Resource\AbstractResource;
+use WoohooLabs\Yin\JsonApi\Schema\Resource\ResourceInterface;
 
 abstract class AttributionBasedResource extends AbstractResource
 {
@@ -16,9 +17,9 @@ abstract class AttributionBasedResource extends AbstractResource
 
     protected AttributionInterface $attribution;
 
-    protected ResourceFactoryInterface $resourceFactory;
+    protected ResourceDocumentFactoryInterface $resourceFactory;
 
-    public function __construct(ResourceFactoryInterface $resourceFactory)
+    public function __construct(ResourceDocumentFactoryInterface $resourceFactory)
     {
         $this->resourceFactory = $resourceFactory;
     }
@@ -50,11 +51,12 @@ abstract class AttributionBasedResource extends AbstractResource
             if ($key === 'id') {
                 continue;
             }
-            $method = 'get' . ucfirst($key);
-            if (! method_exists($entity, $method)) {
-                continue;
+            foreach ([$key, 'get' . ucfirst($key)] as $method) {
+                if (method_exists($entity, $method)) {
+                    $res[$key] = $this->buildAttributeMethod($method, $type);
+                    break;
+                }
             }
-            $res[$key] = $this->buildAttributeMethod($method, $type);
         }
 
         return $res;
@@ -63,7 +65,14 @@ abstract class AttributionBasedResource extends AbstractResource
     protected function buildAttributeMethod(string $method, $type): callable
     {
         if ($type === DateTimeAttribute::class) {
-            return fn($po): ?string => $po->{$method}()->format('c');
+            return static function ($po) use ($method): ?string {
+                $value = $po->{$method}();
+                if ($value === null) {
+                    return null;
+                }
+
+                return $value->format(DATE_ATOM);
+            };
         }
 
         return fn($po): ?string => $po->{$method}();
@@ -78,14 +87,14 @@ abstract class AttributionBasedResource extends AbstractResource
     {
         $res = [];
         foreach ($this->getAttribution()->relations() as $key => $type) {
-            $method = 'get' . ucfirst($key);
-            if (! method_exists($entity, $method)) {
-                continue;
+            foreach ([$key, 'get' . ucfirst($key)] as $method) {
+                if (method_exists($entity, $method)) {
+                    $res[$key] = fn($po) => ToOneRelationship::create()
+                        ->setData($po->{$method}(), $this->getResourceFor($type))
+                        ->omitDataWhenNotIncluded();
+                    break;
+                }
             }
-            $res[$key] = fn($po) => ToOneRelationship::create()
-                ->setData($po->{$method}(), $this->getResourceFor($type))
-                ->omitDataWhenNotIncluded()
-            ;
         }
 
         return $res;
@@ -115,8 +124,8 @@ abstract class AttributionBasedResource extends AbstractResource
         return substr(get_class($this), 0, -8) . 'Attribution';
     }
 
-    public function getResourceFor($entity)
+    public function getResourceFor($className): ResourceInterface
     {
-        return $this->resourceFactory->getFor($entity);
+        return $this->resourceFactory->getResourceByClassName($className);
     }
 }

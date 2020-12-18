@@ -1,17 +1,19 @@
 <?php
+declare(strict_types=1);
 
 namespace hiapi\jsonApi;
 
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 use WoohooLabs\Yin\JsonApi\Schema\Resource\ResourceInterface;
 use WoohooLabs\Yin\JsonApi\Schema\Document\ResourceDocumentInterface;
 
 /**
- * Creates JsonApi resource for given content.
+ * Creates JsonApi resource document for given content.
  *
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */
-class ResourceFactory implements ResourceFactoryInterface
+class ResourceDocumentFactory implements ResourceDocumentFactoryInterface
 {
     private ContainerInterface $container;
 
@@ -27,27 +29,34 @@ class ResourceFactory implements ResourceFactoryInterface
         $this->container = $container;
     }
 
-    public function getFor($content)
+    /** {@inheritDoc} */
+    public function getResourceDocumentFor($content): ResourceDocumentInterface
     {
-        return is_array($content) ? $this->getCollection($content) : $this->getResource($content);
-    }
-
-    /**
-     * @param object|string $entity
-     */
-    public function getResource($entity): ResourceInterface
-    {
-        $class = is_string($entity) ? $entity : get_class($entity);
-        if (empty($this->resources[$class])) {
-            $this->resources[$class] = $this->findResource($class, $entity);
+        if (is_array($content)) {
+            return $this->getCollectionDocument($content);
         }
 
-        return $this->resources[$class];
+        return $this->getSingleDocument($content);
     }
 
-    private function findResource(string $class): ResourceInterface
+    /** {@inheritDoc} */
+    public function getResourceByClassName(string $entityClassName): ResourceInterface
     {
-        return $this->container->get($this->findResourceClass($class));
+        if (empty($this->resources[$entityClassName])) {
+            $this->resources[$entityClassName] = $this->container->get(
+                $this->findResourceClass($entityClassName)
+            );
+        }
+
+        return $this->resources[$entityClassName];
+    }
+
+    /** {@inheritDoc} */
+    public function getResourceFor(object $entity): ResourceInterface
+    {
+        $class = get_class($entity);
+
+        return $this->getResourceByClassName($class);
     }
 
     private function findResourceClass(string $class): string
@@ -58,7 +67,7 @@ class ResourceFactory implements ResourceFactoryInterface
 
         $res = $this->findResourceClassByAttribution($class);
 
-        return $res ?: $this->findResourceClassByAncestor($class);
+        return $res ?? $this->findResourceClassByAncestor($class);
 
     }
 
@@ -77,13 +86,13 @@ class ResourceFactory implements ResourceFactoryInterface
             }
         }
 
-        throw new \RuntimeException("JsonApi resource not defined for '$class'");
+        throw new RuntimeException("JsonApi resource not defined for '$class'");
     }
 
-    private function getCollection(array $rows): ResourceDocumentInterface
+    private function getCollectionDocument(array $rows): ResourceDocumentInterface
     {
         if (empty($rows)) {
-            return new EmptyCollectionDocument;
+            return new EmptyCollectionDocument();
         }
         $class = get_class(reset($rows));
         if (empty($this->collections[$class])) {
@@ -91,6 +100,15 @@ class ResourceFactory implements ResourceFactoryInterface
         }
 
         return $this->collections[$class];
+    }
+
+    private function getSingleDocument(object $entity): ResourceDocumentInterface
+    {
+        $singleDocumentClass = $this->resource2singleDocument(
+            $this->findResourceClass(get_class($entity))
+        );
+
+        return $this->container->get($singleDocumentClass);
     }
 
     private function findCollection(string $class): ResourceDocumentInterface
@@ -104,5 +122,11 @@ class ResourceFactory implements ResourceFactoryInterface
     {
         // XXX TMP quick and dirty TODO improve later
         return substr($class, 0, -8) . 'sCollectionDocument';
+    }
+
+    private function resource2singleDocument(string $class): string
+    {
+        // XXX TMP quick and dirty TODO improve later
+        return substr($class, 0, -8) . 'Document';
     }
 }
