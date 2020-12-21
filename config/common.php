@@ -49,7 +49,7 @@ $singletons = array_merge(
             'enableSession' => false,
         ],
 
-    /// Event
+        /// Event
         \hiapi\event\EventStorageInterface::class => \hiapi\event\EventStorage::class,
         \League\Event\EmitterInterface::class => [
             '__class' => \hiapi\event\ConfigurableEmitter::class,
@@ -62,7 +62,7 @@ $singletons = array_merge(
         \Psr\EventDispatcher\EventDispatcherInterface::class => \Yiisoft\EventDispatcher\Dispatcher\Dispatcher::class,
         \Psr\EventDispatcher\ListenerProviderInterface::class => \Yiisoft\EventDispatcher\Provider\Provider::class,
 
-    /// Queue
+        /// Queue
         \PhpAmqpLib\Connection\AMQPStreamConnection::class => [
             '__class' => \PhpAmqpLib\Connection\AMQPLazyConnection::class,
             '__construct()' => [
@@ -73,7 +73,7 @@ $singletons = array_merge(
             ],
         ],
 
-    /// Request & response
+        /// Request & response
         \Psr\Http\Message\ServerRequestInterface::class => function ($container) {
             return \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
         },
@@ -81,10 +81,10 @@ $singletons = array_merge(
             return new \GuzzleHttp\Psr7\Response();
         },
         \WoohooLabs\Yin\JsonApi\Request\RequestInterface::class => \WoohooLabs\Yin\JsonApi\Request\Request::class,
-        \WoohooLabs\Yin\JsonApi\Request\JsonApiRequestInterface::class => \WoohooLabs\Yin\JsonApi\Request\JsonApiRequest::class, // Yin > 3.1.0
+        \WoohooLabs\Yin\JsonApi\Request\JsonApiRequestInterface::class => \WoohooLabs\Yin\JsonApi\Request\JsonApiRequest::class,// Yin > 3.1.0
         \WoohooLabs\Yin\JsonApi\Exception\ExceptionFactoryInterface::class => \WoohooLabs\Yin\JsonApi\Exception\DefaultExceptionFactory::class,
 
-    /// General
+        /// General
         \yii\di\Container::class => function ($container) {
             return $container;
         },
@@ -92,9 +92,9 @@ $singletons = array_merge(
             return \hiqdev\yii\compat\yii::getApp()->get('mailer');
         },
 
-        \hiapi\jsonApi\ResourceFactoryInterface::class => \hiapi\jsonApi\ResourceFactory::class,
+        \hiapi\jsonApi\ResourceDocumentFactoryInterface::class => \hiapi\jsonApi\ResourceDocumentFactory::class,
 
-        \hiapi\jsonApi\ResourceFactory::class => [
+        \hiapi\jsonApi\ResourceDocumentFactory::class => [
             '__construct()' => [
                 'resourceMap' => [],
                 Buildtime::run(new \Yiisoft\Arrays\Modifier\RemoveKeys()),
