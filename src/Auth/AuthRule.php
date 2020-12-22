@@ -39,7 +39,7 @@ final class AuthRule
 
     public static function client(string $login): self
     {
-        Assert::stringNotEmpty($login, 'Clien login must be set to create the Auth Rule');
+        Assert::stringNotEmpty($login, 'Client login must be set to create the Auth Rule');
 
         $self = new self();
         $self->client = $login;
