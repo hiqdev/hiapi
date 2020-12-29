@@ -45,7 +45,12 @@ class ConsoleLogTarget extends \yii\log\Target
         foreach ($this->messages as $message) {
             $level = $this->convertYiiToPSR[$message[1]] ?? $message[1];
             
-            $this->out($level, $message[0]);
+            $out = $message[0];
+            if (!is_scalar($out)) {
+                $out = VarDumper::dump($message[0]);
+            }
+            
+            $this->out($level, $out);
             $this->outContext($level, $message[2]);
         }
     }
