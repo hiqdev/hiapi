@@ -102,7 +102,7 @@ class QueueController extends \yii\console\Controller
     private function handleError(string $queueName, AMQPMessage $message, \Exception $exception)
     {
         Console::error(' [E] Error: ' . $exception->getMessage());
-        $this->logger->warning('Failed to handle message: ' . $exception->getMessage(), ['message' => $message, 'exception' => $exception]);
+        $this->logger->warning('Failed to handle message: ' . $exception->getMessage(), ['amqpMessage' => $message, 'exception' => $exception]);
         $this->storeRejected($queueName, $message, $exception);
     }
 
@@ -145,7 +145,7 @@ class QueueController extends \yii\console\Controller
         }
 
         if ($exception->getMaxTries() !== null && $tries >= $exception->getMaxTries()) {
-            $this->logger->debug('No tries left for message. Marking it as an error', ['message' => $msg, 'exception' => $exception]);
+            $this->logger->debug('No tries left for message. Marking it as an error', ['amqpMessage' => $msg, 'exception' => $exception]);
             $this->handleError($queueName, $msg, $exception);
             return;
         }
@@ -167,7 +167,7 @@ class QueueController extends \yii\console\Controller
             ]),
         ]));
         $channel->basic_publish($delayMessage, $delayExchange, '');
-        $this->logger->debug('Delayed message for ' . $delayDuration . 'ms', ['message' => $msg, 'exception' => $exception]);
+        $this->logger->debug('Delayed message for ' . $delayDuration . 'ms', ['amqpMessage' => $msg, 'exception' => $exception]);
     }
 
     private function storeRejected(string $queueName, AMQPMessage $message, \Exception $exception): void
