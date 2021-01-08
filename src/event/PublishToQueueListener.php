@@ -37,6 +37,12 @@ class PublishToQueueListener extends AbstractListener
      */
     public $queue;
 
+    /**
+     * @var int|null When number is passed, Priority queues are supported with the maximum priority as set.
+     *  `null` disables priority queue support
+     */
+    public $maxPriority = null;
+
     public function __construct(AMQPStreamConnection $amqp, LoggerInterface $logger)
     {
         $this->amqp = $amqp;
@@ -66,7 +72,13 @@ class PublishToQueueListener extends AbstractListener
     {
         if ($this->channel === null) {
             $this->channel = $channel = $this->amqp->channel();
-            $channel->queue_declare($this->queue, false, true, false, false);
+
+            $table = new \PhpAmqpLib\Wire\AMQPTable();
+            if ($this->maxPriority !== null) {
+                $table->set('x-max-priority', $this->maxPriority);
+            }
+
+            $channel->queue_declare($this->queue, false, true, false, false, false, $table);
         }
 
         return $this->channel;
@@ -78,9 +90,21 @@ class PublishToQueueListener extends AbstractListener
             throw new InvalidConfigException('Event "' . get_class($event) . '" can not be sent to queue');
         }
 
-        return new AMQPMessage(json_encode($event->jsonSerialize(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), [
-            'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT,
-            'content_type' => 'application/json',
-        ]);
+        $options = [];
+        if ($this->maxPriority !== null && $event instanceof PriorityEventInterface) {
+            if ($event->getPriority() > $this->maxPriority) {
+                throw new InvalidConfigException('Event "' . get_class($event) . '" priority is above supported maximum');
+            }
+
+            $options['priority'] = $event->getPriority();
+        }
+
+        return new AMQPMessage(
+            json_encode($event->jsonSerialize(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            array_merge([
+                'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT,
+                'content_type' => 'application/json',
+            ], $options)
+        );
     }
 }

@@ -53,7 +53,7 @@ class QueueController extends \yii\console\Controller
     /**
      * @return \PhpAmqpLib\Channel\AMQPChannel
      */
-    private function createChannel(string $queue): AMQPChannel
+    protected function createChannel(string $queue): AMQPChannel
     {
         $channel = $this->amqp->channel();
         $channel->queue_declare($queue, false, true, false, false);
