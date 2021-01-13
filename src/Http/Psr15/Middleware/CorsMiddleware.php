@@ -32,6 +32,11 @@ class CorsMiddleware implements MiddlewareInterface
         return $this;
     }
 
+    public function withHeader($name, $value): self
+    {
+        return (clone $this)->addHeader($name, $value);
+    }
+
     /**
      * @inheritDoc
      */
