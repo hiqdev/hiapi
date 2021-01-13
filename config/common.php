@@ -74,10 +74,10 @@ $singletons = array_merge(
         ],
 
         /// Request & response
-        \Psr\Http\Message\ServerRequestInterface::class => function ($container) {
+        \Psr\Http\Message\ServerRequestInterface::class => static function () {
             return \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
         },
-        \Psr\Http\Message\ResponseInterface::class => function ($container) {
+        \Psr\Http\Message\ResponseInterface::class => static function () {
             return new \GuzzleHttp\Psr7\Response();
         },
         \WoohooLabs\Yin\JsonApi\Request\RequestInterface::class => \WoohooLabs\Yin\JsonApi\Request\Request::class,
