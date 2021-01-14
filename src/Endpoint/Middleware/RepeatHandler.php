@@ -27,7 +27,7 @@ class RepeatHandler implements Middleware
             return $this->handle($item);
         }, $items);
 
-        return $next(new ArrayCollection($res));
+        return new ArrayCollection($res);
     }
 
     private function handle($item)
