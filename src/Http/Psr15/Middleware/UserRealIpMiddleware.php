@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace hiapi\Core\Http\Psr15\Middleware;
 
@@ -12,15 +13,15 @@ class UserRealIpMiddleware implements MiddlewareInterface
 {
     public const ATTRIBUTE_NAME = 'user-real-ip';
     /**
-     * @var array
+     * @var string[] Networks than are allowed to override client IP
      */
-    private $nets;
+    private array $trustedNets;
 
-    public $ipAttribute = self::ATTRIBUTE_NAME;
+    public string $ipAttribute = self::ATTRIBUTE_NAME;
 
-    public function __construct(array $nets)
+    public function __construct(array $trustedNets)
     {
-        $this->nets = $nets;
+        $this->trustedNets = $trustedNets;
     }
 
     /**
@@ -36,12 +37,12 @@ class UserRealIpMiddleware implements MiddlewareInterface
         $oldip = $this->getIp($request);
         $request = $request->withAttribute($this->ipAttribute, $oldip);
 
-        if (!CIDR::matchBulk($oldip, $this->nets)) {
+        if (!CIDR::matchBulk($oldip, $this->trustedNets)) {
             return $request;
         }
 
         $newip = $this->getNewIp($request);
-        if (empty($newip) || $newip == $oldip) {
+        if (empty($newip) || $newip === $oldip) {
             return $request;
         }
 
@@ -55,7 +56,7 @@ class UserRealIpMiddleware implements MiddlewareInterface
 
     private function getNewIp(ServerRequestInterface $request): string
     {
-        $change = $request->getHeaderLine('X-User-Ip') ?: $this->getParam($request, 'auth_ip') ?? null;
+        $change = $request->getHeaderLine('X-User-Ip') ?: $this->getParam($request, 'auth_ip');
 
         return filter_var($change, FILTER_VALIDATE_IP) ?: '';
     }
@@ -74,7 +75,7 @@ class UserRealIpMiddleware implements MiddlewareInterface
         return $request->withAttribute($this->ipAttribute, $ip);
     }
 
-    public function getParam(ServerRequestInterface $request, string $name): ?string
+    private function getParam(ServerRequestInterface $request, string $name): ?string
     {
         return $request->getParsedBody()[$name] ?? $request->getQueryParams()[$name] ?? null;
     }
