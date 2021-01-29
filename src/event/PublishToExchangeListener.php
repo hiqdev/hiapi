@@ -93,7 +93,7 @@ class PublishToExchangeListener extends AbstractListener
     /**
      * Builds routing key for $event. Default logic:
      *
-     * For events named with `Was` keyword (e.g. `ObjectWasChanged`) routing key will be `object.was.changed`.
+     * For events named with `Was` (or `WillBe`) keyword (e.g. `ObjectWasChanged`) routing key will be `object.was.changed`.
      * For other events [[InvalidConfigException]] will be thrown.
      *
      * You can override this method to implement own routing key generation logic.
@@ -105,15 +105,21 @@ class PublishToExchangeListener extends AbstractListener
     public function buildRoutingKey(EventInterface $event)
     {
         $className = (new \ReflectionClass($event))->getShortName();
-        if (strpos($className, 'Was') === false) {
-            throw new InvalidConfigException("Event class name \"$className\" does not contain \"Was\" keyword and can not be processed with default logic.");
+
+        foreach (['Was', 'WillBe', 'Will'] as $keyword) {
+            if (strpos($className, $keyword) === false) {
+                continue;
+            }
+
+            [$object, $eventName] = explode($keyword, $className);
+
+            $object = Inflector::camel2id($object);
+            $eventName = Inflector::camel2id($eventName);
+            $lowerKeyword = strtolower($keyword);
+
+            return mb_strtolower("$object.$lowerKeyword.$eventName");
         }
 
-        [$object, $eventName] = explode('Was', $className);
-
-        $object = Inflector::camel2id($object);
-        $eventName = Inflector::camel2id($eventName);
-
-        return mb_strtolower("$object.was.$eventName");
+        throw new InvalidConfigException("Event class name \"$className\" does not contain \"Was\" or \"WillBe\" keywords and can not be processed with default logic.");
     }
 }
