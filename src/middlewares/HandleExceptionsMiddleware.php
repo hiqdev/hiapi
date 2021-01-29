@@ -82,7 +82,7 @@ class HandleExceptionsMiddleware implements Middleware
 
     private function ensureExceptionCanBeKept(\Exception $exception): \Exception
     {
-        $this->logger->warning('Uncaught exception ' . \get_class($exception), ['message' => $exception->getMessage()]);
+        $this->logger->warning($exception->getMessage(), ['exception' => $exception]);
 
         if (!$this->keepSystemErrorMessage) {
             return new SystemError('From HandleExceptionsMiddleware', $exception, $exception->getCode());
