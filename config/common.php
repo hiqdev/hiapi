@@ -97,7 +97,7 @@ $singletons = array_merge(
         \hiapi\jsonApi\ResourceDocumentFactory::class => [
             '__construct()' => [
                 'resourceMap' => [],
-                Buildtime::run(new \Yiisoft\Arrays\Modifier\RemoveKeys()),
+                Buildtime::run(new \Yiisoft\Composer\Config\Merger\Modifier\RemoveKeys()),
             ],
         ],
     ]

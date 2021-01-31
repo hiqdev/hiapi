@@ -2,6 +2,7 @@
 
 use hiqdev\yii\compat\yii;
 use Laminas\Diactoros\StreamFactory;
+use Yiisoft\Composer\Config\Merger\Modifier\RemoveKeys;
 
 return [
     \Yiisoft\Middleware\Dispatcher\MiddlewareFactoryInterface::class => \Yiisoft\Middleware\Dispatcher\MiddlewareFactory::class,
@@ -22,7 +23,7 @@ return [
             'auth'          => yii::referenceTo(\hiapi\Core\Auth\AuthMiddleware::class),
             'router'        => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\RouterMiddleware::class),
             'perform'       => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\EndpointMiddleware::class),
-            '~remove-keys'  => new \Yiisoft\Arrays\Modifier\RemoveKeys(),
+            '~remove-keys'  => new RemoveKeys(),
         ]),
     ],
 
@@ -95,7 +96,7 @@ return [
             'endpoints' => [
                 'OpenAPISchema' => \hiapi\Service\OpenApi\Endpoint\OpenAPISchema::class,
             ],
-            new \Yiisoft\Arrays\Modifier\RemoveKeys(),
+            new RemoveKeys(),
         ],
     ],
 ];
