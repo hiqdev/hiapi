@@ -1,30 +1,31 @@
 <?php
+declare(strict_types=1);
 
 namespace hiapi\Core\Utils;
 
+use yii\helpers\IpHelper;
+
 class CIDR
 {
-    public static function match($ip, $range): bool
+    /**
+     * @param string $ip
+     * @param array<string, boolean> $ranges
+     * @return bool
+     * @throws \yii\base\NotSupportedException
+     */
+    public static function matchBulk(string $ip, array $ranges): bool
     {
-        if (strpos($range, '/') === false) {
-            $range = "$range/32";
+        foreach ($ranges as $range => $_) {
+            if (IpHelper::inRange($ip, $range)) {
+                return true;
+            }
         }
-        list ($subnet, $bits) = explode('/', $range);
 
-        $ip = ip2long($ip);
-        $subnet = ip2long($subnet);
-        $mask = -1 << (32 - $bits);
-        $subnet &= $mask;
-        return ($ip & $mask) == $subnet;
+        return false;
     }
 
-    public static function matchBulk($ip, $ranges): bool
+    public static function match(string $ip, string $range): bool
     {
-        $match = false;
-        foreach ($ranges as $range => $value) {
-            $match = $match ? : (self::match($ip, $range) ? $value : false);
-            if ($match) break;
-        }
-        return $match;
+        return IpHelper::inRange($ip, $range);
     }
 }

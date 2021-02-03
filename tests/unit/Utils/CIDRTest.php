@@ -20,10 +20,12 @@ class CIDRTest extends \PHPUnit\Framework\TestCase
 
     public function testMatchBulk()
     {
-        $this->assertTrue(CIDR::matchBulk('1.1.1.1',    ['0.0.0.0/0' => 1]));
-        $this->assertTrue(CIDR::matchBulk('1.1.1.1',    ['1.1.1.1/32' => 1]));
-        $this->assertTrue(CIDR::matchBulk('1.1.1.1',    ['2.2.2.2' => 1, '1.1.1.0/24' => 1]));
-        $this->assertTrue(CIDR::matchBulk('1.1.1.255',  ['1.1.1.0/24' => 1, '2.2.2.2' => 1]));
+        $this->assertTrue(CIDR::matchBulk('1.1.1.1',      ['0.0.0.0/0' => 1]));
+        $this->assertTrue(CIDR::matchBulk('1.1.1.1',      ['1.1.1.1/32' => 1]));
+        $this->assertTrue(CIDR::matchBulk('1.1.1.1',      ['2.2.2.2' => 1, '1.1.1.0/24' => 1]));
+        $this->assertTrue(CIDR::matchBulk('1.1.1.255',    ['1.1.1.0/24' => 1, '2.2.2.2' => 1]));
+        $this->assertTrue(CIDR::matchBulk('172.16.40.2',  ['172.16.0.0/12' => 1]));
+
 
         $this->assertFalse(CIDR::matchBulk('1.1.1.1',   []));
         $this->assertFalse(CIDR::matchBulk('1.1.1.1',   ['2.2.2.2/32' => 1, '1.1.1.0/32' => 1]));
