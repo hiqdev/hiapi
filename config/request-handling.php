@@ -6,7 +6,7 @@ use Yiisoft\Composer\Config\Merger\Modifier\RemoveKeys;
 
 return [
     \Yiisoft\Middleware\Dispatcher\MiddlewareFactoryInterface::class => \Yiisoft\Middleware\Dispatcher\MiddlewareFactory::class,
-    \Yiisoft\Middleware\Dispatcher\MiddlewareStackInterface::class => \Yiisoft\Middleware\Dispatcher\MiddlewareStack::class,
+    \Yiisoft\Middleware\Dispatcher\MiddlewarePipelineInterface::class => \Yiisoft\Middleware\Dispatcher\MiddlewareStack::class,
 
     /// Middlewares
     \hiapi\Core\Http\Psr15\RequestHandler::class => [
