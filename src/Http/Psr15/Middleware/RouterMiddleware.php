@@ -30,7 +30,7 @@ class RouterMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $group = Group::create(null, $this->routes, $this->dispatcher);
+        $group = Group::create(null, $this->dispatcher)->routes(...$this->routes);
         $matcher = new UrlMatcher(new RouteCollection($group));
 
         $result = $matcher->match($request);
