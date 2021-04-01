@@ -104,6 +104,9 @@ class QueueController extends \yii\console\Controller
         Console::error(' [E] Error: ' . $exception->getMessage());
         $this->logger->warning('Failed to handle message: ' . $exception->getMessage(), ['amqpMessage' => $message, 'exception' => $exception]);
         $this->storeRejected($queueName, $message, $exception);
+        try {
+            \Sentry\captureException($exception);
+        } catch (\Throwable $e) {}
     }
 
     /**
