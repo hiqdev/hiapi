@@ -159,7 +159,7 @@ class QueueController extends \yii\console\Controller
         $channel->queue_bind($queueName, $delayExchange);
 
         // Send message
-        $delayDuration = 1000 * $exception->getSecondsBeforeRetry() * (int)pow($exception->getProgressionMultiplier(), $tries);
+        $delayDuration = 1000 * $exception->getSecondsBeforeRetry() * (int)($exception->getProgressionMultiplier() ** $tries);
         $delayMessage = new AMQPMessage($msg->getBody(), array_merge($msg->get_properties(), [
             'application_headers' => new AMQPTable([
                 'x-delay' => $delayDuration,
@@ -172,8 +172,10 @@ class QueueController extends \yii\console\Controller
 
     private function storeRejected(string $queueName, AMQPMessage $message, \Exception $exception): void
     {
-        // TODO: store $exception as well
-        $channel = $this->createChannel("$queueName.failed");
-        $channel->basic_publish($message, "$queueName.failed");
+        $channel = $this->amqp->channel();
+        $failedExchange = "$queueName.failed";
+
+        $channel->exchange_declare($failedExchange, 'fanout', false, true, false);
+        $channel->basic_publish($message, $failedExchange);
     }
 }
