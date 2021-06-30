@@ -33,6 +33,8 @@ final class Endpoint
     public array $permissions = [];
     /** @psalm-var Collection|class-string */
     public $returnType;
+    /** @var bool */
+    public $returnIsNullable = false;
 
     /**
      * // TODO
@@ -54,6 +56,7 @@ final class Endpoint
 
         Assert::notEmpty($config['returnType'], 'Endpoint return definition is required');
         $self->returnType = $config['returnType'];
+        $self->returnIsNullable = (bool)$config['returnIsNullable'];
 
         Assert::isArray($config['middlewares'] ?? []);
         $self->middlewares = $config['middlewares'] ?? [];

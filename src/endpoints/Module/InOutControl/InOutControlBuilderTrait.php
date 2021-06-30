@@ -29,6 +29,11 @@ trait InOutControlBuilderTrait
     protected $return;
 
     /**
+     * @psalm-var boolean
+     */
+    protected $returnIsNullable = false;
+
+    /**
      * @psalm-param TakenType $classNameOrObject
      * @return $this
      */
@@ -51,6 +56,18 @@ trait InOutControlBuilderTrait
     }
 
     /**
+     * @psalm-param TakenType $classNameOrObject
+     * @return $this
+     */
+    public function returnNullable($classNameOrObject): self
+    {
+        $this->return($classNameOrObject);
+        $this->returnIsNullable = true;
+
+        return $this;
+    }
+
+    /**
      * @param EndpointConfigurationInterface $config
      * @return $this
      * @throws EndpointBuildingException
@@ -63,6 +80,7 @@ trait InOutControlBuilderTrait
         }
         $config->set('inputType', $this->take);
         $config->set('returnType', $this->return);
+        $config->set('returnIsNullable', $this->returnIsNullable);
 
         return $this;
     }
