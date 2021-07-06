@@ -67,7 +67,7 @@ $singletons = [
 
 ];
 
-return Buildtime::run(yii::is2()) ? array_merge([
+return !class_exists(\Yiisoft\Factory\Definition\Reference::class) ? array_merge([
     'aliases' => $aliases,
     'components' => $components,
     'container' => [

@@ -103,7 +103,7 @@ $singletons = array_merge(
     ]
 );
 
-return Buildtime::run(yii::is3()) ? array_merge([
+return class_exists(\Yiisoft\Factory\Definition\Reference::class) ? array_merge([
     'app' => $app,
     'aliases' => $aliases,
 ], $components, $singletons) : array_merge([
