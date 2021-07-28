@@ -48,6 +48,7 @@ $singletons = array_merge(
             'identityClass' => \hiapi\Core\Auth\UserIdentity::class,
             'enableSession' => false,
         ],
+        \hiapi\Service\Customer\AccountClientIdResolverInterface::class => \hiapi\Service\Customer\AccountClientIdResolver::class,
 
         /// Event
         \hiapi\event\EventStorageInterface::class => \hiapi\event\EventStorage::class,
