@@ -11,6 +11,7 @@ use Yiisoft\Router\FastRoute\UrlMatcher;
 use Yiisoft\Router\Group;
 use Yiisoft\Router\RouteCollection;
 use Yiisoft\Middleware\Dispatcher\MiddlewareDispatcher;
+use Yiisoft\Router\RouteCollector;
 
 /**
  * Performs matched route.
@@ -19,19 +20,20 @@ use Yiisoft\Middleware\Dispatcher\MiddlewareDispatcher;
  */
 class RouterMiddleware implements MiddlewareInterface
 {
-    private array $routes;
     private MiddlewareDispatcher $dispatcher;
+    private array $routes;
 
-    public function __construct(array $routes = [], MiddlewareDispatcher $dispatcher)
+    public function __construct(MiddlewareDispatcher $dispatcher, array $routes = [])
     {
-        $this->routes = $routes;
         $this->dispatcher = $dispatcher;
+        $this->routes = $routes;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $group = Group::create(null, $this->dispatcher)->routes(...$this->routes);
-        $matcher = new UrlMatcher(new RouteCollection($group));
+        $collector = (new RouteCollector())->addGroup($group);
+        $matcher = new UrlMatcher(new RouteCollection($collector));
 
         $result = $matcher->match($request);
         if ($result->parameters()) {
@@ -40,5 +42,13 @@ class RouterMiddleware implements MiddlewareInterface
         }
 
         return $result->process($request, $handler);
+    }
+
+    /**
+     * @return array
+     */
+    public function getRoutes(): array
+    {
+        return $this->routes;
     }
 }
