@@ -5,6 +5,7 @@ namespace hiapi\Core\Endpoint;
 use Closure;
 use Doctrine\Common\Collections\ArrayCollection;
 use hiapi\Core\Endpoint\Middleware\CheckPermissionsMiddleware;
+use hiapi\Core\Endpoint\Middleware\FixCustomerIdSpecification;
 use hiapi\Core\Endpoint\Middleware\TypeCheckMiddleware;
 use hiapi\exceptions\ConfigurationException;
 use hiapi\middlewares\CallableHandler;
@@ -45,6 +46,7 @@ class EndpointProcessor
         $middlewares[] = new TypeCheckMiddleware($endpoint);
         $middlewares[] = new CheckPermissionsMiddleware($endpoint, $this->di->get(User::class));
         $middlewares[] = new ValidateCommandMiddleware();
+        $middlewares[] = $this->di->get(FixCustomerIdSpecification::class);
         $middlewares = array_merge($middlewares, $this->endpointMiddlewares());
 
         $result = (new CommandBus($middlewares))->handle($command);
