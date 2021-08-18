@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Yiisoft\Router\CurrentRoute;
 use Yiisoft\Router\FastRoute\UrlMatcher;
 use Yiisoft\Router\Group;
 use Yiisoft\Router\RouteCollection;
@@ -33,7 +34,10 @@ class RouterMiddleware implements MiddlewareInterface
     {
         $group = Group::create(null, $this->dispatcher)->routes(...$this->routes);
         $collector = (new RouteCollector())->addGroup($group);
-        $matcher = new UrlMatcher(new RouteCollection($collector));
+        $matcher = new UrlMatcher(
+            new RouteCollection($collector),
+            new CurrentRoute()
+        );
 
         $result = $matcher->match($request);
         if ($result->parameters()) {
