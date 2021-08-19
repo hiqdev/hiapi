@@ -45,8 +45,8 @@ class EndpointProcessor
         $middlewares = [];
         $middlewares[] = new TypeCheckMiddleware($endpoint);
         $middlewares[] = new CheckPermissionsMiddleware($endpoint, $this->di->get(User::class));
-        $middlewares[] = new ValidateCommandMiddleware();
         $middlewares[] = $this->di->get(FixCustomerIdSpecification::class);
+        $middlewares[] = new ValidateCommandMiddleware();
         $middlewares = array_merge($middlewares, $this->endpointMiddlewares());
 
         $result = (new CommandBus($middlewares))->handle($command);
