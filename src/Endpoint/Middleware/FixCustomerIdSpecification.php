@@ -22,9 +22,13 @@ final class FixCustomerIdSpecification implements Middleware
      */
     public function execute($command, callable $next)
     {
-        if (isset($command->where['customer_id'])) {
-            $command->where['customer_id'] = $this->fixCustomerId($command->where['customer_id']);
+        $possibleFilterNames = ['customer_id', 'customer-id'];
+        foreach ($possibleFilterNames as $key) {
+            if (isset($command->where[$key])) {
+                $command->where[$key] = $this->fixCustomerId($command->where[$key]);
+            }
         }
+
         if (isset($command->customer_id)) {
             $command->customer_id = $this->fixCustomerId($command->customer_id);
         }
