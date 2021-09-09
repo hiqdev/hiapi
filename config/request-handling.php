@@ -14,7 +14,7 @@ return [
         '__construct()' => array_filter([
             'quiet'         => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\QuietMiddleware::class),
             'cors'          => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\CorsMiddleware::class),
-            'bodyParser'    => yii::referenceTo(\Yiisoft\Request\Body\RequestBodyParser::class),
+            'body-parser'    => yii::referenceTo(\Yiisoft\Request\Body\RequestBodyParser::class),
             'content-type'  => class_exists(\Lcobucci\ContentNegotiation\ContentTypeMiddleware::class)
                 ? yii::referenceTo(\Lcobucci\ContentNegotiation\ContentTypeMiddleware::class)
                 : null,
