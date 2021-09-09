@@ -3,6 +3,7 @@
 use hiqdev\yii\compat\yii;
 use Laminas\Diactoros\StreamFactory;
 use Yiisoft\Composer\Config\Merger\Modifier\RemoveKeys;
+use Yiisoft\Request\Body\RequestBodyParser;
 
 return [
     \Yiisoft\Middleware\Dispatcher\MiddlewareFactoryInterface::class => \Yiisoft\Middleware\Dispatcher\MiddlewareFactory::class,
@@ -13,6 +14,7 @@ return [
         '__construct()' => array_filter([
             'quiet'         => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\QuietMiddleware::class),
             'cors'          => yii::referenceTo(\hiapi\Core\Http\Psr15\Middleware\CorsMiddleware::class),
+            'bodyParser'    => yii::referenceTo(\Yiisoft\Request\Body\RequestBodyParser::class),
             'content-type'  => class_exists(\Lcobucci\ContentNegotiation\ContentTypeMiddleware::class)
                 ? yii::referenceTo(\Lcobucci\ContentNegotiation\ContentTypeMiddleware::class)
                 : null,
