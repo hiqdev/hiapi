@@ -57,6 +57,7 @@
         "php-amqplib/php-amqplib": "^3.0.0",
         "ramsey/uuid": "^3.0",
         "doctrine/collections": "^1.6.4",
+        "yiisoft/request-body-parser": "dev-master",
         "psr/http-server-middleware": "^1.0.1"
     },
     "require-dev": {
