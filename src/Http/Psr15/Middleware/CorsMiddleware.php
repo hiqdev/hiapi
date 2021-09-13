@@ -12,7 +12,7 @@ class CorsMiddleware implements MiddlewareInterface
 {
     protected $headers = [
         'Access-Control-Allow-Origin' => ['*'],
-        'Access-Control-Request-Method' => ['GET POST'],
+        'Access-Control-Allow-Methods' => ['GET, POST'],
         'Access-Control-Allow-Headers' => ['content-type'],
         'Access-Control-Max-Age' => ['600'],
     ];
