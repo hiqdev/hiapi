@@ -11,4 +11,14 @@ class AccountClientIdResolver implements AccountClientIdResolverInterface
     {
         return 0;
     }
+
+    public function getAccountUuidByClientId(int $clientId): ?UuidInterface
+    {
+        return null;
+    }
+
+    public function getUserUuidByClientId(int $clientId): ?UuidInterface
+    {
+        return null;
+    }
 }
