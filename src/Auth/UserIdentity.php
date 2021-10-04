@@ -43,7 +43,7 @@ class UserIdentity extends Model implements IdentityInterface
         throw new \yii\base\InvalidCallException('no `findIdentityByAccessToken` and not expected');
     }
 
-    public static function fromArray(array $info): self
+    public static function fromArray(array $info): ?self
     {
         $id = $info['id'] ?? $info['sub'] ?? null;
 
