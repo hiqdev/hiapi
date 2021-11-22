@@ -36,8 +36,8 @@ class RouterMiddleware implements MiddlewareInterface
         $matcher = new UrlMatcher(new RouteCollection($collector));
 
         $result = $matcher->match($request);
-        if ($result->parameters()) {
-            $query = array_merge($result->parameters(), $request->getQueryParams());
+        if ($result->arguments()) {
+            $query = array_merge($result->arguments(), $request->getQueryParams());
             $request = $request->withQueryParams($query);
         }
 
