@@ -3,9 +3,10 @@
 namespace hiapi\event\listener;
 
 use hiqdev\yii\compat\yii;
+use JsonSerializable;
 use League\Event\EventInterface;
 use League\Event\ListenerInterface;
-use yii\base\InvalidConfigException;
+use Psr\Log\LoggerInterface;
 use yii\helpers\FileHelper;
 
 /**
@@ -15,6 +16,13 @@ use yii\helpers\FileHelper;
  */
 class LogEventsListener implements ListenerInterface
 {
+    private LoggerInterface $log;
+
+    public function __construct(LoggerInterface $log)
+    {
+        $this->log = $log;
+    }
+
     /**
      * Handle an event.
      *
@@ -24,10 +32,16 @@ class LogEventsListener implements ListenerInterface
      */
     public function handle(EventInterface $event)
     {
+        $eventString = $this->serializeEvent($event);
+        if ($eventString === null) {
+            $this->log->warning('Do not know how to serialize events that does not implement \JsonSerializable interface.');
+            return;
+        }
+
         $dir = yii::getAlias('@runtime');
 
         FileHelper::createDirectory($dir);
-        file_put_contents($dir . DIRECTORY_SEPARATOR . 'events.log', $this->serializeEvent($event) . PHP_EOL, FILE_APPEND | LOCK_EX);
+        file_put_contents($dir . DIRECTORY_SEPARATOR . 'events.log', $eventString . PHP_EOL, FILE_APPEND | LOCK_EX);
     }
 
     /**
@@ -42,12 +56,12 @@ class LogEventsListener implements ListenerInterface
         return true;
     }
 
-    private function serializeEvent(EventInterface $event)
+    private function serializeEvent(EventInterface $event): ?string
     {
-        if ($event instanceof \JsonSerializable) {
+        if ($event instanceof JsonSerializable) {
             return json_encode($event->jsonSerialize());
         }
 
-        throw new InvalidConfigException('Do not know how to serialize events that does not implement \JsonSerializable interface.');
+        return null;
     }
 }
