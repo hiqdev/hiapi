@@ -21,5 +21,10 @@ interface ResourceDocumentFactoryInterface
 
     public function getResourceByClassName(string $entityClassName): ResourceInterface;
 
+    /**
+     * @param object $entity
+     * @return ResourceInterface
+     * @throws \RuntimeException when resources for the $entity class is not defined
+     */
     public function getResourceFor(object $entity): ResourceInterface;
 }
