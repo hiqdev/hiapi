@@ -49,7 +49,7 @@
         "psr/container": "^1.0",
         "hiqdev/yii-compat": "dev-master",
         "hiqdev/yii2-autobus": "dev-master",
-        "hiqdev/yii2-data-mapper": "dev-master",
+        "hiqdev/yii2-data-mapper": "dev-php8",
         "vlucas/phpdotenv": "^2.4",
         "guzzlehttp/psr7": "^1.4",
         "league/event": "^2.1",
