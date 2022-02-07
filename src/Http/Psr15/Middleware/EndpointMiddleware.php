@@ -23,18 +23,16 @@ use yii\base\Arrayable;
  */
 class EndpointMiddleware implements MiddlewareInterface
 {
-    private string $endpointName;
     private CommandFactory $commandFactory;
     private EndpointRepository $endpointRepository;
     private EndpointProcessor $endpointProcessor;
 
     public function __construct(
-        string $enpointName = '',
+        private ?string $enpointName = '',
         CommandFactory $commandFactory,
         EndpointRepository $endpointRepository,
         EndpointProcessor $endpointProcessor
     ) {
-        $this->endpointName = $enpointName;
         $this->commandFactory = $commandFactory;
         $this->endpointRepository = $endpointRepository;
         $this->endpointProcessor = $endpointProcessor;
