@@ -10,10 +10,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class CorsMiddleware implements MiddlewareInterface
 {
-    protected $headers = [
+    protected array $headers = [
         'Access-Control-Allow-Origin' => ['*'],
         'Access-Control-Allow-Methods' => ['GET, POST'],
-        'Access-Control-Allow-Headers' => ['content-type'],
+        'Access-Control-Allow-Headers' => ['content-type, authorization'],
         'Access-Control-Max-Age' => ['600'],
     ];
     public bool $interceptOptionsRequests = false;
@@ -29,7 +29,7 @@ class CorsMiddleware implements MiddlewareInterface
 
     public function addHeader($name, $value): self
     {
-        $this->headers[$name] = array_merge($this->headers[$name] ?? [], [$value]);
+        $this->headers[$name] = array_unique(array_merge($this->headers[$name] ?? [], [$value]));
 
         return $this;
     }
