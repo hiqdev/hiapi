@@ -60,7 +60,7 @@ class CommandFactory
 
     private function extractData(ServerRequestInterface $request): array
     {
-        $data = array_merge($request->getParsedBody(), $request->getQueryParams());
+        $data = array_merge($request->getParsedBody() ?? [], $request->getQueryParams() ?? []);
         array_walk_recursive($data, static function (&$value) {
             if (\is_string($value)) {
                 $value = trim($value);
