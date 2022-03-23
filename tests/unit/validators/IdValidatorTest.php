@@ -11,7 +11,7 @@ class IdValidatorTest extends \PHPUnit\Framework\TestCase
      */
     protected $idValidator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->idValidator = new IdValidator();
     }

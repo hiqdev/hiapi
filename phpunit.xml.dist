@@ -3,7 +3,6 @@
     <testsuites>
         <testsuite name="unit">
             <directory>./tests/unit/</directory>
-            <directory>./vendor/hiqdev/hiapi/tests/unit/</directory>
         </testsuite>
     </testsuites>
     <filter>

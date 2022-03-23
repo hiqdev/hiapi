@@ -5,8 +5,6 @@ namespace hiapi\tests\unit\Endpoints;
 use Closure;
 use hiapi\endpoints\EndpointBuilderInterface;
 use hiapi\endpoints\EndpointConfiguration;
-use hiapi\endpoints\Module\Builder\OrderedBuildersCallTrait;
-use hiapi\endpoints\Module\Builder\ReflectionBasedEndpointBuilderTrait;
 use hiapi\endpoints\Module\InOutControl\ExamplesAwareBuilderInterface;
 use hiapi\endpoints\Module\InOutControl\ExamplesAwareBuilderTrait;
 use hiapi\endpoints\Module\InOutControl\InOutControlBuilderInterface;
@@ -23,7 +21,7 @@ class EndpointBuilderTest extends TestCase
 {
     protected $builder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -55,7 +53,7 @@ class FakeEndpointBuilder implements
 {
     use ExamplesAwareBuilderTrait;
     use InOutControlBuilderTrait {
-        buildInOutParameters as buildInOutControl;
+        InOutControlBuilderTrait::buildInOutParameters as buildInOutControl;
     }
 
     /**
