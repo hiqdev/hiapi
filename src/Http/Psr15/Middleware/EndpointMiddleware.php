@@ -28,7 +28,7 @@ class EndpointMiddleware implements MiddlewareInterface
     private EndpointProcessor $endpointProcessor;
 
     public function __construct(
-        private ?string $enpointName = '',
+        private ?string $endpointName,
         CommandFactory $commandFactory,
         EndpointRepository $endpointRepository,
         EndpointProcessor $endpointProcessor
