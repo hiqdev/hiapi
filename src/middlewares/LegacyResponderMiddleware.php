@@ -5,7 +5,7 @@ namespace hiapi\middlewares;
 use hiapi\commands\error\CommandError;
 use League\Tactician\Middleware;
 use Psr\Http\Message\ResponseInterface;
-use Zend\Hydrator\HydratorInterface;
+use Laminas\Hydrator\HydratorInterface;
 
 class LegacyResponderMiddleware implements Middleware
 {
