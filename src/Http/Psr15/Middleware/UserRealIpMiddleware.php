@@ -17,8 +17,6 @@ class UserRealIpMiddleware implements MiddlewareInterface
      */
     private array $trustedNets;
 
-    public string $ipAttribute = self::ATTRIBUTE_NAME;
-
     public function __construct(array $trustedNets)
     {
         $this->trustedNets = $trustedNets;
@@ -34,27 +32,40 @@ class UserRealIpMiddleware implements MiddlewareInterface
 
     private function prepare(ServerRequestInterface $request): ServerRequestInterface
     {
-        $oldip = $this->getIp($request);
-        $request = $request->withAttribute($this->ipAttribute, $oldip);
+        $clientIp = $this->getClientIp($request);
+        $request = $request->withAttribute(self::ATTRIBUTE_NAME, $clientIp);
 
-        if (!CIDR::matchBulk($oldip, $this->trustedNets)) {
+        if (!$this->isIpTrusted($clientIp)) {
             return $request;
         }
 
-        $newip = $this->getNewIp($request);
-        if (empty($newip) || $newip === $oldip) {
+        $userIp = $this->getUserIp($request);
+        if ($userIp === '' || $userIp === $clientIp) {
             return $request;
         }
 
-        return $this->setNewIp($request, $newip);
+        return $this->setNewIp($request, $userIp);
     }
 
-    private function getIp(ServerRequestInterface $request): string
+    private function isIpTrusted(string $ip): bool
     {
-        return $request->getServerParams()['REMOTE_ADDR'] ?? '';
+        return CIDR::matchBulk($ip, $this->trustedNets);
     }
 
-    private function getNewIp(ServerRequestInterface $request): string
+    private function getClientIp(ServerRequestInterface $request): string
+    {
+        $ip = $request->getServerParams()['REMOTE_ADDR'] ?? '';
+
+        if (!$this->isIpTrusted($ip) || !$request->hasHeader('X-Forwarded-For')) {
+            return $ip;
+        }
+
+        $ipsChain = array_map('trim', explode(',', $request->getHeaderLine('X-Forwarded-For')));
+
+        return filter_var($ipsChain[0] ?? '', FILTER_VALIDATE_IP) ?? $ip;
+    }
+
+    private function getUserIp(ServerRequestInterface $request): string
     {
         $change = $request->getHeaderLine('X-User-Ip') ?: $this->getParam($request, 'auth_ip');
 
@@ -63,16 +74,9 @@ class UserRealIpMiddleware implements MiddlewareInterface
 
     private function setNewIp(ServerRequestInterface $request, string $ip)
     {
-        /// legacy compatibility
         unset($_REQUEST['auth_ip']);
-        $_SERVER['REMOTE_ADDR'] = $ip;
 
-        # XXX TODO withServerParams NOT DEFINED !!!
-        #$params = $request->getServerParams();
-        #$params['REMOTE_ADDR'] = $ip;
-        #return $request->withServerParams($params);
-
-        return $request->withAttribute($this->ipAttribute, $ip);
+        return $request->withAttribute(self::ATTRIBUTE_NAME, $ip);
     }
 
     private function getParam(ServerRequestInterface $request, string $name): ?string
