@@ -19,7 +19,7 @@ class CorsMiddleware implements MiddlewareInterface
     public bool $interceptOptionsRequests = false;
     private ResponseFactoryInterface $responseFactory;
 
-    public function __construct(array $headers = [], ResponseFactoryInterface $responseFactory)
+    public function __construct(array $headers, ResponseFactoryInterface $responseFactory)
     {
         foreach ($headers as $name => $value) {
             $this->addHeader($name, $value);
