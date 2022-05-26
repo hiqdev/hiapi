@@ -12,6 +12,9 @@ use hiapi\exceptions\SystemError;
 use Lcobucci\ContentNegotiation\Formatter\ContentOnly;
 use Throwable;
 
+// XXX maybe enable force object
+// use const JSON_FORCE_OBJECT;
+
 final class Json extends ContentOnly
 {
     private const DEFAULT_FLAGS = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES;
