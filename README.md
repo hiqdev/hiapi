@@ -1,6 +1,6 @@
 # HiAPI
 
-**HiAPI Yii2 base project for building API**
+**HiAPI - base project for building API**
 
 [![Latest Stable Version](https://poser.pugx.org/hiqdev/hiapi/v/stable)](https://packagist.org/packages/hiqdev/hiapi)
 [![Total Downloads](https://poser.pugx.org/hiqdev/hiapi/downloads)](https://packagist.org/packages/hiqdev/hiapi)
@@ -9,7 +9,7 @@
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/hiqdev/hiapi.svg)](https://scrutinizer-ci.com/g/hiqdev/hiapi/)
 [![Dependency Status](https://www.versioneye.com/php/hiqdev:hiapi/dev-master/badge.svg)](https://www.versioneye.com/php/hiqdev:hiapi/dev-master)
 
-HiAPI is a base project for building Yii2 based API.
+HiAPI is a base project for building API.
 
 ## Installation
 
