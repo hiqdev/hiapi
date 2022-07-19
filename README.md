@@ -29,6 +29,19 @@ or add
 
 to the require section of your composer.json.
 
+## Overview
+
+- **Endpoint** - describes an endpoint:
+    - name and description
+    - availability: web, console, ...
+    - authorization
+    - input it takes - **Command**
+    - output it returns - **Result**
+    - execution conveyor: **Middlewares** and **Action**
+- **Command** - describes and holds input data
+- **Action** - takes **Command** and returns **Result**
+- **Result** - describes and holds output data
+
 ## License
 
 This project is released under the terms of the BSD-3-Clause [license](LICENSE).
