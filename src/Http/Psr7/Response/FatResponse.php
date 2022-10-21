@@ -13,7 +13,9 @@ class FatResponse
 
     public static function create($content, RequestInterface $request = null): ResponseInterface
     {
-        $content = self::convertScintificNumbers($content);
+        if (is_array($content)) {
+            $content = self::convertScintificNumbers($content);
+        }
         if ($request === null) {
             return new UnformattedResponse(new Response(), $content);
         }
