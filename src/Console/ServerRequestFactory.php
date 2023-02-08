@@ -2,12 +2,14 @@
 
 namespace hiapi\Core\Console;
 
+use AllowDynamicProperties;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Uri;
 
 /**
  * Class for marshaling a request object sent with console.
  */
+#[AllowDynamicProperties]
 class ServerRequestFactory
 {
     public const PROTOCOL_VERSION = '1.1';
