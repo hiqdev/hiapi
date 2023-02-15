@@ -51,7 +51,7 @@
         "hiqdev/yii2-autobus": "dev-master",
         "hiqdev/yii2-data-mapper": "dev-master",
         "vlucas/phpdotenv": "^2.4 || ^5.3.1",
-        "guzzlehttp/psr7": "^1.4",
+        "guzzlehttp/psr7": "^1.9 || ^2.0",
         "league/event": "^2.1",
         "yiisoft/event-dispatcher": "^1.0",
         "php-amqplib/php-amqplib": "^3.0.0",
