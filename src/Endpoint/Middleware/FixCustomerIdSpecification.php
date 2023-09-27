@@ -7,6 +7,7 @@ use hiapi\commands\SearchCommand;
 use hiapi\Service\Customer\AccountClientIdResolverInterface;
 use League\Tactician\Middleware;
 use Ramsey\Uuid\Uuid;
+use Throwable;
 
 final class FixCustomerIdSpecification implements Middleware
 {
@@ -38,8 +39,14 @@ final class FixCustomerIdSpecification implements Middleware
 
     private function fixCustomerId($customer_id)
     {
-        return Uuid::isValid($customer_id)
-            ? $this->accountClientIdResolver->resolveByAccountId(Uuid::fromString($customer_id))
-            : $customer_id;
+        if (!Uuid::isValid($customer_id)) {
+            return $customer_id;
+        }
+
+        try {
+            return $this->accountClientIdResolver->resolveByAccountId(Uuid::fromString($customer_id));
+        } catch (Throwable $e) {
+            return $customer_id;
+        }
     }
 }
