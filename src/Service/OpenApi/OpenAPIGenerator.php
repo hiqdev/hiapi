@@ -15,6 +15,7 @@ use cebe\openapi\spec\SecurityScheme;
 use cebe\openapi\spec\Server;
 use cebe\openapi\spec\ServerVariable;
 use Generator;
+use hiapi\commands\BaseCommand;
 use hiapi\commands\Reflection\BaseCommandReflection;
 use hiapi\Core\Endpoint\EndpointRepository;
 use hiapi\endpoints\Module\InOutControl\VO\Collection;
