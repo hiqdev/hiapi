@@ -25,7 +25,7 @@ $aliases = [
 $components = [
     (Buildtime::run(yii::is3()) ? 'logger' : 'log') => [
         'targets' => [
-            [
+            'file' => [
                 '__class' => \yii\log\FileTarget::class,
                 'logFile' => '@runtime/error.log',
                 'levels' => [\Psr\Log\LogLevel::ERROR],
