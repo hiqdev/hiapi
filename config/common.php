@@ -22,8 +22,10 @@ $aliases = [
     '@hiapi' => dirname(__DIR__) . '/src',
 ];
 
+$logComponent = Buildtime::run(yii::is3()) ? 'logger' : 'log';
+
 $components = [
-    (Buildtime::run(yii::is3()) ? 'logger' : 'log') => [
+    $logComponent => [
         'targets' => [
             'file' => [
                 '__class' => \yii\log\FileTarget::class,
@@ -104,12 +106,18 @@ $singletons = array_merge(
     ]
 );
 
+$loggingDisabled = getenv('YII_LOGGING_DISABLED');
+if ($loggingDisabled) {
+    // Disable logging
+    $components[$logComponent] = [];
+}
+
 return class_exists(\Yiisoft\Factory\Definition\Reference::class) ? array_merge([
     'app' => $app,
     'aliases' => $aliases,
 ], $components, $singletons) : array_merge([
     'aliases' => $aliases,
-    'bootstrap' => ['log'],
+    'bootstrap' => $loggingDisabled ? [] : ['log'],
     'components' => $components,
     'container' => [
         'resolveArrays' => true,

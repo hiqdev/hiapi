@@ -102,7 +102,7 @@
             "constants": "config/constants.php",
             "params": "config/params.php",
             "common": "config/common.php",
-            "tests": "config/tests.php",
+            "tests": "$common",
             "console": [
                 "$common",
                 "config/console.php"
