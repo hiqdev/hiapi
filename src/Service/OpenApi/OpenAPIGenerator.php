@@ -142,11 +142,16 @@ class OpenAPIGenerator
         foreach ($this->metValidators as $name => $className) {
             $reflection = ValidatorReflection::fromClassname($className);
 
+            $description = $reflection->getDescription();
+            $example = $reflection->getExample();
+            if (!empty($example)) {
+                $description .= "\n\n" . ' Example: ' . $example;
+            }
+
             $result[$name] = new Schema(array_filter([
                 'pattern' => $reflection->getPattern(),
                 'type' => 'string',
-                'description' => $reflection->getSummary(),
-                'example' => $reflection->getExample(),
+                'description' => $description,
             ]));
         }
 
