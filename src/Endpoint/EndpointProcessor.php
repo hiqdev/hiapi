@@ -19,18 +19,16 @@ use yii\web\User;
 
 class EndpointProcessor
 {
-    /**
-     * @var Endpoint
-     */
-    private $endpoint;
-    /**
-     * @var ContainerInterface
-     */
-    private $di;
+    private Endpoint $endpoint;
 
-    public function __construct(ContainerInterface $di)
+    private ContainerInterface $di;
+
+    private User $user;
+
+    public function __construct(ContainerInterface $di, User $user)
     {
         $this->di = $di;
+        $this->user = $user;
     }
 
     /**
@@ -44,7 +42,7 @@ class EndpointProcessor
 
         $middlewares = [];
         $middlewares[] = new TypeCheckMiddleware($endpoint);
-        $middlewares[] = new CheckPermissionsMiddleware($endpoint, $this->di->get(User::class));
+        $middlewares[] = new CheckPermissionsMiddleware($endpoint, $this->user);
         $middlewares[] = $this->di->get(FixCustomerIdSpecification::class);
         $middlewares[] = new ValidateCommandMiddleware();
         $middlewares = array_merge($middlewares, $this->endpointMiddlewares());
