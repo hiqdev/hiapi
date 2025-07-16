@@ -4,7 +4,6 @@
 namespace hiapi\Core\Endpoint;
 
 use hiapi\exceptions\ConfigurationException;
-use Psalm\Type\Atomic\TLiteralClassString;
 use Psr\Container\ContainerInterface;
 
 class EndpointRepository
@@ -14,7 +13,7 @@ class EndpointRepository
     private BuilderFactory $builderFactory;
 
     /**
-     * @var array<string, string|TLiteralClassString>
+     * @var array<string, string|class-string<Endpoint>>
      */
     private array $endpoints = [];
 
@@ -35,7 +34,7 @@ class EndpointRepository
     /**
      * @param string $name
      * @param string $handlerClassName
-     * @psalm-param TLiteralClassString $handlerClassName
+     * @psalm-param class-string $handlerClassName
      * @return $this
      */
     public function addEndpoint(string $name, string $handlerClassName): self
