@@ -73,7 +73,7 @@ final class BulkCommand extends BaseCommand implements Countable, IteratorAggreg
     /**
      * @inheritDoc
      */
-    public function count()
+    public function count(): int
     {
         return $this->collection->count();
     }
