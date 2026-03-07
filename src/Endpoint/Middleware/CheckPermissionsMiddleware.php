@@ -29,7 +29,9 @@ class CheckPermissionsMiddleware implements Middleware
     public function execute($command, callable $next)
     {
         foreach ($this->endpoint->permissions as $permission) {
-            if (! $this->user->can($permission)) {
+            if (! $this->user->can($permission)
+                && !$this->user->identity instanceof PrivilegedIdentity
+            ) {
                 throw new InsufficientPermissionsException($permission);
             }
         }
