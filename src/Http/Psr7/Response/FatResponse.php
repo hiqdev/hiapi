@@ -11,7 +11,7 @@ class FatResponse
 {
     public const REQUEST_ATTRIBUTE = 'request';
 
-    public static function create($content, RequestInterface $request = null): ResponseInterface
+    public static function create($content, ?RequestInterface $request = null): ResponseInterface
     {
         if ($request === null) {
             return new UnformattedResponse(new Response(), $content);

@@ -19,11 +19,8 @@ use yii\base\Model;
  */
 class CommandFactory
 {
-    private ContainerInterface $di;
-
-    public function __construct(ContainerInterface $di)
+    public function __construct(private readonly ContainerInterface $di)
     {
-        $this->di = $di;
     }
 
     public function createByEndpoint(Endpoint $endpoint, ServerRequestInterface $request): Model
@@ -61,7 +58,7 @@ class CommandFactory
     private function extractData(ServerRequestInterface $request): array
     {
         $data = array_merge($request->getParsedBody() ?? [], $request->getQueryParams() ?? []);
-        array_walk_recursive($data, static function (&$value) {
+        array_walk_recursive($data, static function (&$value): void {
             if (\is_string($value)) {
                 $value = trim($value);
             }

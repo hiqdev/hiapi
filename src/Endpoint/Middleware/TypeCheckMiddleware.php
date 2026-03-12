@@ -11,11 +11,8 @@ use RuntimeException;
 
 class TypeCheckMiddleware implements Middleware
 {
-    private Endpoint $endpoint;
-
-    public function __construct(Endpoint $endpoint)
+    public function __construct(private readonly Endpoint $endpoint)
     {
-        $this->endpoint = $endpoint;
     }
 
     /**
@@ -39,7 +36,7 @@ class TypeCheckMiddleware implements Middleware
                     'Endpoint "%s" expects IteratorAggregate of "%s" as input, got "%s" instead',
                     $this->endpoint->name,
                     $inputType->getEntriesClass(),
-                    get_class($command),
+                    $command::class,
                 ));
             }
 
@@ -49,7 +46,7 @@ class TypeCheckMiddleware implements Middleware
                         'Endpoint "%s" expects IteratorAggregate of "%s" as input, one of collection items is "%s"',
                         $this->endpoint->name,
                         $inputType->getEntriesClass(),
-                        get_class($item),
+                        $item::class,
                     ));
                 }
             }
@@ -57,12 +54,12 @@ class TypeCheckMiddleware implements Middleware
             return;
         }
 
-        if (get_class($command) !== $inputType) {
+        if ($command::class !== $inputType) {
             throw new RuntimeException(sprintf(
                 'Endpoint "%s" expects "%s" as input, got "%s" instead',
                 $this->endpoint->name,
                 $inputType,
-                get_class($command),
+                $command::class,
             ));
         }
     }
@@ -80,7 +77,7 @@ class TypeCheckMiddleware implements Middleware
                 'Endpoint "%s" expects "%s" as a result, got "NULL" instead',
                 $this->endpoint->name,
                 is_object($this->endpoint->returnType)
-                    ? get_class($this->endpoint->returnType)
+                    ? $this->endpoint->returnType::class
                     : $this->endpoint->returnType,
             ));
         }
@@ -91,7 +88,7 @@ class TypeCheckMiddleware implements Middleware
                     'Endpoint "%s" expects collection of "%s" as a result, got "%s" instead',
                     $this->endpoint->name,
                     $returnType->getEntriesClass(),
-                    get_class($result),
+                    $result::class,
                 ));
             }
 
@@ -101,7 +98,7 @@ class TypeCheckMiddleware implements Middleware
                         'Endpoint "%s" expects collection of "%s" as a result, one of collection items is "%s"',
                         $this->endpoint->name,
                         $returnType->getEntriesClass(),
-                        get_class($item),
+                        $item::class,
                     ));
                 }
             }
@@ -113,14 +110,14 @@ class TypeCheckMiddleware implements Middleware
             return;
         }
 
-        if (get_class($result) !== $this->endpoint->returnType) {
+        if ($result::class !== $this->endpoint->returnType) {
             throw new RuntimeException(sprintf(
                 'Endpoint "%s" expects "%s" as a result, got "%s" instead',
                 $this->endpoint->name,
                 is_object($this->endpoint->returnType)
-                    ? get_class($this->endpoint->returnType)
+                    ? $this->endpoint->returnType::class
                     : $this->endpoint->returnType,
-                get_class($result),
+                $result::class,
             ));
         }
     }

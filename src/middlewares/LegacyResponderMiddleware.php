@@ -9,21 +9,8 @@ use Laminas\Hydrator\HydratorInterface;
 
 class LegacyResponderMiddleware implements Middleware
 {
-    /**
-     * @var ResponseInterface
-     */
-    private $response;
-    /**
-     * @var HydratorInterface
-     */
-    private $extractor;
-
-    public function __construct(
-        ResponseInterface $response,
-        HydratorInterface $extractor
-    ) {
-        $this->response = $response;
-        $this->extractor = $extractor;
+    public function __construct(private readonly ResponseInterface $response, private readonly HydratorInterface $extractor)
+    {
     }
 
     /**
@@ -48,9 +35,7 @@ class LegacyResponderMiddleware implements Middleware
         }
 
         if (is_array($result)) {
-            return array_map(function ($item) {
-                return $this->extractOne($item);
-            }, $result);
+            return array_map(fn($item) => $this->extractOne($item), $result);
         }
 
         return $this->extractOne($result);

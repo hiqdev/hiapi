@@ -15,6 +15,7 @@ use yii\helpers\Inflector;
 
 abstract class BaseController extends \yii\web\Controller
 {
+    #[\Override]
     public function behaviors()
     {
         return [
@@ -26,6 +27,7 @@ abstract class BaseController extends \yii\web\Controller
 
     protected $_actions;
 
+    #[\Override]
     public function actions()
     {
         if ($this->_actions === null) {
@@ -69,7 +71,7 @@ abstract class BaseController extends \yii\web\Controller
         $commands = [];
         $files = scandir($dir);
         foreach ($files as $file) {
-            if (substr_compare($file, 'Command.php', -11, 11) === 0) {
+            if (str_ends_with($file, 'Command.php')) {
                 $command = Inflector::camel2id(substr(basename($file), 0, -11));
                 $commands[$command] = '';
             }
@@ -96,7 +98,7 @@ abstract class BaseController extends \yii\web\Controller
 
     public function findCommandNamespace()
     {
-        $nss = explode('\\', get_called_class());
+        $nss = explode('\\', static::class);
         array_pop($nss);
         array_pop($nss);
         array_push($nss, 'commands');

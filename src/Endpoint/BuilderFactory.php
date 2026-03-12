@@ -21,7 +21,7 @@ class BuilderFactory implements BuilderFactoryInterface
 {
     public function endpoint(string $className): EndpointBuilder
     {
-        return (new EndpointBuilder())
+        return new EndpointBuilder()
             ->name($this->nameFromClassName($className))
             ->definedBy($className);
     }
@@ -29,7 +29,7 @@ class BuilderFactory implements BuilderFactoryInterface
     private function nameFromClassName(string $className): string
     {
         /** @noinspection PhpUnhandledExceptionInspection */
-        return (new ReflectionClass($className))->getShortName();
+        return new ReflectionClass($className)->getShortName();
     }
 
     public function call(string $className)
@@ -77,9 +77,7 @@ class BuilderFactory implements BuilderFactoryInterface
     // TODO: move to internal project
     public function checkSelf(): Closure
     {
-        return static function ($command, $next) {
-            return $next($command);
-        };
+        return static fn($command, $next) => $next($command);
     }
 
     public function input(array $inputOptions): array

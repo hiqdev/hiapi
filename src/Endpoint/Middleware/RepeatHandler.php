@@ -23,9 +23,7 @@ class RepeatHandler implements Middleware
     {
         $this->ensureCommandIsIterable($command);
         $items = iterator_to_array($command, true);
-        $res = array_map(function ($item) {
-            return $this->handle($item);
-        }, $items);
+        $res = array_map(fn($item) => $this->handle($item), $items);
 
         return new ArrayCollection($res);
     }
@@ -50,7 +48,7 @@ class RepeatHandler implements Middleware
             throw new \RuntimeException(sprintf(
                 '%s expects command to be iterable, %s provided instead',
                 self::class,
-                get_class($command)
+                $command::class
             ));
         }
     }

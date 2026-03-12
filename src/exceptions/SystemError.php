@@ -11,13 +11,12 @@ use Throwable;
  */
 class SystemError extends \RuntimeException
 {
-    /** @var mixed */
-    private $data;
-
-    public function __construct($data, Throwable $previous = null, int $code = 0)
+    /**
+     * @param mixed $data
+     */
+    public function __construct(private $data, ?Throwable $previous = null, int $code = 0)
     {
         parent::__construct('System error', $code, $previous);
-        $this->data = $data;
     }
 
     public function getData()

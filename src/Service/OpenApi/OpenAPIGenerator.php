@@ -38,16 +38,13 @@ use ReflectionObject;
 class OpenAPIGenerator
 {
     /** @psalm-var array<string, SecurityScheme> */
-    private array $securitySchemes;
-    private EndpointRepository $endpointRepository;
+    private readonly array $securitySchemes;
     /** @psalm-var list<string> */
-    private array $hosts;
-    private array $apiInfo;
+    private readonly array $hosts;
+    private readonly array $apiInfo;
 
-    public function __construct(EndpointRepository $endpointRepository, array $options = [])
+    public function __construct(private readonly EndpointRepository $endpointRepository, array $options = [])
     {
-        $this->endpointRepository = $endpointRepository;
-
         $this->hosts = $options['hosts'] ?? [];
         $this->securitySchemes = $options['securitySchemes'] ?? [];
         $this->apiInfo = $options['apiInfo'] ?? [];
@@ -120,7 +117,7 @@ class OpenAPIGenerator
                         ]),
                     ]),
                 ]));
-            } catch (ConfigurationException $exception) {
+            } catch (ConfigurationException) {
             }
         }
     }
@@ -229,13 +226,13 @@ class OpenAPIGenerator
             InlineValidator::class => 'Could not be inspected and should not be used',
             SafeValidator::class => 'Means nothing in OpenAPI',
         ];
-        if (isset($skippedValidators[get_class($validator)])) {
+        if (isset($skippedValidators[$validator::class])) {
             return null;
         }
 
-        $name = (new ReflectionObject($validator))->getShortName();
+        $name = new ReflectionObject($validator)->getShortName();
         if (!isset($this->metValidators[$name])) {
-            $this->metValidators[$name] = get_class($validator);
+            $this->metValidators[$name] = $validator::class;
         }
 
         return $name;

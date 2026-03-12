@@ -21,11 +21,13 @@ use hiqdev\DataMapper\Repository\EntityManagerInterface;
  */
 class GetInfoHandler extends SearchHandler
 {
+    #[\Override]
     public function handle(EntityCommandInterface $command)
     {
         return $this->getRepository($command)->findOneOrFail($this->buildSpecification($command));
     }
 
+    #[\Override]
     protected function buildSpecification(EntityCommandInterface $command)
     {
         return $this->createSpecification()->where(['id' => $command->id])->limit(1);

@@ -20,10 +20,6 @@ class AbstractEvent extends \League\Event\AbstractEvent implements EventInterfac
      * @var \DateTimeImmutable
      */
     private $createdAt;
-    /**
-     * @var object
-     */
-    protected $target;
 
     /**
      * AbstractEvent constructor.
@@ -31,11 +27,10 @@ class AbstractEvent extends \League\Event\AbstractEvent implements EventInterfac
      * @param null $target
      * @throws \Exception
      */
-    public function __construct($target = null)
+    public function __construct(protected $target = null)
     {
         $this->uuid = Uuid::uuid4();
         $this->createdAt = new \DateTimeImmutable();
-        $this->target = $target;
     }
 
     /**
@@ -73,9 +68,10 @@ class AbstractEvent extends \League\Event\AbstractEvent implements EventInterfac
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function getName()
     {
-        $path = explode('\\', get_class($this));
+        $path = explode('\\', static::class);
         return array_pop($path);
     }
 

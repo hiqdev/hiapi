@@ -74,6 +74,7 @@ class ConsoleLogTarget extends \yii\log\Target
         Console::stdout($message . "\n");
     }
 
+    #[\Override]
     protected function getContextMessage()
     {
         return '';

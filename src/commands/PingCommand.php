@@ -18,6 +18,7 @@ class PingCommand extends BaseCommand
     public $message;
     public $no;
 
+    #[\Override]
     public function rules()
     {
         return [

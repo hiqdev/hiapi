@@ -7,12 +7,9 @@ namespace hiapi\exceptions\domain;
  */
 class RequiredInputException extends DomainException
 {
-    private $field;
-
-    public function __construct(string $message, int $code = 0, Throwable $previous = null)
+    public function __construct(private readonly string $field, int $code = 0, ?Throwable $previous = null)
     {
-        $this->field = $message;
-        parent::__construct("required input `$message`", $code, $previous);
+        parent::__construct("required input `{$this->field}`", $code, $previous);
     }
 
     public function getField()

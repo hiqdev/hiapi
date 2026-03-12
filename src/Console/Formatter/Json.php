@@ -19,14 +19,8 @@ final class Json extends ContentOnly
 {
     private const DEFAULT_FLAGS = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES;
 
-    /**
-     * @var int
-     */
-    private $flags;
-
-    public function __construct(int $flags = self::DEFAULT_FLAGS)
+    public function __construct(private readonly int $flags = self::DEFAULT_FLAGS)
     {
-        $this->flags = $flags;
     }
 
     public function formatContent($content, array $attributes = []): string
@@ -47,7 +41,7 @@ final class Json extends ContentOnly
             '_error' => $e->getMessage(),
             '_error_ops' => array_filter([
                 'at' => Json::class,
-                'class' => get_class($source),
+                'class' => $source::class,
                 'data' =>  $system ? $e->getData() : null,
                 'message' => getenv('ENV') === 'prod' ? '' : $source->getMessage(),
             ]),

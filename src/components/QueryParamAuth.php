@@ -23,7 +23,7 @@ class QueryParamAuth extends AuthMethod
     {
         $accessToken = $request->get($this->tokenParam) ?? $request->post($this->tokenParam);
         if (is_string($accessToken)) {
-            $identity = $user->loginByAccessToken($accessToken, get_class($this));
+            $identity = $user->loginByAccessToken($accessToken, static::class);
             if ($identity !== null) {
                 return $identity;
             }

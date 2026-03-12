@@ -11,19 +11,8 @@ use hiapi\commands\BaseCommand;
  */
 abstract class CommandError
 {
-    /**
-     * @var BaseCommand
-     */
-    private $command;
-    /**
-     * @var \Exception
-     */
-    private $exception;
-
-    public function __construct(BaseCommand $command, \Exception $exception)
+    public function __construct(private readonly BaseCommand $command, private readonly \Exception $exception)
     {
-        $this->command = $command;
-        $this->exception = $exception;
     }
 
     /**

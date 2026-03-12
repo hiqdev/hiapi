@@ -19,10 +19,10 @@ use hiapi\commands\BaseCommand;
 final class Endpoint
 {
     public string $name;
-    public ?string $description;
+    public ?string $description = null;
 
     /** @psalm-var ?class-string */
-    public ?string $definedBy;
+    public ?string $definedBy = null;
     /** @psalm-var Tenant::CLI|Tenant::WEB */
     public int $tenantMask;
     /** @psalm-var Collection|class-string<BaseCommand> */

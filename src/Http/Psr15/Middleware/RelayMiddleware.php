@@ -29,6 +29,6 @@ class RelayMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return (new Relay($this->middlewares))->handle($request);
+        return new Relay($this->middlewares)->handle($request);
     }
 }

@@ -13,6 +13,7 @@ class IdValidator extends RegularExpressionValidator
 {
     public $pattern = '/^\d+$/';
 
+    #[\Override]
     public function init()
     {
         parent::init();

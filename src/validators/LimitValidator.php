@@ -18,9 +18,10 @@ class LimitValidator extends Validator
         $this->message = 'The limit is not valid';
     }
 
+    #[\Override]
     public function validateAttribute($model, $attribute)
     {
-        $model->$attribute = mb_strtolower($model->$attribute);
+        $model->$attribute = mb_strtolower((string) $model->$attribute);
 
         parent::validateAttribute($model, $attribute);
     }

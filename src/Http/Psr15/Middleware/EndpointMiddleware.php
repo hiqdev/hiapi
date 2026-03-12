@@ -23,18 +23,14 @@ use yii\base\Arrayable;
  */
 class EndpointMiddleware implements MiddlewareInterface
 {
-    private CommandFactory $commandFactory;
-    private EndpointRepository $endpointRepository;
-    private EndpointProcessor $endpointProcessor;
+    private readonly EndpointProcessor $endpointProcessor;
 
     public function __construct(
-        private ?string $endpointName,
-        CommandFactory $commandFactory,
-        EndpointRepository $endpointRepository,
+        private readonly ?string $endpointName,
+        private readonly CommandFactory $commandFactory,
+        private readonly EndpointRepository $endpointRepository,
         EndpointProcessor $endpointProcessor
     ) {
-        $this->commandFactory = $commandFactory;
-        $this->endpointRepository = $endpointRepository;
         $this->endpointProcessor = $endpointProcessor;
     }
 
@@ -81,9 +77,7 @@ class EndpointMiddleware implements MiddlewareInterface
     private function transformResult($result)
     {
         if ($result instanceof ArrayCollection) {
-            return array_map(function ($item) {
-                return $this->transformResult($item);
-            }, $result->toArray());
+            return array_map(fn($item) => $this->transformResult($item), $result->toArray());
         }
 
         if ($result instanceof Arrayable) {

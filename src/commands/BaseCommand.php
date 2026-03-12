@@ -26,7 +26,7 @@ abstract class BaseCommand extends \yii\base\Model
      */
     public function commandName(): string
     {
-        return strtr((new \ReflectionObject($this))->getShortName(), [
+        return strtr(new \ReflectionObject($this)->getShortName(), [
             'Command' => '',
         ]);
     }

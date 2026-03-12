@@ -14,13 +14,9 @@ use yii\console\ExitCode;
  */
 class QueueController extends \yii\console\Controller
 {
-    private QueueConsumerService $consumer;
-
-    public function __construct($id, Module $module, QueueConsumerService $consumer, array $config = [])
+    public function __construct($id, Module $module, private readonly QueueConsumerService $consumer, array $config = [])
     {
         parent::__construct($id, $module, $config);
-
-        $this->consumer = $consumer;
     }
 
     /**

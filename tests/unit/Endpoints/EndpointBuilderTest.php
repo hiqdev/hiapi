@@ -2,14 +2,19 @@
 
 namespace hiapi\tests\unit\Endpoints;
 
-use hiapi\tests\unit\Endpoints\support\FakeEndpointBuilder;
+use Closure;
+use hiapi\endpoints\EndpointBuilderInterface;
+use hiapi\endpoints\EndpointConfiguration;
+use hiapi\endpoints\Module\InOutControl\ExamplesAwareBuilderInterface;
+use hiapi\endpoints\Module\InOutControl\ExamplesAwareBuilderTrait;
+use hiapi\endpoints\Module\InOutControl\InOutControlBuilderInterface;
+use hiapi\endpoints\Module\InOutControl\InOutControlBuilderTrait;
+use hiapi\tests\unit\Endpoints\support\FakeEndpoint;
 use hiapi\tests\unit\Endpoints\support\InputStub;
 use hiapi\tests\unit\Endpoints\support\ReturnStub;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @group endpoints
- */
+#[\PHPUnit\Framework\Attributes\Group('endpoints')]
 class EndpointBuilderTest extends TestCase
 {
     protected $builder;
@@ -29,7 +34,49 @@ class EndpointBuilderTest extends TestCase
 
         $endpoint = $builder->build();
 
-        $this->assertSame(InputStub::class, $endpoint->getConfig()['take']);
-        $this->assertSame(ReturnStub::class, $endpoint->getConfig()['return']);
+        $this->assertSame(InputStub::class, $endpoint->getConfig()['inputType']);
+        $this->assertSame(ReturnStub::class, $endpoint->getConfig()['returnType']);
     }
 }
+
+/**
+ * Class TestABC
+ *
+ * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
+ */
+class FakeEndpointBuilder implements
+    EndpointBuilderInterface,
+    ExamplesAwareBuilderInterface,
+    InOutControlBuilderInterface
+{
+    use ExamplesAwareBuilderTrait;
+    use InOutControlBuilderTrait {
+        InOutControlBuilderTrait::buildInOutParameters as buildInOutControl;
+    }
+
+    /**
+     * @return Closure[]
+     */
+    protected function getBuildersList(): array
+    {
+        return [
+            $this->buildExamples(...),
+            $this->buildInOutControl(...),
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function build()
+    {
+        $builders = $this->getBuildersList();
+
+        $config = new EndpointConfiguration();
+        foreach ($builders as $builder) {
+            $builder($config);
+        }
+
+        return FakeEndpoint::fromConfig($config);
+    }
+};

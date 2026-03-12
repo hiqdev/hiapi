@@ -29,22 +29,16 @@ use yii\web\Response;
  */
 class ApiController extends Controller
 {
-    /**
-     * @var AutoBusInterface|BranchedAutoBus
-     */
-    private $autoBus;
-
     public function __construct(
         string $id,
         Module $module,
-        ApiCommandsBusInterface $autoBus,
+        private readonly ApiCommandsBusInterface $autoBus,
         array $config = []
     ) {
-        $this->autoBus = $autoBus;
-
         parent::__construct($id, $module, $config);
     }
 
+    #[\Override]
     public function behaviors()
     {
         return array_merge(parent::behaviors(), [
@@ -83,6 +77,6 @@ class ApiController extends Controller
 
     private function buildCommandName($resource, $action, $bulk = false) // todo use $bulk
     {
-        return $resource . ucfirst($action);
+        return $resource . ucfirst((string) $action);
     }
 }

@@ -23,11 +23,6 @@ class PublishToQueueListener extends AbstractListener
     protected $amqp;
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * @var AMQPChannel
      */
     protected $channel;
@@ -43,10 +38,9 @@ class PublishToQueueListener extends AbstractListener
      */
     public $maxPriority = null;
 
-    public function __construct(AMQPStreamConnection $amqp, LoggerInterface $logger)
+    public function __construct(AMQPStreamConnection $amqp, private readonly LoggerInterface $logger)
     {
         $this->amqp = $amqp;
-        $this->logger = $logger;
     }
 
     /**
@@ -87,13 +81,13 @@ class PublishToQueueListener extends AbstractListener
     private function createMessage($event): AMQPMessage
     {
         if (!$event instanceof \JsonSerializable) {
-            throw new InvalidConfigException('Event "' . get_class($event) . '" can not be sent to queue');
+            throw new InvalidConfigException('Event "' . $event::class . '" can not be sent to queue');
         }
 
         $options = [];
         if ($this->maxPriority !== null && $event instanceof PriorityEventInterface) {
             if ($event->getPriority() > $this->maxPriority) {
-                throw new InvalidConfigException('Event "' . get_class($event) . '" priority is above supported maximum');
+                throw new InvalidConfigException('Event "' . $event::class . '" priority is above supported maximum');
             }
 
             $options['priority'] = $event->getPriority();

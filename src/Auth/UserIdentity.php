@@ -19,6 +19,7 @@ class UserIdentity extends Model implements IdentityInterface
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function rules()
     {
         return [
@@ -30,7 +31,7 @@ class UserIdentity extends Model implements IdentityInterface
     }
 
     /** {@inheritdoc} */
-    public static function findIdentity($id)
+    public static function findIdentity($id): never
     {
         throw new \yii\base\InvalidCallException('no `findIdentity` and not expected');
     }
@@ -38,7 +39,7 @@ class UserIdentity extends Model implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public static function findIdentityByAccessToken($token, $type = null): never
     {
         throw new \yii\base\InvalidCallException('no `findIdentityByAccessToken` and not expected');
     }

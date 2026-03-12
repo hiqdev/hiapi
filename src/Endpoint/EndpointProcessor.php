@@ -21,14 +21,8 @@ class EndpointProcessor
 {
     private Endpoint $endpoint;
 
-    private ContainerInterface $di;
-
-    private User $user;
-
-    public function __construct(ContainerInterface $di, User $user)
+    public function __construct(private readonly ContainerInterface $di, private readonly User $user)
     {
-        $this->di = $di;
-        $this->user = $user;
     }
 
     /**
@@ -47,7 +41,7 @@ class EndpointProcessor
         $middlewares[] = new ValidateCommandMiddleware();
         $middlewares = array_merge($middlewares, $this->endpointMiddlewares());
 
-        $result = (new CommandBus($middlewares))->handle($command);
+        $result = new CommandBus($middlewares)->handle($command);
 
         return $result;
     }

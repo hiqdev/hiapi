@@ -56,13 +56,13 @@ class EndpointBuilder implements
     protected function getBuildersList(): array
     {
         return [
-            Closure::fromCallable([$this, 'buildPermissionsCheck']),
-            Closure::fromCallable([$this, 'buildName']),
-            Closure::fromCallable([$this, 'buildInOutParameters']),
-            Closure::fromCallable([$this, 'buildTenants']),
-            Closure::fromCallable([$this, 'buildMiddlewares']),
-            Closure::fromCallable([$this, 'buildExamples']),
-            Closure::fromCallable([$this, 'buildDescription']),
+            $this->buildPermissionsCheck(...),
+            $this->buildName(...),
+            $this->buildInOutParameters(...),
+            $this->buildTenants(...),
+            $this->buildMiddlewares(...),
+            $this->buildExamples(...),
+            $this->buildDescription(...),
         ];
     }
 

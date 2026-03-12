@@ -15,13 +15,7 @@ class CIDR
      */
     public static function matchBulk(string $ip, array $ranges): bool
     {
-        foreach ($ranges as $range => $_) {
-            if (IpHelper::inRange($ip, $range)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($ranges, fn($_, $range) => IpHelper::inRange($ip, $range));
     }
 
     public static function match(string $ip, string $range): bool

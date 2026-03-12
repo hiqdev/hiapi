@@ -47,7 +47,7 @@ class QueueConsumerService
 
         Console::output(' [*] Waiting for messages. To exit press CTRL+C');
 
-        $callback = function (AMQPMessage $msg) use (&$maxProcessedMessagesCount, $queueName, $channel, $bus) {
+        $callback = function (AMQPMessage $msg) use (&$maxProcessedMessagesCount, $queueName, $channel, $bus): void {
             Console::output(' [x] Received ' . $msg->body);
             $channel->basic_ack($msg->getDeliveryTag());
             $maxProcessedMessagesCount--;
@@ -95,7 +95,7 @@ class QueueConsumerService
         if (!isset($body['name'])) {
             throw new WrongCommandException('Message must have a name');
         }
-        $parts = explode('\\', $body['name']);
+        $parts = explode('\\', (string) $body['name']);
         $name = array_pop($parts);
 
         $bus->runCommand($name, $body);

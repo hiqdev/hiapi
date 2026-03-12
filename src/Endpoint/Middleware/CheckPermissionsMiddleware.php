@@ -14,13 +14,8 @@ use League\Tactician\Middleware;
  */
 class CheckPermissionsMiddleware implements Middleware
 {
-    private User $user;
-    private Endpoint $endpoint;
-
-    public function __construct(Endpoint $endpoint, User $user)
+    public function __construct(private readonly Endpoint $endpoint, private readonly User $user)
     {
-        $this->endpoint = $endpoint;
-        $this->user = $user;
     }
 
     /**

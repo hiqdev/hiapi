@@ -17,14 +17,8 @@ class OAuth2Middleware extends AuthMiddleware
 {
     public $userinfoUrl;
 
-    /**
-     * @var User
-     */
-    private $user;
-
-    public function __construct(User $user)
+    public function __construct(private readonly User $user)
     {
-        $this->user = $user;
     }
 
     public function authenticate(ServerRequestInterface $request)

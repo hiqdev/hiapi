@@ -11,11 +11,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class BlacklistMiddleware implements MiddlewareInterface
 {
-    private $restriction;
-
-    public function __construct($restriction)
+    public function __construct(private $restriction)
     {
-        $this->restriction = $restriction;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

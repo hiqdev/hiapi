@@ -14,6 +14,7 @@ class UsernameValidator extends RegularExpressionValidator
 {
     public $pattern = '/^[a-z][a-z0-9_]{1,31}$/';
 
+    #[\Override]
     public function init()
     {
         parent::init();

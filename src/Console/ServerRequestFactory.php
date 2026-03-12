@@ -32,7 +32,7 @@ class ServerRequestFactory
      */
     public static function fromGlobals(): ServerRequest
     {
-        return (new static())->createFromGlobals();
+        return new static()->createFromGlobals();
     }
 
     public function createFromGlobals(): ServerRequest
@@ -58,14 +58,14 @@ class ServerRequestFactory
         $argv = $GLOBALS['argv'];
         $this->program = array_shift($argv);
         while ($argv[0][0]=='-') {
-            $vs = explode('=', substr(array_shift($argv), 1), 2);
+            $vs = explode('=', substr((string) array_shift($argv), 1), 2);
             $this->ops[$vs[0]] = $vs[1] ?? true;
         }
         $this->command = array_shift($argv);
 
         foreach ($argv as $n => $arg) {
             if ($arg[0] == '-') {
-                $vs = explode('=', substr($arg, 1), 2);
+                $vs = explode('=', substr((string) $arg, 1), 2);
                 $this->query[$vs[0]] = is_null($vs[1]) ? true : $vs[1];
             } else $this->query[$n] = $arg;
         }

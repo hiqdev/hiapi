@@ -23,8 +23,8 @@ use Webmozart\Assert\Assert;
  */
 final class AuthRule
 {
-    public ?string $client;
-    public ?string $clientId;
+    public ?string $client = null;
+    public ?string $clientId = null;
 
     public bool $canSeeSellerObjects = false;
 

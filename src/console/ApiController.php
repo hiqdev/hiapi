@@ -23,21 +23,16 @@ use yii\helpers\Inflector;
 class ApiController extends Controller
 {
 
-    /**
-     * @var AutoBusInterface|BranchedAutoBus
-     */
-    private $autoBus;
-
     public function __construct(
         string $id,
         Module $module,
-        ApiCommandsBusInterface $autoBus,
+        private readonly ApiCommandsBusInterface $autoBus,
         array $config = []
     ) {
         parent::__construct($id, $module, $config);
-        $this->autoBus = $autoBus;
     }
 
+    #[\Override]
     public function runAction($id, $params = [])
     {
         $args = [$params[0], $params['_aliases'] ?? []];
@@ -47,7 +42,7 @@ class ApiController extends Controller
 
     public function actionCommand($route, $args)
     {
-        [$resource, $action] = explode('/', $route, 2);
+        [$resource, $action] = explode('/', (string) $route, 2);
         $result = $this->autoBus->runCommand($this->buildCommandName($resource, $action), $args);
 
         echo print_r($result, true);

@@ -11,29 +11,8 @@ use hiqdev\yii\compat\Injector;
 
 class IfMiddleware implements MiddlewareInterface
 {
-    /**
-     * @var Closure
-     */
-    private $if;
-    /**
-     * @var MiddlewareInterface
-     */
-    private $then;
-    /**
-     * @var MiddlewareInterface
-     */
-    private $else;
-    /**
-     * @var Injector
-     */
-    private $injector;
-
-    public function __construct(Closure $if, MiddlewareInterface $then, MiddlewareInterface $else, Injector $injector)
+    public function __construct(private readonly Closure $if, private readonly MiddlewareInterface $then, private readonly MiddlewareInterface $else, private readonly Injector $injector)
     {
-        $this->if = $if;
-        $this->then = $then;
-        $this->else = $else;
-        $this->injector = $injector;
     }
 
     /**

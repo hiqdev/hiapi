@@ -15,24 +15,8 @@ use Psr\Log\LoggerInterface;
  */
 class EventEmitterMiddleware implements Middleware
 {
-    /**
-     * @var \hiapi\event\EventStorageInterface
-     */
-    private $eventStorage;
-    /**
-     * @var EmitterInterface
-     */
-    private $emitter;
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    public function __construct(EventStorageInterface $eventStorage, EmitterInterface $emitter, LoggerInterface $logger)
+    public function __construct(private readonly EventStorageInterface $eventStorage, private readonly EmitterInterface $emitter, private readonly LoggerInterface $logger)
     {
-        $this->eventStorage = $eventStorage;
-        $this->emitter = $emitter;
-        $this->logger = $logger;
     }
 
     /**

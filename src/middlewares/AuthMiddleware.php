@@ -15,19 +15,8 @@ use yii\web\User;
  */
 class AuthMiddleware implements Middleware
 {
-    /**
-     * @var string
-     */
-    private $permission;
-    /**
-     * @var User
-     */
-    private $user;
-
-    public function __construct(string $permission, User $user)
+    public function __construct(private readonly string $permission, private readonly User $user)
     {
-        $this->permission = $permission;
-        $this->user = $user;
     }
 
     /**

@@ -19,18 +19,12 @@ use yii\helpers\StringHelper;
 class ConfigurableEmitter extends Emitter implements EmitterInterface
 {
     /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
      * ConfigurableEmitter constructor.
      *
      * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(private readonly ContainerInterface $container)
     {
-        $this->container = $container;
     }
 
     public function __set($name, $value)
@@ -73,7 +67,7 @@ class ConfigurableEmitter extends Emitter implements EmitterInterface
      */
     private function listenerFromClassName(string $className): \Closure
     {
-        return function ($event) use ($className) {
+        return function ($event) use ($className): void {
             /** @var ListenerInterface $handler */
             $listener = $this->container->get($className);
 
@@ -81,22 +75,15 @@ class ConfigurableEmitter extends Emitter implements EmitterInterface
         };
     }
 
+    #[\Override]
     public function hasListeners($event)
     {
         if (parent::hasListeners($event)) {
             return true;
         }
 
-        $namesWithWildcard = array_filter(array_keys($this->listeners), function ($name) {
-            return $name !== '*' && strpos($name, '*') !== false;
-        });
-        foreach ($namesWithWildcard as $name) {
-            if (StringHelper::matchWildcard('*', $name)) {
-                return true;
-            }
-        }
-
-        return false;
+        $namesWithWildcard = array_filter(array_keys($this->listeners), fn($name) => $name !== '*' && str_contains((string) $name, '*'));
+        return array_any($namesWithWildcard, fn($name) => StringHelper::matchWildcard('*', $name));
     }
 
     /**
@@ -106,6 +93,7 @@ class ConfigurableEmitter extends Emitter implements EmitterInterface
      *
      * @return ListenerInterface[]
      */
+    #[\Override]
     protected function getSortedListeners($event)
     {
         if (! $this->hasListeners($event)) {
@@ -115,9 +103,7 @@ class ConfigurableEmitter extends Emitter implements EmitterInterface
         $listeners = $this->listeners[$event] ?? [];
 
         if ($event !== '*') {
-            $namesWithWildcard = array_filter(array_keys($this->listeners), function ($name) {
-                return $name !== '*' && strpos($name, '*') !== false;
-            });
+            $namesWithWildcard = array_filter(array_keys($this->listeners), fn($name) => $name !== '*' && str_contains((string) $name, '*'));
             foreach ($namesWithWildcard as $name) {
                 if (StringHelper::matchWildcard('*', $name)) {
                     $listeners = array_merge($listeners, $this->listeners[$name]);
@@ -131,6 +117,6 @@ class ConfigurableEmitter extends Emitter implements EmitterInterface
 
         krsort($listeners);
 
-        return call_user_func_array('array_merge', $listeners);
+        return call_user_func_array(array_merge(...), $listeners);
     }
 }

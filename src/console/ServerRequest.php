@@ -50,142 +50,142 @@ class ServerRequest implements ServerRequestInterface
         return [];
     }
 
-    public function getServerParams()
+    public function getServerParams(): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function getCookieParams()
+    public function getCookieParams(): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withCookieParams(array $cookies)
+    public function withCookieParams(array $cookies): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withQueryParams(array $query)
+    public function withQueryParams(array $query): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function getUploadedFiles()
+    public function getUploadedFiles(): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withUploadedFiles(array $uploadedFiles)
+    public function withUploadedFiles(array $uploadedFiles): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withParsedBody($data)
+    public function withParsedBody($data): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function getAttributes()
+    public function getAttributes(): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function getAttribute($name, $default = null)
+    public function getAttribute($name, $default = null): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withAttribute($name, $value)
+    public function withAttribute($name, $value): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withoutAttribute($name)
+    public function withoutAttribute($name): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function getRequestTarget()
+    public function getRequestTarget(): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withRequestTarget($requestTarget)
+    public function withRequestTarget($requestTarget): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function getMethod()
+    public function getMethod(): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withMethod($method)
+    public function withMethod($method): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function getUri()
+    public function getUri(): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withUri(UriInterface $uri, $preserveHost = false)
+    public function withUri(UriInterface $uri, $preserveHost = false): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function getProtocolVersion()
+    public function getProtocolVersion(): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withProtocolVersion($version)
+    public function withProtocolVersion($version): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function getHeaders()
+    public function getHeaders(): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function hasHeader($name)
+    public function hasHeader($name): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function getHeader($name)
+    public function getHeader($name): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function getHeaderLine($name)
+    public function getHeaderLine($name): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withHeader($name, $value)
+    public function withHeader($name, $value): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withAddedHeader($name, $value)
+    public function withAddedHeader($name, $value): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withoutHeader($name)
+    public function withoutHeader($name): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function getBody()
+    public function getBody(): never
     {
         throw new \Exception('not implemented');
     }
 
-    public function withBody(StreamInterface $body)
+    public function withBody(StreamInterface $body): never
     {
         throw new \Exception('not implemented');
     }

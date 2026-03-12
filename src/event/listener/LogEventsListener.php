@@ -16,11 +16,8 @@ use yii\helpers\FileHelper;
  */
 class LogEventsListener implements ListenerInterface
 {
-    private LoggerInterface $log;
-
-    public function __construct(LoggerInterface $log)
+    public function __construct(private readonly LoggerInterface $log)
     {
-        $this->log = $log;
     }
 
     /**

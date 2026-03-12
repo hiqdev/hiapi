@@ -24,6 +24,7 @@ abstract class GetInfoCommand extends EntityCommand
         return $this->id;
     }
 
+    #[\Override]
     public function rules()
     {
         return [

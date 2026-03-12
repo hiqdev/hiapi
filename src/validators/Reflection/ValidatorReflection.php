@@ -19,10 +19,7 @@ use yii\validators\Validator;
  */
 class ValidatorReflection
 {
-    protected ContextFactory $contextFactory;
-    protected TypeResolver   $typeResolver;
     protected ReflectionObject $reflection;
-    protected Validator $validator;
     protected ?DocBlockFactory $docBlockFactory;
 
     /**
@@ -30,23 +27,20 @@ class ValidatorReflection
      */
     public static function fromClassname(string $className): self
     {
-        $validator = (new \ReflectionClass($className))->newInstanceWithoutConstructor();
+        $validator = new \ReflectionClass($className)->newInstanceWithoutConstructor();
 
         return new self($validator);
     }
 
     public function __construct(
-        Validator $validator,
-        DocBlockFactory $docBlockFactory = null,
-        ContextFactory $contextFactory = null,
-        TypeResolver $typeResolver = null
+        protected Validator $validator,
+        ?DocBlockFactory $docBlockFactory = null,
+        protected ?ContextFactory $contextFactory = new ContextFactory(),
+        protected ?TypeResolver $typeResolver = new TypeResolver()
     ) {
-        $this->validator = $validator;
-        $this->reflection = new ReflectionObject($validator);
+        $this->reflection = new ReflectionObject($this->validator);
 
         $this->docBlockFactory = $docBlockFactory ?? DocBlockFactory::createInstance();
-        $this->contextFactory = $contextFactory ?? new ContextFactory();
-        $this->typeResolver = $typeResolver ?? new TypeResolver();
 
     }
     
@@ -72,7 +66,7 @@ class ValidatorReflection
     {
         try {
             return $this->docBlockFactory->create($this->reflection);
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException) {
             return null;
         }
     }

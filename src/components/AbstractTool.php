@@ -14,18 +14,14 @@ use hiqdev\yii\compat\yii;
 
 abstract class AbstractTool extends \yii\base\Component
 {
-    protected $base;
-
     /**
+     * @param mixed[] $data
+     */
+    public function __construct(protected $base, /**
      * @var array tool configuration
      */
-    protected $data;
-
-    public function __construct($base, $data)
+    protected $data)
     {
-        $this->base = $base;
-        $this->data = $data;
-
         /// XXX WTF? $base->di becomes null after passing as argument
         /// TODO fix!
         if ($this->base->di === null) {

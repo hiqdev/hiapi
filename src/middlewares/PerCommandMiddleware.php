@@ -18,15 +18,10 @@ class PerCommandMiddleware implements Middleware
     /**
      * @var array
      */
-    public $commandMiddlewares; // TODO: make private after switching to yiisoft/di
-    /**
-     * @var Container
-     */
-    private $di;
+    public $commandMiddlewares;
 
-    public function __construct(Container $di)
+    public function __construct(private readonly Container $di)
     {
-        $this->di = $di;
     }
 
     /**
@@ -37,7 +32,7 @@ class PerCommandMiddleware implements Middleware
      */
     private function getBusForCommand($command): ?CommandBus
     {
-        $className = get_class($command);
+        $className = $command::class;
 
         if (!isset($this->commandMiddlewares[$className])) {
             return null;

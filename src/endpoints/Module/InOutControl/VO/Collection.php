@@ -15,16 +15,15 @@ use hiapi\commands\BaseCommand;
 class Collection
 {
     /**
-     * @psalm-var class-string<T>
-     */
-    private string $entriesClass;
-
-    /**
      * @psalm-param class-string $entriesClass
      */
-    private function __construct(string $entriesClass)
+    private function __construct(
+        /**
+         * @psalm-var class-string<T>
+         */
+        private readonly string $entriesClass
+    )
     {
-        $this->entriesClass = $entriesClass;
     }
 
     /**

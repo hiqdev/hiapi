@@ -7,7 +7,7 @@ use cebe\openapi\Writer;
 use hiapi\Service\OpenApi\OpenAPIGenerator;
 use Laminas\Diactoros\Response;
 
-final class OpenAPISchemaAction
+final readonly class OpenAPISchemaAction
 {
     private OpenAPIGenerator $openApiGenerator;
 

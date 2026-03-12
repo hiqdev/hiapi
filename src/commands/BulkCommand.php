@@ -19,17 +19,9 @@ final class BulkCommand extends BaseCommand implements Countable, IteratorAggreg
      * @var ArrayCollection
      */
     private $collection;
-    /**
-     * @var string
-     */
-    private $commandClassName;
 
-    private CommandFactory $factory;
-
-    public function __construct(string $className, CommandFactory $factory, $config = [])
+    public function __construct(private readonly string $commandClassName, private readonly CommandFactory $factory, $config = [])
     {
-        $this->commandClassName = $className;
-        $this->factory = $factory;
         parent::__construct($config);
     }
 
@@ -45,9 +37,10 @@ final class BulkCommand extends BaseCommand implements Countable, IteratorAggreg
         return new self($className, $factory);
     }
 
+    #[\Override]
     public function load($data, $formName = null): bool
     {
-        $data = array_filter($data, 'is_array');
+        $data = array_filter($data, is_array(...));
 
         for ($i = 0, $iMax = count($data); $i < $iMax; $i++) {
             $this->collection->add($this->factory->createByClass($this->commandClassName));
@@ -56,11 +49,10 @@ final class BulkCommand extends BaseCommand implements Countable, IteratorAggreg
         return self::loadMultiple($this->collection, $data, $formName);
     }
 
+    #[\Override]
     public function validate($attributeNames = null, $clearErrors = true)
     {
-        return array_reduce($this->collection->toArray(), static function (bool $isValid, BaseCommand $command): bool {
-            return $command->validate() && $isValid;
-        }, true);
+        return array_reduce($this->collection->toArray(), static fn(bool $isValid, BaseCommand $command): bool => $command->validate() && $isValid, true);
     }
 
     public function add($command): self
@@ -81,6 +73,7 @@ final class BulkCommand extends BaseCommand implements Countable, IteratorAggreg
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getIterator()
     {
         return $this->collection->getIterator();
@@ -89,6 +82,7 @@ final class BulkCommand extends BaseCommand implements Countable, IteratorAggreg
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function offsetExists($offset)
     {
         return $this->collection->offsetExists($offset);
@@ -97,6 +91,7 @@ final class BulkCommand extends BaseCommand implements Countable, IteratorAggreg
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function offsetGet($offset)
     {
         return $this->collection->offsetGet($offset);
@@ -105,6 +100,7 @@ final class BulkCommand extends BaseCommand implements Countable, IteratorAggreg
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function offsetSet($offset, $value)
     {
         return $this->collection->offsetSet($offset, $value);
@@ -113,6 +109,7 @@ final class BulkCommand extends BaseCommand implements Countable, IteratorAggreg
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function offsetUnset($offset)
     {
         return $this->collection->offsetUnset($offset);

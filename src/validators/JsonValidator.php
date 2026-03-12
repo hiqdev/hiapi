@@ -24,7 +24,7 @@ class JsonValidator extends Validator
     {
         try {
             Json::decode($value);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             return [$this->message, []];
         }
     }

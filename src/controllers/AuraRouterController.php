@@ -37,7 +37,7 @@ class AuraRouterController extends Controller
 
         $route = $router->getMatcher()->match($request);
         if (!$route) {
-            $response = (new \GuzzleHttp\Psr7\Response())
+            $response = new \GuzzleHttp\Psr7\Response()
                 ->withStatus(404);
         } else {
             foreach ($route->attributes as $attribute => $value) {

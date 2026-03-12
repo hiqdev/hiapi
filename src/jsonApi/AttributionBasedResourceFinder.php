@@ -5,13 +5,10 @@ namespace hiapi\jsonApi;
 
 use WoohooLabs\Yin\JsonApi\Schema\Resource\ResourceInterface;
 
-final class AttributionBasedResourceFinder
+final readonly class AttributionBasedResourceFinder
 {
-    private ResourceDocumentFactoryInterface $resourceDocumentFactory;
-
-    public function __construct(ResourceDocumentFactoryInterface $resourceDocumentFactory)
+    public function __construct(private ResourceDocumentFactoryInterface $resourceDocumentFactory)
     {
-        $this->resourceDocumentFactory = $resourceDocumentFactory;
     }
 
     public function getResource(string $documentClassName): ResourceInterface

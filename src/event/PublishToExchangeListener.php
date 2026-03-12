@@ -24,11 +24,6 @@ class PublishToExchangeListener extends AbstractListener
     protected $amqp;
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * @var AMQPChannel
      */
     protected $channel;
@@ -43,10 +38,9 @@ class PublishToExchangeListener extends AbstractListener
      */
     public $exchangeType = 'direct';
 
-    public function __construct(AMQPStreamConnection $amqp, LoggerInterface $logger)
+    public function __construct(AMQPStreamConnection $amqp, private readonly LoggerInterface $logger)
     {
         $this->amqp = $amqp;
-        $this->logger = $logger;
     }
 
     /**
@@ -81,7 +75,7 @@ class PublishToExchangeListener extends AbstractListener
     private function createMessage($event): AMQPMessage
     {
         if (!$event instanceof \JsonSerializable) {
-            throw new InvalidConfigException('Event "' . get_class($event) . '" can not be sent to exchange');
+            throw new InvalidConfigException('Event "' . $event::class . '" can not be sent to exchange');
         }
 
         return new AMQPMessage(json_encode($event->jsonSerialize(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), [
@@ -104,10 +98,10 @@ class PublishToExchangeListener extends AbstractListener
      */
     public function buildRoutingKey(EventInterface $event)
     {
-        $className = (new \ReflectionClass($event))->getShortName();
+        $className = new \ReflectionClass($event)->getShortName();
 
         foreach (['Was', 'WillBe', 'Will'] as $keyword) {
-            if (strpos($className, $keyword) === false) {
+            if (!str_contains($className, $keyword)) {
                 continue;
             }
 

@@ -15,7 +15,7 @@ class NotAuthenticatedException extends DomainException
     /**
      * NotAuthenticatedException constructor.
      */
-    public function __construct(string $message = null)
+    public function __construct(?string $message = null)
     {
         parent::__construct($message ?: "Not authenticated");
     }

@@ -9,13 +9,10 @@ use League\Tactician\Middleware;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 
-final class FixCustomerIdSpecification implements Middleware
+final readonly class FixCustomerIdSpecification implements Middleware
 {
-    private AccountClientIdResolverInterface $accountClientIdResolver;
-
-    public function __construct(AccountClientIdResolverInterface $accountClientIdResolver)
+    public function __construct(private AccountClientIdResolverInterface $accountClientIdResolver)
     {
-        $this->accountClientIdResolver = $accountClientIdResolver;
     }
 
     /**
@@ -45,7 +42,7 @@ final class FixCustomerIdSpecification implements Middleware
 
         try {
             return $this->accountClientIdResolver->resolveByAccountId(Uuid::fromString($customer_id));
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             return $customer_id;
         }
     }

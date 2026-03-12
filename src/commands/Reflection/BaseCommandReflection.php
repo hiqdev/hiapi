@@ -5,10 +5,8 @@ namespace hiapi\commands\Reflection;
 
 use hiapi\commands\BaseCommand;
 
-final class BaseCommandReflection
+final readonly class BaseCommandReflection
 {
-    private BaseCommand $command;
-
     /**
      * @psalm-param class-sting<BaseCommand>
      */
@@ -17,9 +15,8 @@ final class BaseCommandReflection
         return new self(new $className());
     }
 
-    public function __construct(BaseCommand $command)
+    public function __construct(private BaseCommand $command)
     {
-        $this->command = $command;
     }
 
     /**

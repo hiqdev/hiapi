@@ -14,14 +14,8 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class SkipExceptionsIn implements MiddlewareInterface
 {
-    /**
-     * @var MiddlewareInterface
-     */
-    private $middleware;
-
-    public function __construct(MiddlewareInterface $middleware)
+    public function __construct(private readonly MiddlewareInterface $middleware)
     {
-        $this->middleware = $middleware;
     }
 
     /**
@@ -36,15 +30,10 @@ class SkipExceptionsIn implements MiddlewareInterface
              * @var bool
              */
             private $isExecutingNextHandler;
-            /**
-             * @var RequestHandlerInterface
-             */
-            private $nextHandler;
 
-            public function __construct(bool &$isExecutingNextHandler, RequestHandlerInterface $realHandler)
+            public function __construct(bool &$isExecutingNextHandler, private readonly RequestHandlerInterface $nextHandler)
             {
                 $this->isExecutingNextHandler = &$isExecutingNextHandler;
-                $this->nextHandler = $realHandler;
             }
 
             /**

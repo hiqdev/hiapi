@@ -20,19 +20,14 @@ use Yiisoft\Router\RouteCollector;
  */
 class RouterMiddleware implements MiddlewareInterface
 {
-    private MiddlewareDispatcher $dispatcher;
-    private array $routes;
-
-    public function __construct(MiddlewareDispatcher $dispatcher, array $routes = [])
+    public function __construct(private readonly MiddlewareDispatcher $dispatcher, private readonly array $routes = [])
     {
-        $this->dispatcher = $dispatcher;
-        $this->routes = $routes;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $group = Group::create(null, $this->dispatcher)->routes(...$this->routes);
-        $collector = (new RouteCollector())->addGroup($group);
+        $collector = new RouteCollector()->addGroup($group);
         $matcher = new UrlMatcher(new RouteCollection($collector));
 
         $result = $matcher->match($request);

@@ -12,14 +12,8 @@ use League\Tactician\Middleware;
  */
 class PassToAnotherCommandBusMiddleware implements Middleware
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
-
-    public function __construct(CommandBus $commandBus)
+    public function __construct(private readonly CommandBus $commandBus)
     {
-        $this->commandBus = $commandBus;
     }
 
     /**

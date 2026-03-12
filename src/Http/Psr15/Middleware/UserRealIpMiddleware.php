@@ -12,14 +12,14 @@ use Psr\Http\Server\RequestHandlerInterface;
 class UserRealIpMiddleware implements MiddlewareInterface
 {
     public const ATTRIBUTE_NAME = 'user-real-ip';
-    /**
-     * @var string[] Networks than are allowed to override client IP
-     */
-    private array $trustedNets;
 
-    public function __construct(array $trustedNets)
+    public function __construct(
+        /**
+         * @var string[] Networks than are allowed to override client IP
+         */
+        private readonly array $trustedNets
+    )
     {
-        $this->trustedNets = $trustedNets;
     }
 
     /**
@@ -60,7 +60,7 @@ class UserRealIpMiddleware implements MiddlewareInterface
             return $ip;
         }
 
-        $ipsChain = array_map('trim', explode(',', $request->getHeaderLine('X-Forwarded-For')));
+        $ipsChain = array_map(trim(...), explode(',', $request->getHeaderLine('X-Forwarded-For')));
 
         return filter_var($ipsChain[0] ?? '', FILTER_VALIDATE_IP) ?? $ip;
     }

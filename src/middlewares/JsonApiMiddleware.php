@@ -22,30 +22,14 @@ use WoohooLabs\Yin\JsonApi\Schema\Error;
 class JsonApiMiddleware implements JsonApiMiddlewareInterface, Middleware
 {
     /**
-     * @var array
-     */
-    private $commandToDocumentMap = [];
-    /**
-     * @var ContainerInterface
-     */
-    private $di;
-    /**
-     * @var JsonApi
-     */
-    private $jsonApi;
-
-    /**
      * JsonApiMiddleware constructor.
      *
      * @param array $commandToDocumentMap
      * @param ContainerInterface $di
      * @param JsonApi $jsonApi
      */
-    public function __construct(array $commandToDocumentMap, ContainerInterface $di, JsonApi $jsonApi)
+    public function __construct(private array $commandToDocumentMap, private readonly ContainerInterface $di, private readonly JsonApi $jsonApi)
     {
-        $this->commandToDocumentMap = $commandToDocumentMap;
-        $this->di = $di;
-        $this->jsonApi = $jsonApi;
     }
 
     public function execute($command, callable $next)
@@ -71,7 +55,7 @@ class JsonApiMiddleware implements JsonApiMiddlewareInterface, Middleware
      */
     public function getSuccessDocumentFor($command)
     {
-        $className = get_class($command);
+        $className = $command::class;
         if (!isset($this->commandToDocumentMap[$className])) {
             throw new \OutOfRangeException('Document map for "' . $className . "' does not exist");
         }

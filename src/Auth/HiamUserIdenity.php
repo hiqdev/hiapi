@@ -19,6 +19,7 @@ class OAuth2UserIdentity extends UserIdentity
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function rules()
     {
         return [
@@ -30,7 +31,7 @@ class OAuth2UserIdentity extends UserIdentity
     }
 
     /** {@inheritdoc} */
-    public static function findIdentity($id)
+    public static function findIdentity($id): never
     {
         throw new \yii\base\InvalidCallException('no `findIdentity` and not expected');
     }

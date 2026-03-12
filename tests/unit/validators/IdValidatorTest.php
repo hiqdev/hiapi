@@ -3,7 +3,6 @@
 namespace hiapi\tests\unit\validators;
 
 use hiapi\validators\IdValidator;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 class IdValidatorTest extends \PHPUnit\Framework\TestCase
 {
@@ -14,9 +13,10 @@ class IdValidatorTest extends \PHPUnit\Framework\TestCase
         $this->idValidator = new IdValidator();
     }
 
-    #[DataProvider('validIdProvider')]
+    #[\PHPUnit\Framework\Attributes\DataProvider('validIdProvider')]
     public function testMatch($value)
     {
+        $this->expectNotToPerformAssertions();
         $this->idValidator->validate($value);
     }
 

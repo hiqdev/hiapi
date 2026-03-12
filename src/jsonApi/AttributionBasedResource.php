@@ -17,16 +17,13 @@ abstract class AttributionBasedResource extends AbstractResource
 
     protected AttributionInterface $attribution;
 
-    protected ResourceDocumentFactoryInterface $resourceFactory;
-
-    public function __construct(ResourceDocumentFactoryInterface $resourceFactory)
+    public function __construct(protected ResourceDocumentFactoryInterface $resourceFactory)
     {
-        $this->resourceFactory = $resourceFactory;
     }
 
     public function getType($entity): string
     {
-        return lcfirst(substr(strrchr(get_class($this), '\\'), 1, -8));
+        return lcfirst(substr(strrchr(static::class, '\\'), 1, -8));
     }
 
     public function getId($entity): string
@@ -121,7 +118,7 @@ abstract class AttributionBasedResource extends AbstractResource
 
     private function findAttributionClass(): string
     {
-        return substr(get_class($this), 0, -8) . 'Attribution';
+        return substr(static::class, 0, -8) . 'Attribution';
     }
 
     public function getResourceFor($className): ResourceInterface

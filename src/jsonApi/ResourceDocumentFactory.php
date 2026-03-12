@@ -15,18 +15,12 @@ use WoohooLabs\Yin\JsonApi\Schema\Document\ResourceDocumentInterface;
  */
 class ResourceDocumentFactory implements ResourceDocumentFactoryInterface
 {
-    private ContainerInterface $container;
-
-    private array $resourceMap;
-
     private array $collections = [];
 
     private array $resources = [];
 
-    public function __construct(array $resourceMap, ContainerInterface $container)
+    public function __construct(private array $resourceMap, private readonly ContainerInterface $container)
     {
-        $this->resourceMap = $resourceMap;
-        $this->container = $container;
     }
 
     /** {@inheritDoc} */
@@ -54,7 +48,7 @@ class ResourceDocumentFactory implements ResourceDocumentFactoryInterface
     /** {@inheritDoc} */
     public function getResourceFor(object $entity): ResourceInterface
     {
-        $class = get_class($entity);
+        $class = $entity::class;
 
         return $this->getResourceByClassName($class);
     }
@@ -94,7 +88,7 @@ class ResourceDocumentFactory implements ResourceDocumentFactoryInterface
         if (empty($rows)) {
             return new EmptyCollectionDocument();
         }
-        $class = get_class(reset($rows));
+        $class = reset($rows)::class;
         if (empty($this->collections[$class])) {
             $this->collections[$class] = $this->findCollection($class);
         }
@@ -105,7 +99,7 @@ class ResourceDocumentFactory implements ResourceDocumentFactoryInterface
     private function getSingleDocument(object $entity): ResourceDocumentInterface
     {
         $singleDocumentClass = $this->resource2singleDocument(
-            $this->findResourceClass(get_class($entity))
+            $this->findResourceClass($entity::class)
         );
 
         return $this->container->get($singleDocumentClass);

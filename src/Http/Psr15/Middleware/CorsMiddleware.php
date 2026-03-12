@@ -17,14 +17,12 @@ class CorsMiddleware implements MiddlewareInterface
         'Access-Control-Max-Age' => ['600'],
     ];
     public bool $interceptOptionsRequests = false;
-    private ResponseFactoryInterface $responseFactory;
 
-    public function __construct(array $headers, ResponseFactoryInterface $responseFactory)
+    public function __construct(array $headers, private ResponseFactoryInterface $responseFactory)
     {
         foreach ($headers as $name => $value) {
             $this->addHeader($name, $value);
         }
-        $this->responseFactory = $responseFactory;
     }
 
     public function addHeader($name, $value): self

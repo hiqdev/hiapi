@@ -33,6 +33,7 @@ abstract class SearchCommand extends EntityCommand
 
     const DEFAULT_LIMIT = 25;
 
+    #[\Override]
     public function rules()
     {
         return [

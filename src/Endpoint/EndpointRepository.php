@@ -8,22 +8,16 @@ use Psr\Container\ContainerInterface;
 
 class EndpointRepository
 {
-    private ContainerInterface $container;
-
-    private BuilderFactory $builderFactory;
-
     /**
      * @var array<string, string|class-string<Endpoint>>
      */
     private array $endpoints = [];
 
-    public function __construct(array $endpoints, ContainerInterface $container, BuilderFactory $builderFactory)
+    public function __construct(array $endpoints, private readonly ContainerInterface $container, private readonly BuilderFactory $builderFactory)
     {
         foreach ($endpoints as $name => $handler) {
             $this->addEndpoint($name, $handler);
         }
-        $this->container = $container;
-        $this->builderFactory = $builderFactory;
     }
 
     public function has(string $name): bool
