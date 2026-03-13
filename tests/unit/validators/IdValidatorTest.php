@@ -3,28 +3,24 @@
 namespace hiapi\tests\unit\validators;
 
 use hiapi\validators\IdValidator;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class IdValidatorTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var IdValidator
-     */
-    protected $idValidator;
+    protected IdValidator $idValidator;
 
     public function setUp(): void
     {
         $this->idValidator = new IdValidator();
     }
 
-    /**
-     * @dataProvider validIdProvider
-     */
+    #[DataProvider('validIdProvider')]
     public function testMatch($value)
     {
         $this->idValidator->validate($value);
     }
 
-    public function validIdProvider()
+    public static function validIdProvider(): iterable
     {
         yield ['1314129'];
         yield [1314129];
