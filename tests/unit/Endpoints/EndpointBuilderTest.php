@@ -2,14 +2,7 @@
 
 namespace hiapi\tests\unit\Endpoints;
 
-use Closure;
-use hiapi\endpoints\EndpointBuilderInterface;
-use hiapi\endpoints\EndpointConfiguration;
-use hiapi\endpoints\Module\InOutControl\ExamplesAwareBuilderInterface;
-use hiapi\endpoints\Module\InOutControl\ExamplesAwareBuilderTrait;
-use hiapi\endpoints\Module\InOutControl\InOutControlBuilderInterface;
-use hiapi\endpoints\Module\InOutControl\InOutControlBuilderTrait;
-use hiapi\tests\unit\Endpoints\support\FakeEndpoint;
+use hiapi\tests\unit\Endpoints\support\FakeEndpointBuilder;
 use hiapi\tests\unit\Endpoints\support\InputStub;
 use hiapi\tests\unit\Endpoints\support\ReturnStub;
 use PHPUnit\Framework\TestCase;
@@ -40,45 +33,3 @@ class EndpointBuilderTest extends TestCase
         $this->assertSame(ReturnStub::class, $endpoint->getConfig()['return']);
     }
 }
-
-/**
- * Class TestABC
- *
- * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
- */
-class FakeEndpointBuilder implements
-    EndpointBuilderInterface,
-    ExamplesAwareBuilderInterface,
-    InOutControlBuilderInterface
-{
-    use ExamplesAwareBuilderTrait;
-    use InOutControlBuilderTrait {
-        InOutControlBuilderTrait::buildInOutParameters as buildInOutControl;
-    }
-
-    /**
-     * @return Closure[]
-     */
-    protected function getBuildersList(): array
-    {
-        return [
-            Closure::fromCallable([$this, 'buildExamples']),
-            Closure::fromCallable([$this, 'buildInOutControl']),
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function build()
-    {
-        $builders = $this->getBuildersList();
-
-        $config = new EndpointConfiguration();
-        foreach ($builders as $builder) {
-            $builder($config);
-        }
-
-        return FakeEndpoint::fromConfig($config);
-    }
-};
