@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace hiapi\Core\Http\Psr15\Middleware;
 
@@ -15,33 +14,30 @@ use Yiisoft\Router\RouteCollector;
 
 /**
  * Performs matched route.
- * Passes pattern matched parameters into request query parameters.
- * If no route matched then proceeds.
+ * Passes pattern-matched parameters into request query parameters.
+ * If no route is matched, then proceeds.
  */
-class RouterMiddleware implements MiddlewareInterface
+readonly class RouterMiddleware implements MiddlewareInterface
 {
-    public function __construct(private readonly MiddlewareDispatcher $dispatcher, private readonly array $routes = [])
+    public function __construct(private MiddlewareDispatcher $dispatcher, private array $routes = [])
     {
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $group = Group::create(null, $this->dispatcher)->routes(...$this->routes);
-        $collector = new RouteCollector()->addGroup($group);
+        $group = Group::create()->routes(...$this->routes);
+        $collector = new RouteCollector()->addRoute($group);
         $matcher = new UrlMatcher(new RouteCollection($collector));
 
         $result = $matcher->match($request);
-        if ($result->arguments()) {
+        if ($result->isSuccess() && $result->arguments()) {
             $query = array_merge($result->arguments(), $request->getQueryParams());
             $request = $request->withQueryParams($query);
         }
 
-        return $result->process($request, $handler);
+        return $handler->handle($request);
     }
 
-    /**
-     * @return array
-     */
     public function getRoutes(): array
     {
         return $this->routes;
