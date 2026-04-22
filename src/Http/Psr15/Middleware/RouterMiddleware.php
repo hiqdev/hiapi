@@ -6,10 +6,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Yiisoft\Middleware\Dispatcher\MiddlewareDispatcher;
 use Yiisoft\Router\FastRoute\UrlMatcher;
 use Yiisoft\Router\Group;
 use Yiisoft\Router\RouteCollection;
-use Yiisoft\Middleware\Dispatcher\MiddlewareDispatcher;
 use Yiisoft\Router\RouteCollector;
 
 /**
@@ -30,12 +30,18 @@ readonly class RouterMiddleware implements MiddlewareInterface
         $matcher = new UrlMatcher(new RouteCollection($collector));
 
         $result = $matcher->match($request);
-        if ($result->isSuccess() && $result->arguments()) {
+        if (!$result->isSuccess()) {
+            return $handler->handle($request);
+        }
+
+        if ($result->arguments()) {
             $query = array_merge($result->arguments(), $request->getQueryParams());
             $request = $request->withQueryParams($query);
         }
 
-        return $handler->handle($request);
+        return $this->dispatcher
+            ->withMiddlewares($result->route()->getData('enabledMiddlewares'))
+            ->dispatch($request, $handler);
     }
 
     public function getRoutes(): array
