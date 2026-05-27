@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace hiapi\Core\Http;
 
 use Closure;
+use Yiisoft\Http\Method;
 use hiapi\Core\Http\Psr15\Middleware\EndpointMiddleware;
 use Yiisoft\Router\Route;
 
@@ -46,7 +47,7 @@ class EndpointRoute
 
     public static function anyMethod(string $pattern, string $name): Route
     {
-        return Route::anyMethod($pattern)->action(static::buildMiddlewareFor($name));
+        return Route::methods(Method::ALL, $pattern)->action(static::buildMiddlewareFor($name));
     }
 
     public static function buildMiddlewareFor(string $name): Closure
