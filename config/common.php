@@ -51,6 +51,7 @@ $singletons = array_merge(
             'enableSession' => false,
         ],
         \hiapi\Service\Customer\AccountClientIdResolverInterface::class => \hiapi\Service\Customer\AccountClientIdResolver::class,
+        \hiapi\Core\Console\ProgressReporterInterface::class => \hiapi\Core\Console\StderrProgressReporter::class,
 
         /// Event
         \hiapi\event\EventStorageInterface::class => \hiapi\event\EventStorage::class,
