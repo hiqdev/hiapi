@@ -2,15 +2,16 @@
 
 namespace hiapi\Core\Console\Formatter;
 
-use Exception;
 use Lcobucci\ContentNegotiation\Formatter\ContentOnly;
+use Throwable;
 
 class Php extends ContentOnly
 {
     public function formatContent($content, $attributes = []): string
     {
-        if ($content instanceof Exception) {
-            throw $content;
+        // Formatters run outside the exception middleware, so re-throwing here escapes as an unhandled error.
+        if ($content instanceof Throwable) {
+            return var_export($content->getMessage(), true);
         }
 
         return var_export($content, true);
