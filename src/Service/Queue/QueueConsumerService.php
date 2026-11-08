@@ -111,7 +111,7 @@ class QueueConsumerService
     private function requeue(string $queueName, AMQPMessage $msg, NotProcessableException $exception): void
     {
         $tries = 0;
-        $headers = $msg->get_properties()['application_headers'];
+        $headers = $msg->get_properties()['application_headers'] ?? null;
         if ($headers instanceof AMQPTable) {
             $tries = $headers->getNativeData()['x-number-of-tries'] ?? 0;
         }
@@ -131,7 +131,7 @@ class QueueConsumerService
         $channel->queue_bind($queueName, $delayExchange);
 
         // Send message
-        $delayDuration = 1000 * $exception->getSecondsBeforeRetry() * (int)($exception->getProgressionMultiplier() ** $tries);
+        $delayDuration = (int)round(1000 * $exception->getSecondsBeforeRetry() * $exception->getProgressionMultiplier() ** $tries);
         $delayMessage = new AMQPMessage($msg->getBody(), array_merge($msg->get_properties(), [
             'application_headers' => new AMQPTable([
                 'x-delay' => $delayDuration,
@@ -148,6 +148,9 @@ class QueueConsumerService
         $failedExchange = "$queueName.failed";
 
         $channel->exchange_declare($failedExchange, 'fanout', false, true, false);
+        // A fanout exchange with no queue bound discards what it receives, so keep rejected messages in a queue
+        $channel->queue_declare($failedExchange, false, true, false, false);
+        $channel->queue_bind($failedExchange, $failedExchange);
         $channel->basic_publish($message, $failedExchange);
     }
 
