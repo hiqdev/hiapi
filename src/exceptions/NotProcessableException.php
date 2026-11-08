@@ -10,7 +10,7 @@ namespace hiapi\exceptions;
 class NotProcessableException extends \RuntimeException
 {
     /**
-     * @var int
+     * @var float
      */
     protected $progressionMultiplier = 1;
     /**
@@ -60,9 +60,9 @@ class NotProcessableException extends \RuntimeException
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getProgressionMultiplier(): int
+    public function getProgressionMultiplier(): float
     {
         return $this->progressionMultiplier;
     }
