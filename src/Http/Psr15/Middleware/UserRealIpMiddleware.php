@@ -62,7 +62,7 @@ class UserRealIpMiddleware implements MiddlewareInterface
 
         $ipsChain = array_map(trim(...), explode(',', $request->getHeaderLine('X-Forwarded-For')));
 
-        return filter_var($ipsChain[0] ?? '', FILTER_VALIDATE_IP) ?? $ip;
+        return filter_var($ipsChain[0] ?? '', FILTER_VALIDATE_IP) ?: $ip;
     }
 
     private function getUserIp(ServerRequestInterface $request): string
