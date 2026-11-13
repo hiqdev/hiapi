@@ -4,9 +4,6 @@
 
 [![Latest Stable Version](https://poser.pugx.org/hiqdev/hiapi/v/stable)](https://packagist.org/packages/hiqdev/hiapi)
 [![Total Downloads](https://poser.pugx.org/hiqdev/hiapi/downloads)](https://packagist.org/packages/hiqdev/hiapi)
-[![Build Status](https://img.shields.io/travis/hiqdev/hiapi.svg)](https://travis-ci.org/hiqdev/hiapi)
-[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/hiqdev/hiapi.svg)](https://scrutinizer-ci.com/g/hiqdev/hiapi/)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/hiqdev/hiapi.svg)](https://scrutinizer-ci.com/g/hiqdev/hiapi/)
 [![Dependency Status](https://www.versioneye.com/php/hiqdev:hiapi/dev-master/badge.svg)](https://www.versioneye.com/php/hiqdev:hiapi/dev-master)
 
 HiAPI is a base project for building API.

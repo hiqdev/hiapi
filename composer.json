@@ -61,16 +61,15 @@
         "psr/http-server-middleware": "^1.0.1"
     },
     "require-dev": {
-        "hiqdev/hidev-php": "dev-master",
-        "hiqdev/hidev-hiqdev": "dev-master",
-        "vimeo/psalm": "^3.8.3",
         "phpunit/phpunit": "^12.0",
         "cebe/php-openapi": "^1.4.0",
-        "laminas/laminas-httphandlerrunner": "^1.1",
-        "laminas/laminas-diactoros": "^2.2",
+        "laminas/laminas-httphandlerrunner": "^1.1 || ^2.0",
+        "laminas/laminas-diactoros": "^2.2 || ^3.0",
         "relay/relay": "2.0.0",
         "middlewares/negotiation": "^2.0",
-        "doctrine/collections": "^1.6.4"
+        "doctrine/collections": "^1.6.4",
+        "yiisoft/yii2": "~2.0.49",
+        "lcobucci/content-negotiation-middleware": "^3.0"
     },
     "suggest": {
         "woohoolabs/yin": "To work with JsonAPI requests/responses",
@@ -118,5 +117,10 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         }
-    ]
+    ],
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
+    }
 }
