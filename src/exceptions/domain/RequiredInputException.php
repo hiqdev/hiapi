@@ -2,6 +2,8 @@
 
 namespace hiapi\exceptions\domain;
 
+use Throwable;
+
 /**
  * @author Andrii Vasyliev <sol@hiqdev.com>
  */

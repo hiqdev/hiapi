@@ -13,7 +13,7 @@ use hiapi\endpoints\EndpointConfigurationInterface;
 trait MiddlewareBuilderTrait
 {
     /**
-     * @psalm-var list<string|Closure>
+     * @psalm-var list<string|\Closure>
      */
     protected $middlewares = [];
 

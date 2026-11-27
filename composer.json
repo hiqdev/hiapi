@@ -44,7 +44,7 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.4",
         "psr/log": "^1|^2|^3",
         "psr/container": "^1.0",
         "hiqdev/yii-compat": "dev-master",
@@ -69,7 +69,13 @@
         "middlewares/negotiation": "^2.0",
         "doctrine/collections": "^1.6.4",
         "yiisoft/yii2": "~2.0.49",
-        "lcobucci/content-negotiation-middleware": "^3.0"
+        "lcobucci/content-negotiation-middleware": "^3.0",
+        "vimeo/psalm": "^6.14",
+        "woohoolabs/yin": "^4.3",
+        "guzzlehttp/guzzle": "^7.0",
+        "yiisoft/router": "^4.0",
+        "yiisoft/router-fastroute": "^4.0",
+        "yiisoft/middleware-dispatcher": "^5.0"
     },
     "suggest": {
         "woohoolabs/yin": "To work with JsonAPI requests/responses",

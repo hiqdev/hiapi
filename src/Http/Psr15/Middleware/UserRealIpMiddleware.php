@@ -15,7 +15,7 @@ class UserRealIpMiddleware implements MiddlewareInterface
 
     public function __construct(
         /**
-         * @var string[] Networks than are allowed to override client IP
+         * @var array<string, mixed> Networks than are allowed to override client IP
          */
         private readonly array $trustedNets
     )
