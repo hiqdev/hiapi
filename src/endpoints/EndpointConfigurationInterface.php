@@ -9,7 +9,7 @@ use ArrayAccess;
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
  *
- * @template-implements ArrayAccess<string, mixed>
+ * @extends ArrayAccess<string, mixed>
  */
 interface EndpointConfigurationInterface extends ArrayAccess
 {

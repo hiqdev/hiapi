@@ -12,6 +12,9 @@ use IteratorAggregate;
  * Class BulkCommand
  *
  * @author Dmytro Naumenko <d.naumenko.a@gmail.com>
+ *
+ * @implements IteratorAggregate<array-key, BaseCommand>
+ * @implements ArrayAccess<array-key, BaseCommand>
  */
 final class BulkCommand extends BaseCommand implements Countable, IteratorAggregate, ArrayAccess
 {

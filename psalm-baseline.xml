@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="6.x-dev@7fcf2a074d1f14f0a795c2094ee3e55df1c40b65">
+  <file src="src/Auth/AuthMiddleware.php">
+    <PossiblyUndefinedIntArrayOffset>
+      <code><![CDATA[$matches[1]]]></code>
+    </PossiblyUndefinedIntArrayOffset>
+  </file>
+  <file src="src/Auth/AuthRule.php">
+    <InaccessibleProperty>
+      <code><![CDATA[$this->canSeeSellerObjects]]></code>
+    </InaccessibleProperty>
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[$specification->where]]></code>
+      <code><![CDATA[$specification->where]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Auth/HiamUserIdenity.php">
+    <MethodSignatureMismatch>
+      <code><![CDATA[public static function findIdentityByAccessToken($token, $type = null)]]></code>
+    </MethodSignatureMismatch>
+  </file>
+  <file src="src/Console/Formatter/Json.php">
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[getData]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Console/ServerRequestFactory.php">
+    <PossiblyUndefinedArrayOffset>
+      <code><![CDATA[$vs[1]]]></code>
+    </PossiblyUndefinedArrayOffset>
+    <PossiblyUndefinedStringArrayOffset>
+      <code><![CDATA[$GLOBALS['argv']]]></code>
+    </PossiblyUndefinedStringArrayOffset>
+    <UndefinedThisPropertyAssignment>
+      <code><![CDATA[$this->program]]></code>
+    </UndefinedThisPropertyAssignment>
+  </file>
+  <file src="src/Endpoint/EndpointBuilder.php">
+    <InvalidTemplateParam>
+      <code><![CDATA[EndpointBuilder]]></code>
+    </InvalidTemplateParam>
+    <MissingTemplateParam>
+      <code><![CDATA[DescriptionBuilderInterface]]></code>
+      <code><![CDATA[InOutControlBuilderTrait]]></code>
+    </MissingTemplateParam>
+    <UndefinedClass>
+      <code><![CDATA[EndpointBuilder]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Endpoint/Middleware/FixCustomerIdSpecification.php">
+    <MoreSpecificImplementedParamType>
+      <code><![CDATA[$command]]></code>
+    </MoreSpecificImplementedParamType>
+  </file>
+  <file src="src/Http/Psr15/Middleware/EndpointMiddleware.php">
+    <InvalidReturnStatement>
+      <code><![CDATA[$result]]></code>
+    </InvalidReturnStatement>
+  </file>
+  <file src="src/Http/Psr15/Middleware/QuietMiddleware.php">
+    <UndefinedClass>
+      <code><![CDATA[err]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Service/OpenApi/Endpoint/OpenAPISchema.php">
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[exportTo]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Service/OpenApi/Endpoint/OpenAPISchemaAction.php">
+    <UnusedParam>
+      <code><![CDATA[$command]]></code>
+    </UnusedParam>
+  </file>
+  <file src="src/Service/OpenApi/OpenAPIGenerator.php">
+    <UndefinedConstant>
+      <code><![CDATA[YII_ENV_DEV]]></code>
+    </UndefinedConstant>
+  </file>
+  <file src="src/Service/Queue/QueueConsumerService.php">
+    <NullArgument>
+      <code><![CDATA[null]]></code>
+    </NullArgument>
+    <PossiblyUndefinedStringArrayOffset>
+      <code><![CDATA[$msg->get_properties()['content_type']]]></code>
+    </PossiblyUndefinedStringArrayOffset>
+    <UnusedParam>
+      <code><![CDATA[$exception]]></code>
+    </UnusedParam>
+  </file>
+  <file src="src/_ideas/MiddlewareAttribute.php">
+    <UndefinedClass>
+      <code><![CDATA[AttributeInterface]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="src/commands/BulkCommand.php">
+    <InvalidArgument>
+      <code><![CDATA[$this->collection]]></code>
+      <code><![CDATA[BaseCommand]]></code>
+    </InvalidArgument>
+    <InvalidReturnStatement>
+      <code><![CDATA[$this->collection->offsetSet($offset, $value)]]></code>
+      <code><![CDATA[$this->collection->offsetUnset($offset)]]></code>
+    </InvalidReturnStatement>
+    <MethodSignatureMustProvideReturnType>
+      <code><![CDATA[getIterator]]></code>
+      <code><![CDATA[offsetExists]]></code>
+      <code><![CDATA[offsetGet]]></code>
+      <code><![CDATA[offsetSet]]></code>
+      <code><![CDATA[offsetUnset]]></code>
+    </MethodSignatureMustProvideReturnType>
+  </file>
+  <file src="src/components/QueryParamAuth.php">
+    <MissingTemplateParam>
+      <code><![CDATA[QueryParamAuth]]></code>
+    </MissingTemplateParam>
+  </file>
+  <file src="src/console/ApiController.php">
+    <MissingTemplateParam>
+      <code><![CDATA[ApiController]]></code>
+    </MissingTemplateParam>
+    <PossiblyUndefinedArrayOffset>
+      <code><![CDATA[$action]]></code>
+    </PossiblyUndefinedArrayOffset>
+    <PossiblyUndefinedIntArrayOffset>
+      <code><![CDATA[$params[0]]]></code>
+    </PossiblyUndefinedIntArrayOffset>
+    <UnusedParam>
+      <code><![CDATA[$bulk]]></code>
+    </UnusedParam>
+  </file>
+  <file src="src/console/HiapiController.php">
+    <MissingTemplateParam>
+      <code><![CDATA[HiapiController]]></code>
+    </MissingTemplateParam>
+  </file>
+  <file src="src/console/QueueController.php">
+    <MissingTemplateParam>
+      <code><![CDATA[QueueController]]></code>
+    </MissingTemplateParam>
+  </file>
+  <file src="src/console/ServerRequest.php">
+    <UndefinedThisPropertyFetch>
+      <code><![CDATA[$this->_params]]></code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="src/controllers/ApiController.php">
+    <MissingTemplateParam>
+      <code><![CDATA[ApiController]]></code>
+    </MissingTemplateParam>
+    <UnusedParam>
+      <code><![CDATA[$bulk]]></code>
+    </UnusedParam>
+  </file>
+  <file src="src/controllers/AuraRouterController.php">
+    <MissingTemplateParam>
+      <code><![CDATA[AuraRouterController]]></code>
+    </MissingTemplateParam>
+    <UndefinedClass>
+      <code><![CDATA[RouterContainer]]></code>
+    </UndefinedClass>
+    <UndefinedDocblockClass>
+      <code><![CDATA[$router]]></code>
+      <code><![CDATA[$router]]></code>
+      <code><![CDATA[RouterContainer]]></code>
+    </UndefinedDocblockClass>
+    <UnnecessaryVarAnnotation>
+      <code><![CDATA[\Aura\Router\RouterContainer]]></code>
+    </UnnecessaryVarAnnotation>
+  </file>
+  <file src="src/controllers/BaseController.php">
+    <MissingTemplateParam>
+      <code><![CDATA[BaseController]]></code>
+    </MissingTemplateParam>
+    <UndefinedClass>
+      <code><![CDATA[\hiapi\filters\ContentNegotiator]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="src/controllers/CommandAction.php">
+    <MissingTemplateParam>
+      <code><![CDATA[CommandAction]]></code>
+    </MissingTemplateParam>
+  </file>
+  <file src="src/endpoints/Module/InOutControl/InOutControlBuilderTrait.php">
+    <InvalidTemplateParam>
+      <code><![CDATA[ReturnedType]]></code>
+    </InvalidTemplateParam>
+    <MoreSpecificImplementedParamType>
+      <code><![CDATA[$classNameOrObject]]></code>
+      <code><![CDATA[$classNameOrObject]]></code>
+    </MoreSpecificImplementedParamType>
+  </file>
+  <file src="src/event/PublishToExchangeListener.php">
+    <PossiblyUndefinedIntArrayOffset>
+      <code><![CDATA[$eventName]]></code>
+    </PossiblyUndefinedIntArrayOffset>
+  </file>
+  <file src="src/event/listener/LogEventsListener.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode($event->jsonSerialize())]]></code>
+    </FalsableReturnStatement>
+  </file>
+  <file src="src/exceptions/domain/RequiredInputException.php">
+    <UndefinedClass>
+      <code><![CDATA[?Throwable]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="src/jsonApi/AttributionBasedResource.php">
+    <ParamNameMismatch>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[$entity]]></code>
+    </ParamNameMismatch>
+  </file>
+  <file src="src/jsonApi/EmptyResource.php">
+    <ParamNameMismatch>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[$entity]]></code>
+      <code><![CDATA[$entity]]></code>
+    </ParamNameMismatch>
+  </file>
+  <file src="src/jsonApi/NewResourceCreatedDocument.php">
+    <UndefinedClass>
+      <code><![CDATA[AbstractSuccessfulDocument]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="src/jsonApi/ResourceCreatedDocument.php">
+    <UndefinedClass>
+      <code><![CDATA[AbstractSuccessfulDocument]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="src/jsonApi/SearchCountDocument.php">
+    <UndefinedClass>
+      <code><![CDATA[AbstractSuccessfulDocument]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="src/middlewares/JsonApiMiddleware.php">
+    <InvalidArgument>
+      <code><![CDATA[$result->getStatusCode()]]></code>
+      <code><![CDATA[$this->getSuccessDocumentFor($command)]]></code>
+      <code><![CDATA[[
+                Error::create()
+                    ->setTitle($result->getException()->getMessage())
+                    ->setMeta($result->getCommand()->getAttributes())
+                ,
+            ]]]></code>
+    </InvalidArgument>
+    <MissingDependency>
+      <code><![CDATA[SearchCountDocument]]></code>
+    </MissingDependency>
+    <UndefinedClass>
+      <code><![CDATA[Error]]></code>
+      <code><![CDATA[ErrorDocument]]></code>
+    </UndefinedClass>
+    <UndefinedDocblockClass>
+      <code><![CDATA[AbstractSuccessfulDocument|\WoohooLabs\Yin\JsonApi\Schema\Document\AbstractSuccessfulDocument]]></code>
+      <code><![CDATA[AbstractSuccessfulDocument|\WoohooLabs\Yin\JsonApi\Schema\Document\AbstractSuccessfulDocument]]></code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/middlewares/JsonApiMiddlewareInterface.php">
+    <UndefinedDocblockClass>
+      <code><![CDATA[AbstractSuccessfulDocument|\WoohooLabs\Yin\JsonApi\Schema\Document\AbstractSuccessfulDocument]]></code>
+      <code><![CDATA[AbstractSuccessfulDocument|\WoohooLabs\Yin\JsonApi\Schema\Document\AbstractSuccessfulDocument]]></code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/validators/Reflection/ValidatorReflection.php">
+    <PossiblyUndefinedStringArrayOffset>
+      <code><![CDATA[$this->reflection->getDefaultProperties()['pattern']]]></code>
+    </PossiblyUndefinedStringArrayOffset>
+  </file>
+</files>

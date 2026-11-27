@@ -4,6 +4,9 @@ namespace hiapi\endpoints;
 
 use hiapi\endpoints\Exception\EndpointBuildingException;
 
+/**
+ * @implements \ArrayAccess<string, mixed>
+ */
 class EndpointConfiguration implements \ArrayAccess, EndpointConfigurationInterface
 {
     private $config = [];

@@ -15,7 +15,6 @@ use cebe\openapi\spec\SecurityScheme;
 use cebe\openapi\spec\Server;
 use cebe\openapi\spec\ServerVariable;
 use Generator;
-use hiapi\commands\BaseCommand;
 use hiapi\commands\Reflection\BaseCommandReflection;
 use hiapi\Core\Endpoint\EndpointRepository;
 use hiapi\endpoints\Module\InOutControl\VO\Collection;
@@ -87,14 +86,13 @@ class OpenAPIGenerator
     }
 
     /**
-     * @psalm-return Generator<int, PathItem>
+     * @psalm-return Generator<string, PathItem>
      */
     private function generatePaths(): Generator
     {
         foreach ($this->endpointRepository->getEndpointNames() as $name) {
             try {
                 $endpoint = $this->endpointRepository->getByName($name);
-                $input = $endpoint->inputType;
 
                 yield "/$name" => new PathItem(array_filter([
                     'post' => new Operation([
@@ -157,7 +155,7 @@ class OpenAPIGenerator
 
     /**
      * @param \hiapi\Core\Endpoint\Endpoint $endpoint
-     * @psalm-return Generator<int, SecurityScheme>
+     * @psalm-return Generator<int, SecurityRequirement>
      */
     private function generateSecuritySchemas(\hiapi\Core\Endpoint\Endpoint $endpoint): Generator
     {
@@ -179,7 +177,6 @@ class OpenAPIGenerator
             // TODO: describe as a nested object
             $inputType = $inputType->getEntriesClass();
         }
-        /** @psalm-var class-string<BaseCommand> $inputType */
         $reflection = BaseCommandReflection::fromClassname($inputType);
 
         foreach ($reflection->getAttributes() as $attribute) {

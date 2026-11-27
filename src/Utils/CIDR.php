@@ -9,7 +9,7 @@ class CIDR
 {
     /**
      * @param string $ip
-     * @param array<string, boolean> $ranges
+     * @param array<string, mixed> $ranges
      * @return bool
      * @throws \yii\base\NotSupportedException
      */
