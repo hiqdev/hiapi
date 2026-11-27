@@ -200,11 +200,6 @@
       <code><![CDATA[json_encode($event->jsonSerialize())]]></code>
     </FalsableReturnStatement>
   </file>
-  <file src="src/exceptions/domain/RequiredInputException.php">
-    <UndefinedClass>
-      <code><![CDATA[?Throwable]]></code>
-    </UndefinedClass>
-  </file>
   <file src="src/jsonApi/AttributionBasedResource.php">
     <ParamNameMismatch>
       <code><![CDATA[$entity]]></code>
